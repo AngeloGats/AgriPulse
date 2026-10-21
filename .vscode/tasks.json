@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start AgroPulse model server",
+      "type": "process",
+      "command": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+      "args": ["site\\ML Algorithms\\app.py"],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "agropulse",
+        "pattern": {
+          "regexp": "^(.*)$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Running on http://127\\.0\\.0\\.1:5051",
+          "endsPattern": "Press CTRL\\+C to quit"
+        }
+      }
+    }
+  ]
+}

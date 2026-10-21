@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Preview the AgroPulse client portal interface for organizing field data and exploring machine learning workflows." />
+    <title>Client Portal Preview | AgroPulse Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/site.css?v=3" />
+    <script src="../assets/js/site.js" defer></script>
+    <script src="../assets/js/demo.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-brand" href="index.html" aria-label="AgroPulse Intelligence home"><span class="site-brand-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 27V14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /><path d="M16 17C8.8 17 5 13.2 5 6c7.2 0 11 3.8 11 11Z" fill="currentColor" /><path d="M16 21c0-6.2 3.2-9.5 9.5-9.5 0 6.3-3.3 9.5-9.5 9.5Z" fill="currentColor" opacity=".62" /></svg></span><span>AgroPulse<span class="brand-light"> Intelligence</span></span></a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a><a href="about.html">About us</a><a href="analytics.html">ML algorithms</a><a class="current" href="demo.html" aria-current="page">Client portal</a><a class="nav-cta" href="analytics.html">Explore the platform <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+
+    <main class="portal-page">
+      <section class="portal-heading">
+        <div>
+          <div class="overline"><span></span> AGROPULSE CLOUD PLATFORM</div>
+          <h1>Field data workspace</h1>
+          <p>A preview of how field measurements could be organized before they are analyzed.</p>
+        </div>
+        <div class="portal-status"><span></span> Interface preview</div>
+      </section>
+
+      <section class="portal-callout">
+        <span class="callout-mark" aria-hidden="true">✳</span>
+        <div><strong>Model predictions are not connected yet.</strong><p>This page is a visual preview of the client portal. Submitting the form will summarize your sample inputs only; it will not diagnose a crop or generate a prediction.</p></div>
+        <a href="analytics.html">Explore model concepts <span aria-hidden="true">→</span></a>
+      </section>
+
+      <div class="portal-grid">
+        <section class="portal-form-card">
+          <div class="portal-card-heading"><div><span class="overline">FIELD OBSERVATION</span><h2>Enter sample conditions</h2></div><span class="form-step">01 <i>/ 02</i></span></div>
+          <form id="field-form">
+            <div class="portal-field-grid">
+              <label>Field name<input name="fieldName" type="text" value="North plot" required /></label>
+              <label>Crop<select name="crop"><option>Rice</option><option>Corn</option><option>Soybean</option><option>Other</option></select></label>
+              <label>Rainfall in last 7 days <span class="input-with-unit"><input name="rainfall" type="number" min="0" max="1000" value="42" required /><i>mm</i></span></label>
+              <label>Soil moisture <span class="input-with-unit"><input name="moisture" type="number" min="0" max="100" value="24" required /><i>%</i></span></label>
+              <label>Relative humidity <span class="input-with-unit"><input name="humidity" type="number" min="0" max="100" value="68" required /><i>%</i></span></label>
+              <label>Nitrogen level <span class="input-with-unit"><input name="nitrogen" type="number" min="0" value="38" required /><i>mg/kg</i></span></label>
+            </div>
+            <button class="button button-primary portal-submit" type="submit">Review sample inputs <span aria-hidden="true">→</span></button>
+            <p class="portal-form-note">Use the example values or enter your own hypothetical field readings.</p>
+          </form>
+        </section>
+
+        <aside class="portal-result-card" aria-live="polite">
+          <div class="result-topline"><span class="result-icon" aria-hidden="true">⌁</span><span>INPUT SUMMARY</span></div>
+          <h2 id="result-title">Your field snapshot</h2>
+          <p id="result-description">Review the example measurements entered in the form.</p>
+          <div class="snapshot-list">
+            <div><span>Field</span><strong id="summary-field">North plot</strong></div>
+            <div><span>Crop</span><strong id="summary-crop">Rice</strong></div>
+            <div><span>7-day rainfall</span><strong id="summary-rainfall">42 mm</strong></div>
+            <div><span>Soil moisture</span><strong id="summary-moisture">24%</strong></div>
+            <div><span>Humidity</span><strong id="summary-humidity">68%</strong></div>
+            <div><span>Nitrogen</span><strong id="summary-nitrogen">38 mg/kg</strong></div>
+          </div>
+          <div class="summary-notice"><span aria-hidden="true">ⓘ</span><span id="summary-note">This is only a summary of the entered values. No model has interpreted them.</span></div>
+        </aside>
+      </div>
+
+      <section class="portal-next">
+        <div><div class="overline">NEXT IN THE WORKFLOW</div><h2>From field readings to an explainable result.</h2><p>The next build stage can connect real sample datasets and trained models to these inputs, then show how a result was reached.</p></div>
+        <div class="workflow-steps"><span class="step-done"><i>✓</i> Collect data</span><b>→</b><span><i>02</i> Choose a model</span><b>→</b><span><i>03</i> Review insight</span></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="site-brand footer-brand" href="index.html"><span class="site-brand-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 27V14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /><path d="M16 17C8.8 17 5 13.2 5 6c7.2 0 11 3.8 11 11Z" fill="currentColor" /><path d="M16 21c0-6.2 3.2-9.5 9.5-9.5 0 6.3-3.3 9.5-9.5 9.5Z" fill="currentColor" opacity=".62" /></svg></span><span>AgroPulse<span class="brand-light"> Intelligence</span></span></a>
+      <p>Predictive intelligence for sustainable agriculture.</p>
+      <nav aria-label="Footer navigation"><a href="about.html">About us</a><a href="analytics.html">ML algorithms</a><a href="index.html#impact-calculator">Impact estimator</a></nav>
+      <small>Portal interface preview · No model predictions are generated.</small>
+    </footer>
+  </body>
+</html>

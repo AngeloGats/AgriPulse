@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore a trained Linear Regression model that estimates crop yield from CYCleSS satellite summaries."
+    />
+    <title>Linear Regression Field Lab | AgroPulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/ml-static/linear-regression.css?v=4" />
+    <script src="/ml-static/linear-regression.js?v=4" defer></script>
+  </head>
+  <body>
+    <header class="ml-header">
+      <a class="ml-brand" href="/index.html" aria-label="AgroPulse Intelligence home">
+        <span class="ml-brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 27V14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M16 17C8.8 17 5 13.2 5 6c7.2 0 11 3.8 11 11Z" fill="currentColor" />
+            <path d="M16 21c0-6.2 3.2-9.5 9.5-9.5 0 6.3-3.3 9.5-9.5 9.5Z" fill="currentColor" opacity=".62" />
+          </svg>
+        </span>
+        <span>AgroPulse<span class="ml-brand-muted"> Intelligence</span></span>
+      </a>
+      <nav class="ml-nav" aria-label="Main navigation">
+        <a href="/analytics.html">Algorithm library</a>
+        <a href="/about.html">About us</a>
+        <a href="/demo.html">Client portal</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="ml-hero">
+        <div>
+          <div class="ml-overline"><span></span> INTERACTIVE MODEL FIELD LAB</div>
+          <h1>Estimate crop yield<br />with <em>Linear Regression.</em></h1>
+          <p>
+            Enter crop, season year, and Sentinel-1 satellite summaries to get a
+            prediction from the trained CYCleSS model.
+          </p>
+          <div class="ml-hero-meta">
+            <span><i></i> Trained on 742 field records</span>
+            <span>Target: mean yield in tonnes per hectare</span>
+          </div>
+        </div>
+        <aside class="ml-score-card" aria-label="Held-out model performance">
+          <span class="ml-score-label">HELD-OUT TEST PERFORMANCE</span>
+          <strong>R² {{ "%.2f"|format(metrics.test_r2) }}</strong>
+          <span>Mean absolute error</span>
+          <b>{{ "%.2f"|format(metrics.test_mae) }} t/ha</b>
+          <small>Measured across {{ metrics.test_rows }} fields in held-out grid groups.</small>
+        </aside>
+      </section>
+
+      <section class="ml-explainer" aria-label="How the model works">
+        <div><span class="ml-step">01</span><span><b>Describe the field</b><small>Choose a crop and data year.</small></span></div>
+        <span class="ml-step-arrow" aria-hidden="true">→</span>
+        <div><span class="ml-step">02</span><span><b>Enter satellite summaries</b><small>Ratio, VH, and VV measurements.</small></span></div>
+        <span class="ml-step-arrow" aria-hidden="true">→</span>
+        <div><span class="ml-step">03</span><span><b>Run the trained model</b><small>See its numeric yield estimate.</small></span></div>
+      </section>
+
+      <section class="ml-workspace" aria-labelledby="form-title">
+        <div class="ml-form-panel">
+          <div class="ml-section-heading">
+            <div>
+              <span class="ml-kicker">MODEL INPUTS</span>
+              <h2 id="form-title">Field and satellite data</h2>
+            </div>
+            <button class="ml-example-button" id="load-example" type="button">Load example inputs</button>
+          </div>
+
+          <form id="prediction-form">
+            <div class="ml-field-pair">
+              <label class="ml-field">
+                <span>Crop</span>
+                <select name="crop" id="crop" required>
+                  {% for crop in crops %}
+                  <option value="{{ crop }}">{{ crop }}</option>
+                  {% endfor %}
+                </select>
+              </label>
+              <label class="ml-field">
+                <span>Data year</span>
+                <select name="year" id="year" required>
+                  {% for year in years %}
+                  <option value="{{ year }}">{{ year }}</option>
+                  {% endfor %}
+                </select>
+              </label>
+            </div>
+
+            <div class="ml-sensor-grid">
+              {% for sensor, title, detail in [
+                ("ratio", "Ratio", "VV-to-VH backscatter ratio"),
+                ("vh", "VH polarization", "Cross-polarized backscatter"),
+                ("vv", "VV polarization", "Co-polarized backscatter")
+              ] %}
+              <fieldset class="ml-sensor-card">
+                <legend><span class="ml-sensor-mark">{{ title[0] }}</span>{{ title }}</legend>
+                <p>{{ detail }}</p>
+                <div class="ml-sensor-fields">
+                  {% for field, label, step, min_value in [
+                    ("mean", "Mean", "any", ""),
+                    ("std", "Standard deviation", "any", "0"),
+                    ("min", "Minimum", "any", ""),
+                    ("max", "Maximum", "any", ""),
+                    ("observations", "Observed dates", "1", "0")
+                  ] %}
+                  <label class="ml-field">
+                    <span>{{ label }}</span>
+                    <input
+                      type="number"
+                      name="{{ sensor }}_{{ field }}"
+                      id="{{ sensor }}_{{ field }}"
+                      step="{{ step }}"
+                      {% if min_value %}min="{{ min_value }}"{% endif %}
+                      {% if field != "std" %}required{% endif %}
+                      inputmode="decimal"
+                      placeholder="Load an example"
+                    />
+                  </label>
+                  {% endfor %}
+                </div>
+                {% if sensor == "ratio" %}
+                <small class="ml-sensor-unit">Ratio compares VV and VH radar backscatter, helping describe how the crop canopy reflects the radar signal.</small>
+                {% elif sensor == "vh" %}
+                <small class="ml-sensor-unit">VH polarization records cross-polarized radar returns, which are sensitive to vegetation structure and canopy scattering.</small>
+                {% else %}
+                <small class="ml-sensor-unit">VV polarization records co-polarized radar returns, reflecting the canopy and the ground surface beneath it.</small>
+                {% endif %}
+                <small class="ml-sensor-input-note">If no dates were observed, enter 0; summary values will be imputed from training data. Standard deviation may be left blank.</small>
+              </fieldset>
+              {% endfor %}
+            </div>
+
+            <div class="ml-form-footer">
+              <p><b>Not sure what to enter?</b> Load the example values taken from a held-out CYCleSS field.</p>
+              <button class="ml-submit-button" id="predict-button" type="submit">
+                Calculate yield estimate <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </form>
+          <div class="ml-status" id="form-status" role="status" aria-live="polite"></div>
+        </div>
+
+        <aside class="ml-result-panel" aria-labelledby="result-title">
+          <span class="ml-result-icon" aria-hidden="true">↗</span>
+          <span class="ml-kicker">MODEL OUTPUT</span>
+          <h2 id="result-title">Your estimate</h2>
+          <p class="ml-result-intro">Submit field inputs to calculate a prediction.</p>
+          <div class="ml-result-value" id="result-value" aria-live="polite">— <small>t/ha</small></div>
+          <div class="ml-result-context" id="result-context">No calculation yet</div>
+          <div class="ml-result-warning" id="result-warning" hidden></div>
+          <div class="ml-performance-note">
+            <span class="ml-performance-icon" aria-hidden="true">i</span>
+            <p>
+              This is a learning demonstration, not agronomic advice. The test
+              MAE is {{ "%.2f"|format(metrics.test_mae) }} t/ha; individual
+              errors can be larger.
+            </p>
+          </div>
+          <div class="ml-result-divider"></div>
+          <span class="ml-kicker">MODEL DETAILS</span>
+          <dl class="ml-model-details">
+            <div><dt>Algorithm</dt><dd>Ordinary least squares</dd></div>
+            <div><dt>Training rows</dt><dd>742</dd></div>
+            <div><dt>Evaluation split</dt><dd>Held-out grid groups</dd></div>
+            <div><dt>Output</dt><dd>Mean field yield (t/ha)</dd></div>
+          </dl>
+        </aside>
+      </section>
+
+      <section class="ml-visualization-panel" aria-labelledby="visualization-title">
+        <div class="ml-visualization-heading">
+          <div>
+            <span class="ml-kicker">HELD-OUT MODEL RESULTS</span>
+            <h2 id="visualization-title">Actual vs. predicted yield</h2>
+            <p>Each point represents one held-out CYCleSS field. The fitted line shows the trend; your latest prediction appears as an orange reference on the predicted-yield axis.</p>
+          </div>
+          <div class="ml-chart-legend" aria-hidden="true">
+            <span><i class="ml-legend-point"></i> Test field</span>
+            <span><i class="ml-legend-fit"></i> Fitted trend</span>
+            <span><i class="ml-legend-estimate"></i> Your estimate</span>
+          </div>
+        </div>
+        <svg
+          class="ml-regression-chart"
+          id="regression-chart"
+          viewBox="0 0 760 380"
+          role="img"
+          aria-labelledby="regression-chart-title regression-chart-description"
+        >
+          <title id="regression-chart-title">Actual and predicted crop yields</title>
+          <desc id="regression-chart-description">Scatter plot of observed and predicted yields across held-out CYCleSS field records, with a fitted regression trend line.</desc>
+        </svg>
+        <p class="ml-chart-caption" id="chart-caption">Submit your field inputs to highlight the new estimate against {{ metrics.test_rows }} held-out fields.</p>
+        <script id="regression-chart-data" type="application/json">{{ diagnostic_points|tojson }}</script>
+      </section>
+
+      <section class="ml-caveat">
+        <span aria-hidden="true">ⓘ</span>
+        <p>
+          <b>Interpret predictions with care.</b> CYCleSS contains 934 field-year
+          records from England for 2015–2017. This model uses full-season
+          satellite summaries, so it cannot be interpreted as an early-season
+          forecast. Inputs far outside the training data will be flagged.
+        </p>
+      </section>
+
+      <footer class="ml-footer">
+        <span>AgroPulse Intelligence <i aria-hidden="true">✳</i> Machine Learning Field Lab</span>
+        <a href="/analytics.html">Back to the algorithm library <span aria-hidden="true">↗</span></a>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore how AgroPulse applies six machine learning algorithms to agricultural questions."
+    />
+    <title>Algorithm Hub | AgroPulse Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=2" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="index.html" aria-label="AgroPulse home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M16 27V14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+              <path d="M16 17C8.8 17 5 13.2 5 6c7.2 0 11 3.8 11 11Z" fill="currentColor" />
+              <path d="M16 21c0-6.2 3.2-9.5 9.5-9.5 0 6.3-3.3 9.5-9.5 9.5Z" fill="currentColor" opacity=".62" />
+            </svg>
+          </span>
+          <span class="brand-name">Agro<span><Pic></Pic>Pulse</span></span>
+        </a>
+
+        <div class="workspace-label">WORKSPACE</div>
+        <nav class="side-nav">
+          <a class="nav-link" href="index.html">
+            <span class="nav-icon" aria-hidden="true">◫</span>
+            Homepage
+          </a>
+          <a class="nav-link active" href="analytics.html#algorithms" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">⌘</span>
+            Algorithm library
+            <span class="nav-count">06</span>
+          </a>
+          <a class="nav-link" href="demo.html">
+            <span class="nav-icon" aria-hidden="true">⌁</span>
+            Client portal
+          </a>
+          <a class="nav-link" href="about.html">
+            <span class="nav-icon" aria-hidden="true">◎</span>
+            About us
+          </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <div class="sidebar-note">
+            <span class="note-spark" aria-hidden="true">✳</span>
+            <p>Curious about the models?</p>
+            <span>Pick an algorithm to explore its role in agriculture.</span>
+            <a href="#algorithms">Explore algorithms <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="profile">
+            <div class="avatar" aria-hidden="true">AG</div>
+            <div>
+              <strong>AgroPulse Lab</strong>
+              <span>Learning workspace</span>
+            </div>
+            <span class="profile-menu" aria-hidden="true">···</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content" id="overview">
+        <header class="topbar">
+          <div class="breadcrumb"><span>AgroPulse</span><span aria-hidden="true">/</span><strong>Algorithm hub</strong></div>
+          <div class="topbar-actions">
+            <span class="learning-status"><span></span> Learning mode</span>
+            <button class="icon-button" type="button" aria-label="Notifications">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg>
+            </button>
+            <div class="top-avatar" aria-label="User profile">A</div>
+          </div>
+        </header>
+
+        <div class="page-content">
+          <section class="welcome-row">
+            <div>
+              <div class="eyebrow"><span class="eyebrow-dot"></span> YOUR AGRICULTURE ML PLAYGROUND</div>
+              <h1>Good morning, Angelo <span aria-hidden="true">✳</span></h1>
+              <p class="welcome-copy">Explore how machine learning can help answer real questions in agriculture.</p>
+            </div>
+            <a class="date-chip" href="demo.html">
+              <span class="date-icon" aria-hidden="true">◷</span>
+              Open client portal
+              <span aria-hidden="true">↗</span>
+            </a>
+          </section>
+
+          <section class="intro-banner" aria-labelledby="intro-title">
+            <div class="banner-copy">
+              <div class="banner-label"><span aria-hidden="true">✳</span> FROM DATA TO THE FIELD</div>
+              <h2 id="intro-title">Better decisions<br />start with better insight.</h2>
+              <p>See how six different algorithms learn from agricultural data—from estimating harvests to identifying crop conditions.</p>
+              <a href="#algorithms" class="banner-link">Meet the algorithms <span aria-hidden="true">→</span></a>
+            </div>
+            <div class="banner-art" aria-hidden="true">
+              <img class="banner-photo" src="../assets/images/Farmer2.avif" alt="" />
+            </div>
+          </section>
+
+          <section class="section-heading" id="algorithms">
+            <div>
+              <div class="eyebrow">THE TOOLKIT</div>
+              <h2>Six ways to learn from the field</h2>
+              <p>Each algorithm looks at agricultural data a little differently.</p>
+            </div>
+            <span class="section-count"><strong>06</strong> algorithms</span>
+          </section>
+
+          <section class="algorithm-grid" aria-label="Machine learning algorithms">
+            <article class="algorithm-card selected">
+              <button class="algorithm-card-control" type="button" data-model="linear" aria-pressed="true">
+                <span class="algorithm-icon icon-linear" aria-hidden="true">
+                  <svg viewBox="0 0 32 32"><path d="M5 25V7M5 25h22M9 21l5-5 4 2 8-10" /><path d="M8 22 25 8" class="icon-accent" /></svg>
+                </span>
+                <span class="card-topline"><span class="category-tag regression-tag">REGRESSION</span></span>
+                <strong>Linear Regression</strong>
+                <span class="card-description">Estimate crop yield from rainfall, temperature, and soil data.</span>
+                <span class="card-footer"><span class="use-case-dot green-dot"></span> Yield estimation</span>
+              </button>
+              <a class="card-arrow-link" href="/linear-regression" data-model-demo aria-label="Open the Linear Regression model">
+                <span class="card-arrow" aria-hidden="true">↗</span>
+              </a>
+            </article>
+
+            <button class="algorithm-card" type="button" data-model="bayes">
+              <span class="algorithm-icon icon-bayes" aria-hidden="true">
+                <svg viewBox="0 0 32 32"><circle cx="8" cy="16" r="3" /><circle cx="23.5" cy="8" r="3" /><circle cx="23.5" cy="24" r="3" /><path d="m11 15 9.5-5M11 17l9.5 5" /></svg>
+              </span>
+              <span class="card-topline"><span class="category-tag classification-tag">CLASSIFICATION</span><span class="card-arrow">↗</span></span>
+              <strong>Naive Bayes</strong>
+              <span class="card-description">Use observed symptoms to estimate likely crop conditions.</span>
+              <span class="card-footer"><span class="use-case-dot orange-dot"></span> Disease screening</span>
+            </button>
+
+            <button class="algorithm-card" type="button" data-model="knn">
+              <span class="algorithm-icon icon-knn" aria-hidden="true">
+                <svg viewBox="0 0 32 32"><circle cx="8" cy="10" r="2.5" /><circle cx="13" cy="22" r="2.5" /><circle cx="23" cy="10" r="2.5" /><circle cx="24" cy="22" r="2.5" /><circle cx="17" cy="15.5" r="3" class="icon-accent" /><path d="m10 11 5 3M15 20l1-2M20 14l2-2M20 17l2 3" stroke-dasharray="2 2" /></svg>
+              </span>
+              <span class="card-topline"><span class="category-tag classification-tag">CLASSIFICATION</span><span class="card-arrow">↗</span></span>
+              <strong>K-Nearest Neighbors</strong>
+              <span class="card-description">Compare a new sample with similar soils or plant conditions.</span>
+              <span class="card-footer"><span class="use-case-dot blue-dot"></span> Soil comparison</span>
+            </button>
+
+            <button class="algorithm-card" type="button" data-model="svm">
+              <span class="algorithm-icon icon-svm" aria-hidden="true">
+                <svg viewBox="0 0 32 32"><path d="M5 25V7M5 25h22M8 23l16-15" /><circle cx="11" cy="12" r="2.2" /><circle cx="15" cy="9" r="2.2" /><circle cx="20" cy="7" r="2.2" /><circle cx="15" cy="21" r="2.2" class="icon-accent" /><circle cx="21" cy="17" r="2.2" class="icon-accent" /><path d="m8 17 16-8" stroke-dasharray="3 2" /></svg>
+              </span>
+              <span class="card-topline"><span class="category-tag classification-tag">CLASSIFICATION</span><span class="card-arrow">↗</span></span>
+              <strong>Support Vector Machine</strong>
+              <span class="card-description">Separate classes such as healthy crops and disease cases.</span>
+              <span class="card-footer"><span class="use-case-dot purple-dot"></span> Crop health</span>
+            </button>
+
+            <button class="algorithm-card" type="button" data-model="tree">
+              <span class="algorithm-icon icon-tree" aria-hidden="true">
+                <svg viewBox="0 0 32 32"><rect x="12" y="4" width="8" height="6" rx="2" /><rect x="4" y="22" width="8" height="6" rx="2" /><rect x="20" y="22" width="8" height="6" rx="2" /><path d="M16 10v5M8 15v7M24 15v7M8 15h16" /></svg>
+              </span>
+              <span class="card-topline"><span class="category-tag rules-tag">RULE-BASED</span><span class="card-arrow">↗</span></span>
+              <strong>Decision Tree</strong>
+              <span class="card-description">Follow clear conditions to guide an irrigation decision.</span>
+              <span class="card-footer"><span class="use-case-dot yellow-dot"></span> Irrigation guidance</span>
+            </button>
+
+            <button class="algorithm-card" type="button" data-model="neural">
+              <span class="algorithm-icon icon-neural" aria-hidden="true">
+                <svg viewBox="0 0 32 32"><path d="m8 8 8 8M8 16h8M8 24l8-8m0 0 8-8m-8 8h8m-8 0 8 8" /><circle cx="7" cy="8" r="2.2" /><circle cx="7" cy="16" r="2.2" /><circle cx="7" cy="24" r="2.2" /><circle cx="17" cy="16" r="2.5" class="icon-accent" /><circle cx="25" cy="8" r="2.2" /><circle cx="25" cy="16" r="2.2" /><circle cx="25" cy="24" r="2.2" /></svg>
+              </span>
+              <span class="card-topline"><span class="category-tag neural-tag">NEURAL NETWORK</span><span class="card-arrow">↗</span></span>
+              <strong>Artificial Neural Network</strong>
+              <span class="card-description">Learn complex patterns in crop images or growing conditions.</span>
+              <span class="card-footer"><span class="use-case-dot pink-dot"></span> Leaf image recognition</span>
+            </button>
+          </section>
+
+          <section class="field-lab" id="field-demo" aria-labelledby="field-title">
+            <div class="field-heading">
+              <div>
+                <div class="eyebrow"><span class="eyebrow-dot"></span> TAKE A CLOSER LOOK</div>
+                <h2 id="field-title">Inside the field lab</h2>
+                <p>Select an algorithm above to explore its agricultural example.</p>
+              </div>
+              <span class="preview-label"><span></span> VISUAL PREVIEW</span>
+            </div>
+
+            <div class="demo-panel">
+              <div class="demo-main">
+                <div class="demo-title-row">
+                  <div class="demo-icon" id="demoIcon" aria-hidden="true">↗</div>
+                  <div class="demo-title">
+                    <span class="category-tag regression-tag" id="demoCategory">REGRESSION</span>
+                    <h3 id="demoName">Linear Regression</h3>
+                  </div>
+                  <span class="sample-badge">SAMPLE EXAMPLE</span>
+                </div>
+                <p class="demo-description" id="demoDescription">See how historical rainfall and harvest data can reveal a trend in crop yield.</p>
+                <div class="visualization" id="visualization" aria-live="polite"></div>
+                <div class="chart-legend" id="chartLegend">
+                  <span><i class="legend-dot harvest-dot"></i> Sample harvests</span>
+                  <span><i class="legend-line"></i> Fitted trend</span>
+                </div>
+                <div class="demo-caption"><span aria-hidden="true">ⓘ</span> Illustrative visualization with sample values. No trained model is connected yet.</div>
+              </div>
+
+              <aside class="demo-insight">
+                <div class="insight-label"><span aria-hidden="true">✳</span> AGRICULTURAL USE</div>
+                <h3 id="useCaseTitle">Estimate crop yield</h3>
+                <p id="useCaseDescription">Learn how rainfall relates to harvest size, then use the trend to estimate a numeric yield.</p>
+                <div class="insight-divider"></div>
+                <div class="example-output">
+                  <span class="output-label" id="outputLabel">EXAMPLE OUTPUT</span>
+                  <strong id="outputValue">Yield estimate <span>5.8 t/ha</span></strong>
+                  <span class="output-note" id="outputNote">An example numeric prediction</span>
+                </div>
+                <div class="data-chips" id="dataChips">
+                  <span>Rainfall</span><span>Temperature</span><span>Soil quality</span>
+                </div>
+                <div class="insight-footnote"><span class="footnote-icon">↗</span><span id="learningNote">Regression predicts a continuous number, rather than a category.</span></div>
+                <a class="model-demo-button" href="/linear-regression" data-model-demo>
+                  Try the trained Linear Regression model <span aria-hidden="true">↗</span>
+                </a>
+              </aside>
+            </div>
+          </section>
+
+          <footer class="page-footer">
+            <span>AgroPulse <span aria-hidden="true">✳</span> A learning space for agriculture and machine learning</span>
+            <span>Sample visuals are for learning purposes</span>
+          </footer>
+        </div>
+      </main>
+    </div>
+    <script src="../assets/js/script.js"></script>
+  </body>
+</html>
