@@ -277,7 +277,7 @@ start Flask from the terminal as in section 4.
 | `python3: command not found` (macOS/Linux) | Install Python as in section 1.1. |
 | `No module named flask` (or pandas, sklearn…) | The packages are not installed in the environment you are using. Activate `.venv` and run `pip install -r requirements.txt`, or run the app with `.venv` Python as shown in section 4. |
 | `Activate.ps1 cannot be loaded… scripts disabled` | Run `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned`, or call `.\.venv\Scripts\python.exe` directly. |
-| `FileNotFoundError … missing required trained artifacts` | `trained_models/` or `data/LinearRegression/processed/` was not copied. Get them from the project owner (see section 2). To rebuild them, see section 7. |
+| `FileNotFoundError … missing required trained artifacts` | `trained_models/` or `data/LinearRegression/processed/` was not copied. Run `git pull` to get the latest commit (the owner must have pushed them), or ask the project owner for the folders (see section 2). To rebuild them, see section 7. |
 | Browser: **This site can’t be reached / ERR_CONNECTION_REFUSED** on port 5051 | The Flask server is not running. Start it (section 4) and keep the terminal open. |
 | Browser: **Cannot GET /linear-regression** | You are on Live Server (port 5500) and the link did not switch to Flask. Open <http://127.0.0.1:5051/linear-regression> directly. |
 | `Address already in use` / port 5051 busy | Another copy of the app is still running. Stop it with `Ctrl+C` in its terminal (or close that terminal), then start again. |

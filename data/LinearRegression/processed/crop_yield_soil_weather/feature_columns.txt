@@ -1,0 +1,102 @@
+year
+area
+fertilizer
+pesticide
+N
+P
+K
+pH
+avg_temp_c
+total_rainfall_mm
+avg_humidity_percent
+crop_Arecanut
+crop_Arhar/Tur
+crop_Bajra
+crop_Banana
+crop_Barley
+crop_Black pepper
+crop_Cardamom
+crop_Cashewnut
+crop_Castor seed
+crop_Coconut 
+crop_Coriander
+crop_Cotton(lint)
+crop_Cowpea(Lobia)
+crop_Dry chillies
+crop_Garlic
+crop_Ginger
+crop_Gram
+crop_Groundnut
+crop_Guar seed
+crop_Horse-gram
+crop_Jowar
+crop_Jute
+crop_Khesari
+crop_Linseed
+crop_Maize
+crop_Masoor
+crop_Mesta
+crop_Moong(Green Gram)
+crop_Moth
+crop_Niger seed
+crop_Oilseeds total
+crop_Onion
+crop_Other  Rabi pulses
+crop_Other Cereals
+crop_Other Kharif pulses
+crop_Other Summer Pulses
+crop_Peas & beans (Pulses)
+crop_Potato
+crop_Ragi
+crop_Rapeseed &Mustard
+crop_Rice
+crop_Safflower
+crop_Sannhamp
+crop_Sesamum
+crop_Small millets
+crop_Soyabean
+crop_Sugarcane
+crop_Sunflower
+crop_Sweet potato
+crop_Tapioca
+crop_Tobacco
+crop_Turmeric
+crop_Urad
+crop_Wheat
+crop_other oilseeds
+season_Autumn     
+season_Kharif     
+season_Rabi       
+season_Summer     
+season_Whole Year 
+season_Winter     
+state_Andhra Pradesh
+state_Arunachal Pradesh
+state_Assam
+state_Bihar
+state_Chhattisgarh
+state_Delhi
+state_Goa
+state_Gujarat
+state_Haryana
+state_Himachal Pradesh
+state_Jammu and Kashmir
+state_Jharkhand
+state_Karnataka
+state_Kerala
+state_Madhya Pradesh
+state_Maharashtra
+state_Manipur
+state_Meghalaya
+state_Mizoram
+state_Nagaland
+state_Odisha
+state_Puducherry
+state_Punjab
+state_Sikkim
+state_Tamil Nadu
+state_Telangana
+state_Tripura
+state_Uttar Pradesh
+state_Uttarakhand
+state_West Bengal

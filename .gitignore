@@ -1,4 +1,10 @@
 .venv/
 __pycache__/
 *.py[cod]
-data/
+
+# Raw datasets are large and not needed to run the site.
+# Keep only the processed data the app reads at startup.
+data/*
+!data/LinearRegression/
+data/LinearRegression/*
+!data/LinearRegression/processed/
