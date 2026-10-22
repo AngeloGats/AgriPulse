@@ -14,8 +14,8 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/ml-static/linear-regression.css?v=4" />
-    <script src="/ml-static/linear-regression.js?v=4" defer></script>
+    <link rel="stylesheet" href="/ml-static/linear-regression.css?v=6" />
+    <script src="/ml-static/linear-regression.js?v=6" defer></script>
   </head>
   <body>
     <header class="ml-header">
@@ -98,24 +98,25 @@
             </div>
 
             <div class="ml-sensor-grid">
-              {% for sensor, title, detail in [
-                ("ratio", "Ratio", "VV-to-VH backscatter ratio"),
-                ("vh", "VH polarization", "Cross-polarized backscatter"),
-                ("vv", "VV polarization", "Co-polarized backscatter")
+              {% for sensor, mark, title, tech_sub, detail in [
+                ("ratio", "R", "Canopy Structure Ratio", "Ratio (VV / VH)", "Compares upright plant canopy returns to surface returns"),
+                ("vh", "VH", "Canopy & Biomass Return", "VH Polarization", "Sensitive to leaf area, crop volume, and plant structure"),
+                ("vv", "VV", "Ground & Surface Return", "VV Polarization", "Sensitive to ground moisture, soil roughness, and early vegetative cover")
               ] %}
               <fieldset class="ml-sensor-card">
-                <legend><span class="ml-sensor-mark">{{ title[0] }}</span>{{ title }}</legend>
+                <legend><span class="ml-sensor-mark">{{ mark }}</span>{{ title }}</legend>
+                <span class="ml-sensor-tech-label">{{ tech_sub }}</span>
                 <p>{{ detail }}</p>
                 <div class="ml-sensor-fields">
-                  {% for field, label, step, min_value in [
-                    ("mean", "Mean", "any", ""),
-                    ("std", "Standard deviation", "any", "0"),
-                    ("min", "Minimum", "any", ""),
-                    ("max", "Maximum", "any", ""),
-                    ("observations", "Observed dates", "1", "0")
+                  {% for field, label, tech_field, step, min_value in [
+                    ("mean", "Seasonal Average", "Mean", "any", ""),
+                    ("std", "Growth Variability", "SD (Optional)", "any", "0"),
+                    ("min", "Seasonal Minimum", "Min", "any", ""),
+                    ("max", "Peak Canopy", "Max", "any", ""),
+                    ("observations", "Valid Observations", "Count", "1", "0")
                   ] %}
                   <label class="ml-field">
-                    <span>{{ label }}</span>
+                    <span>{{ label }} <small class="ml-field-sub">({{ tech_field }})</small></span>
                     <input
                       type="number"
                       name="{{ sensor }}_{{ field }}"
@@ -130,13 +131,13 @@
                   {% endfor %}
                 </div>
                 {% if sensor == "ratio" %}
-                <small class="ml-sensor-unit">Ratio compares VV and VH radar backscatter, helping describe how the crop canopy reflects the radar signal.</small>
+                <small class="ml-sensor-unit"><b>Ratio:</b> Compares VV and VH radar backscatter, helping describe how the crop canopy reflects the radar signal.</small>
                 {% elif sensor == "vh" %}
-                <small class="ml-sensor-unit">VH polarization records cross-polarized radar returns, which are sensitive to vegetation structure and canopy scattering.</small>
+                <small class="ml-sensor-unit"><b>VH:</b> Records cross-polarized radar returns, which are sensitive to vegetation structure and canopy scattering.</small>
                 {% else %}
-                <small class="ml-sensor-unit">VV polarization records co-polarized radar returns, reflecting the canopy and the ground surface beneath it.</small>
+                <small class="ml-sensor-unit"><b>VV:</b> Records co-polarized radar returns, reflecting the canopy and the ground surface beneath it.</small>
                 {% endif %}
-                <small class="ml-sensor-input-note">If no dates were observed, enter 0; summary values will be imputed from training data. Standard deviation may be left blank.</small>
+                <small class="ml-sensor-input-note">If no satellite dates were observed, enter 0; values will be imputed from historical training data. Growth variability (SD) may be left blank.</small>
               </fieldset>
               {% endfor %}
             </div>
@@ -203,6 +204,78 @@
         </svg>
         <p class="ml-chart-caption" id="chart-caption">Submit your field inputs to highlight the new estimate against {{ metrics.test_rows }} held-out fields.</p>
         <script id="regression-chart-data" type="application/json">{{ diagnostic_points|tojson }}</script>
+      </section>
+
+      <section class="ml-glossary" aria-labelledby="glossary-title">
+        <span class="ml-kicker">GLOSSARY & FIELD GUIDE</span>
+        <h2 id="glossary-title">What do these inputs mean for your field?</h2>
+        <p class="ml-glossary-intro">
+          The model reads Sentinel-1 satellite radar pulses bounced off the field throughout the growing season.
+          Unlike optical imagery, radar penetrates through cloud cover and provides direct insights into physical crop density, structure, and surface moisture.
+        </p>
+
+        <h3>The three radar signals (Sensors)</h3>
+        <dl class="ml-glossary-grid">
+          <div>
+            <dt>Canopy Structure Ratio <small>(Ratio: VV / VH)</small></dt>
+            <dd>Compares the dual-polarization radar returns for the exact same location. As crops grow tall and leafy, canopy volume increases relative to soil bounce, making this ratio an indicator of overall canopy development and density.</dd>
+          </div>
+          <div>
+            <dt>Canopy & Biomass Return <small>(VH Polarization)</small></dt>
+            <dd>Cross-polarized radar backscatter (vertical pulse sent, horizontal bounce received). The radar signal scatters heavily within complex leaf and stem networks, making it directly sensitive to aboveground crop biomass and canopy volume.</dd>
+          </div>
+          <div>
+            <dt>Ground & Surface Return <small>(VV Polarization)</small></dt>
+            <dd>Co-polarized radar backscatter (vertical pulse sent, vertical bounce received). It reflects strongly off soil and the lower canopy, capturing changes in ground moisture, surface roughness, and early vegetative coverage before full closure.</dd>
+          </div>
+        </dl>
+
+        <h3>The five metrics for each signal</h3>
+        <dl class="ml-glossary-grid">
+          <div>
+            <dt>Seasonal Average <small>(Mean)</small></dt>
+            <dd>The average radar return across all recorded passes during the growing season. Represents typical canopy vigor and crop presence across the season.</dd>
+          </div>
+          <div>
+            <dt>Growth Variability <small>(Standard Deviation / SD)</small></dt>
+            <dd>How much the canopy reading varied over the season. A low value reflects steady, uniform conditions; a high value indicates dynamic development, rapid growth spurts, or stress. Optional: if left blank, it is imputed from regional training medians.</dd>
+          </div>
+          <div>
+            <dt>Seasonal Minimum <small>(Min)</small></dt>
+            <dd>The lowest backscatter recorded over the season. Typically captures early-season baseline soil conditions before emergence, or periods of dormancy.</dd>
+          </div>
+          <div>
+            <dt>Peak Canopy <small>(Max)</small></dt>
+            <dd>The highest radar return recorded over the season, corresponding to maximum canopy thickness, leaf area index (LAI), and peak vegetative stage prior to maturation.</dd>
+          </div>
+          <div>
+            <dt>Valid Observations <small>(Observed Dates Count)</small></dt>
+            <dd>The number of clear satellite passes with valid readings for this field. If set to 0 (no data), the model automatically imputes regional median values from historical training data.</dd>
+          </div>
+        </dl>
+
+        <h3>Agricultural & Modeling Terms</h3>
+        <dl class="ml-glossary-grid">
+          <div>
+            <dt>Radar Backscatter</dt>
+            <dd>The fraction of microwave energy transmitted by the satellite that scatters back from the field surface and vegetation to the satellite sensor.</dd>
+          </div>
+          <div>
+            <dt>t/ha (Tonnes per Hectare)</dt>
+            <dd>Standard agricultural yield metric. 1 t/ha is equivalent to 1,000 kg of harvested crop per 10,000 square meters (approximately 0.446 US tons per acre).</dd>
+          </div>
+          <div>
+            <dt>Held-Out Field</dt>
+            <dd>A real field partition held aside during model training to test prediction accuracy on unseen farmland. Represented by individual dots on the performance chart.</dd>
+          </div>
+          <div>
+            <dt>Model Accuracy (R² & MAE)</dt>
+            <dd><b>R²</b> reflects how much of natural yield variance is explained by satellite data (1.0 = perfect fit). <b>MAE</b> (Mean Absolute Error) indicates the average deviation of predictions in t/ha.</dd>
+          </div>
+        </dl>
+        <p class="ml-glossary-note">
+          <b>Tip:</b> If you do not have raw radar data for your field, use <b>Load example inputs</b> to populate typical values from tested fields and experiment with different crop types and seasons.
+        </p>
       </section>
 
       <section class="ml-caveat">

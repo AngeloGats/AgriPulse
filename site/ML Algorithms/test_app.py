@@ -31,6 +31,10 @@ class LinearRegressionPageTests(unittest.TestCase):
         self.assertIn(b"Calculate yield estimate", page.data)
         self.assertIn(b"Actual vs. predicted yield", page.data)
         self.assertIn(b"Your estimate", page.data)
+        self.assertIn(b"What do these inputs mean for your field?", page.data)
+        self.assertIn(b"Growth Variability", page.data)
+        self.assertIn(b"Seasonal Average", page.data)
+        self.assertIn(b"Canopy &amp; Biomass Return", page.data)
         self.assertIn(b'id="regression-chart"', page.data)
         self.assertIn(b'id="regression-chart-data"', page.data)
         chart_data = re.search(

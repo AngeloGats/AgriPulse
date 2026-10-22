@@ -369,6 +369,21 @@ main {
   font-weight: 800;
 }
 
+.ml-sensor-tech-label {
+  display: inline-block;
+  margin: 2px 0 3px;
+  color: var(--ml-green);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.ml-field-sub {
+  color: #7b8a7f;
+  font-weight: 500;
+  font-size: 8px;
+}
+
 .ml-sensor-mark {
   display: grid;
   width: 22px;
@@ -624,6 +639,70 @@ main {
   color: #849087;
   font-size: 9px;
   text-align: right;
+}
+
+.ml-glossary {
+  padding: 22px 24px 20px;
+  margin-top: 18px;
+  background: #fff;
+  border: 1px solid var(--ml-line);
+  border-radius: 13px;
+  box-shadow: 0 8px 26px rgb(35 61 45 / 3%);
+}
+
+.ml-glossary h2 {
+  margin: 6px 0 6px;
+  font-family: "Manrope", sans-serif;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+}
+
+.ml-glossary h3 {
+  margin: 20px 0 9px;
+  color: #40574a;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+}
+
+.ml-glossary-intro,
+.ml-glossary-note {
+  margin: 0;
+  color: var(--ml-muted);
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.ml-glossary-note {
+  padding-top: 14px;
+  margin-top: 16px;
+  border-top: 1px solid #edf0ec;
+}
+
+.ml-glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.ml-glossary-grid > div {
+  padding: 12px 13px;
+  background: #f7f9f6;
+  border-radius: 9px;
+}
+
+.ml-glossary-grid dt {
+  margin-bottom: 5px;
+  color: var(--ml-deep);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.ml-glossary-grid dd {
+  margin: 0;
+  color: #66766b;
+  font-size: 10px;
+  line-height: 1.65;
 }
 
 .ml-result-icon {
@@ -910,6 +989,14 @@ main {
 
   .ml-chart-caption {
     text-align: left;
+  }
+
+  .ml-glossary {
+    padding: 18px 13px 16px;
+  }
+
+  .ml-glossary-grid {
+    grid-template-columns: 1fr;
   }
 }
 
