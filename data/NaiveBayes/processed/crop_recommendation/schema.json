@@ -1,0 +1,63 @@
+{
+  "features": {
+    "N": {
+      "min": 0.0,
+      "max": 140.0,
+      "median": 37.0
+    },
+    "P": {
+      "min": 5.0,
+      "max": 145.0,
+      "median": 51.0
+    },
+    "K": {
+      "min": 5.0,
+      "max": 205.0,
+      "median": 32.0
+    },
+    "temperature": {
+      "min": 8.825674745,
+      "max": 43.67549305,
+      "median": 25.51865526
+    },
+    "humidity": {
+      "min": 14.25803981,
+      "max": 99.98187601,
+      "median": 80.54232197
+    },
+    "ph": {
+      "min": 3.504752314,
+      "max": 9.93509073,
+      "median": 6.431477621500001
+    },
+    "rainfall": {
+      "min": 20.21126747,
+      "max": 298.5601175,
+      "median": 94.77256285
+    }
+  },
+  "classes": [
+    "apple",
+    "banana",
+    "blackgram",
+    "chickpea",
+    "coconut",
+    "coffee",
+    "cotton",
+    "grapes",
+    "jute",
+    "kidneybeans",
+    "lentil",
+    "maize",
+    "mango",
+    "mothbeans",
+    "mungbean",
+    "muskmelon",
+    "orange",
+    "papaya",
+    "pigeonpeas",
+    "pomegranate",
+    "rice",
+    "watermelon"
+  ]
+}

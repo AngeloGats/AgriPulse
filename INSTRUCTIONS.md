@@ -70,7 +70,9 @@ back to default fonts).
 You do **not** need Node.js, a database, or any other language.
 
 > Python 3.12 is what the project was built and tested with. Python 3.11 or
-> newer should also work, but anything older will fail to install the packages.
+> 3.13 should also work. **Use Python 3.10 to 3.13**: older versions cannot install
+> the packages, and TensorFlow (used by the Neural Network page) does not
+> support newer ones such as 3.14 yet.
 
 ### 1.1 Install Python
 
@@ -140,6 +142,16 @@ to a teammate, make sure they are included:
 | `site/` | small | The website pages, images, and the Flask app |
 | `trained_models/linear_regression/` | ~0.2 MB | The trained model and its test predictions |
 | `data/LinearRegression/processed/` | ~15 MB | Prepared data the app reads on startup |
+| `trained_models/naive_bayes/` | ~0.1 MB | The trained Naive Bayes models (page works without them, but shows an error) |
+| `data/NaiveBayes/processed/` | ~0.2 MB | Prepared Naive Bayes data and symptom label schema |
+| `trained_models/knn/` | ~0.5 MB | The trained KNN models and accuracy-by-K metrics |
+| `data/kNN/` | ~0.5 MB | Generated (simulated) KNN datasets and their prepared train/test splits |
+| `trained_models/svm/` | ~0.1 MB | SVM metrics and recommended settings (the page refits small SVMs live) |
+| `data/SVM/` | ~0.2 MB | Generated (simulated) crop-disease dataset and its train/test split |
+| `trained_models/decision_tree/` | ~0.1 MB | Decision Tree model, metrics and accuracy by depth |
+| `data/DecisionTree/` | ~0.2 MB | Generated (simulated) irrigation dataset and its train/test split |
+| `trained_models/ann/` | ~2.5 MB | Convolutional neural network (`leaf_cnn.keras`), metrics and training history |
+| `data/ANN/` | ~9 MB | Downsized PlantVillage tomato-leaf subset (4,500 photos) and its train/test split. The raw `data/ANN/PlantVillage/` download is not committed |
 | `requirements.txt` | tiny | The exact Python packages to install |
 | `index.html` (project root) | tiny | Redirect used with Live Server |
 | `ml/` | small | Scripts that rebuild the data and model (optional) |
@@ -186,8 +198,9 @@ pip install -r requirements.txt
 
 When the environment is active, your terminal prompt starts with `(.venv)`.
 
-Installing the packages downloads a few hundred MB (NumPy, pandas,
-scikit-learn, Flask). This only has to be done once.
+Installing the packages downloads about 1 GB in total (TensorFlow is the
+largest, roughly 300-600 MB, with NumPy, pandas, scikit-learn and Flask). This
+only has to be done once. TensorFlow runs on the CPU here; no graphics card is needed.
 
 > **Do not change the versions in `requirements.txt`.** The trained model file
 > was saved with scikit-learn 1.9.1; other versions may refuse to load it or
@@ -227,7 +240,7 @@ Now open these addresses in your browser:
 | Homepage | <http://127.0.0.1:5051/> |
 | Algorithm library | <http://127.0.0.1:5051/analytics.html> |
 | About us | <http://127.0.0.1:5051/about.html> |
-| Client portal | <http://127.0.0.1:5051/demo.html> |
+| Algorithm library | <http://127.0.0.1:5051/analytics.html> |
 | **Linear Regression model** | <http://127.0.0.1:5051/linear-regression> |
 
 **To stop the server:** click the terminal and press `Ctrl+C`.
@@ -315,7 +328,7 @@ MachineLearning/
 ├── requirements.txt            ← exact Python package versions
 ├── .vscode/tasks.json          ← "Start AgroPulse model server" task (Windows)
 ├── site/
-│   ├── pages/                  ← homepage, About, Algorithm library, Client portal
+│   ├── pages/                  ← homepage, About, Algorithm library
 │   ├── assets/                 ← shared CSS, JavaScript, images
 │   └── ML Algorithms/          ← Flask app + Linear Regression page and tests
 ├── ml/                         ← data-preparation and training scripts

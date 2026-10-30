@@ -1,0 +1,242 @@
+.knn-tabs {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.knn-form[hidden],
+.knn-chart-card[hidden] {
+  display: none;
+}
+
+.knn-k {
+  margin: 4px 0 18px;
+  padding: 14px 16px;
+  background: #f2f8f3;
+  border: 1px solid var(--ml-line);
+  border-radius: 14px;
+}
+
+.knn-k label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.knn-k label b {
+  color: var(--ml-green);
+  font-family: "Manrope", sans-serif;
+  font-size: 24px;
+}
+
+.knn-k input[type="range"] {
+  width: 100%;
+  margin: 8px 0 2px;
+  accent-color: var(--ml-green);
+}
+
+.knn-k-scale {
+  display: flex;
+  justify-content: space-between;
+  color: var(--ml-muted);
+  font-size: 11px;
+}
+
+.knn-k-note {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.knn-k-note.is-changed {
+  color: #b2681a;
+  font-weight: 600;
+}
+
+.knn-chart-card {
+  margin-top: 22px;
+}
+
+.knn-chart-wrap {
+  overflow-x: auto;
+}
+
+.knn-chart {
+  display: block;
+  width: 100%;
+  min-width: 520px;
+  height: auto;
+}
+
+.knn-axis {
+  stroke: #cfd9d1;
+  stroke-width: 1;
+}
+
+.knn-grid {
+  stroke: var(--ml-line);
+  stroke-width: 1;
+}
+
+.knn-tick,
+.knn-axis-title {
+  fill: var(--ml-muted);
+  font-family: "DM Sans", sans-serif;
+  font-size: 11px;
+}
+
+.knn-axis-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.knn-dot {
+  opacity: 0.5;
+}
+
+.knn-dot.is-far {
+  opacity: 0.22;
+}
+
+.knn-link {
+  stroke: #21362c;
+  stroke-opacity: 0.45;
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.knn-ring {
+  fill: none;
+  stroke-width: 2.4;
+}
+
+.knn-sample {
+  fill: #21362c;
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.knn-sample-label {
+  fill: #21362c;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: #fff;
+  stroke-width: 3px;
+}
+
+.knn-line-test {
+  fill: none;
+  stroke: var(--ml-green);
+  stroke-width: 2.4;
+}
+
+.knn-line-cv {
+  fill: none;
+  stroke: #e0a15a;
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+}
+
+.knn-k-marker {
+  stroke: #21362c;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+
+.knn-best-dot {
+  fill: #fff;
+  stroke: var(--ml-green);
+  stroke-width: 2.5;
+}
+
+.knn-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 12px 0 0;
+  padding: 0;
+  font-size: 12.5px;
+  list-style: none;
+}
+
+.knn-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.knn-swatch {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.knn-swatch.is-diamond {
+  border-radius: 2px;
+  transform: rotate(45deg) scale(0.85);
+}
+
+.knn-swatch.is-line {
+  width: 18px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.knn-chart-note {
+  margin: 12px 0 0;
+  font-size: 12.5px;
+}
+
+.knn-table-wrap {
+  overflow-x: auto;
+}
+
+.knn-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.knn-table th,
+.knn-table td {
+  padding: 8px 10px;
+  text-align: right;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--ml-line);
+}
+
+.knn-table th:first-child,
+.knn-table td:first-child,
+.knn-table th:nth-child(2),
+.knn-table td:nth-child(2) {
+  text-align: left;
+}
+
+.knn-table th {
+  color: var(--ml-muted);
+  font-weight: 700;
+}
+
+.knn-table tr.is-out td {
+  color: #a3aea7;
+}
+
+.knn-table tr.is-in td:nth-child(2) {
+  font-weight: 700;
+}
+
+.knn-k-slider:focus-visible,
+.knn-k input:focus-visible {
+  outline: 2px solid var(--ml-green);
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .knn-tabs {
+    grid-template-columns: 1fr;
+  }
+}

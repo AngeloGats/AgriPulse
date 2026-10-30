@@ -1,0 +1,175 @@
+.dt-advice {
+  margin: 4px 0 14px;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.dt-advice[hidden],
+.dt-rules[hidden],
+.dt-leaf[hidden] {
+  display: none;
+}
+
+.dt-rules h3,
+.dt-two-col h3 {
+  margin: 0 0 8px;
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.dt-rules ol {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding-left: 20px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.dt-rules li b {
+  color: var(--ml-deep);
+}
+
+.dt-rules li small {
+  color: var(--ml-muted);
+}
+
+.dt-leaf {
+  margin: 0 0 12px;
+  color: var(--ml-muted);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.dt-tree-card {
+  margin-top: 22px;
+}
+
+.dt-depth {
+  max-width: 460px;
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  background: #f2f8f3;
+  border: 1px solid var(--ml-line);
+  border-radius: 14px;
+}
+
+.dt-depth label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.dt-depth label b {
+  color: var(--ml-green);
+  font-family: "Manrope", sans-serif;
+  font-size: 22px;
+}
+
+.dt-depth input[type="range"] {
+  width: 100%;
+  margin: 6px 0 2px;
+  accent-color: var(--ml-green);
+}
+
+.dt-depth input:focus-visible {
+  outline: 2px solid var(--ml-green);
+  outline-offset: 3px;
+}
+
+.dt-chart-wrap {
+  overflow-x: auto;
+}
+
+.dt-chart {
+  display: block;
+  width: 100%;
+  min-width: 860px;
+  height: auto;
+}
+
+.dt-edge {
+  fill: none;
+  stroke: #bfcdc3;
+  stroke-width: 1.6;
+}
+
+.dt-edge.is-path {
+  stroke: #21362c;
+  stroke-width: 3;
+}
+
+.dt-edge-label {
+  fill: var(--ml-muted);
+  font-family: "DM Sans", sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.dt-edge-label.is-path {
+  fill: #21362c;
+}
+
+.dt-split {
+  fill: #fff;
+  stroke: #9fb0a5;
+  stroke-width: 1.4;
+}
+
+.dt-split-text,
+.dt-leaf-text {
+  font-family: "DM Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.dt-split-text {
+  fill: var(--ml-ink);
+}
+
+.dt-leaf-text {
+  fill: #fff;
+}
+
+.dt-leaf-sub {
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.dt-node.is-path .dt-split {
+  fill: #eef6f0;
+  stroke: #21362c;
+  stroke-width: 2.6;
+}
+
+.dt-node.is-path .dt-leaf-box {
+  stroke: #21362c;
+  stroke-width: 3;
+}
+
+.dt-chart.has-path .dt-node:not(.is-path),
+.dt-chart.has-path .dt-edge:not(.is-path),
+.dt-chart.has-path .dt-edge-label:not(.is-path) {
+  opacity: 0.35;
+}
+
+.dt-two-col {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 28px;
+}
+
+.dt-two-col .nb-bars {
+  margin-top: 6px;
+}
+
+@media (max-width: 760px) {
+  .dt-two-col {
+    grid-template-columns: 1fr;
+  }
+}

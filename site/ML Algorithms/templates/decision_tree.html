@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore a trained Decision Tree that recommends irrigation actions from soil moisture, rainfall and crop stage, shown as a flowchart."
+    />
+    <title>Decision Tree Field Lab | AgroPulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/ml-static/linear-regression.css?v=6" />
+    <link rel="stylesheet" href="/ml-static/naive-bayes.css?v=1" />
+    <link rel="stylesheet" href="/ml-static/knn.css?v=1" />
+    <link rel="stylesheet" href="/ml-static/decision-tree.css?v=1" />
+    <script src="/ml-static/decision-tree.js?v=1" defer></script>
+  </head>
+  <body>
+    <header class="ml-header">
+      <a class="ml-brand" href="/index.html" aria-label="AgroPulse Intelligence home">
+        <span class="ml-brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 27V14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M16 17C8.8 17 5 13.2 5 6c7.2 0 11 3.8 11 11Z" fill="currentColor" />
+            <path d="M16 21c0-6.2 3.2-9.5 9.5-9.5 0 6.3-3.3 9.5-9.5 9.5Z" fill="currentColor" opacity=".62" />
+          </svg>
+        </span>
+        <span>AgroPulse<span class="ml-brand-muted"> Intelligence</span></span>
+      </a>
+      <nav class="ml-nav" aria-label="Main navigation">
+        <a href="/analytics.html">Algorithm library</a>
+        <a href="/about.html">About us</a>
+        <a href="/analytics.html">ML algorithms</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="ml-hero">
+        <div>
+          <div class="ml-overline"><span></span> INTERACTIVE MODEL FIELD LAB</div>
+          <h1>Follow the rules to an<br /><em>irrigation decision.</em></h1>
+          <p>
+            A Decision Tree asks a short series of yes/no questions about your
+            field and ends on a recommendation. Enter your conditions and follow
+            the highlighted branches through the flowchart.
+          </p>
+          <div class="ml-hero-meta">
+            <span><i></i> 5 field conditions, 4 recommendations</span>
+            <span>Output: an action, with the rules that led to it</span>
+          </div>
+        </div>
+        <aside class="ml-score-card" aria-label="Held-out model performance">
+          <span class="ml-score-label">HELD-OUT TEST PERFORMANCE</span>
+          <strong>{{ "%.0f"|format(ctx.accuracy * 100) }}%</strong>
+          <span>Irrigation advice accuracy</span>
+          <b>vs {{ "%.0f"|format(ctx.baseline * 100) }}% for always saying "Wait"</b>
+          <small>Measured on {{ ctx.test_rows }} unseen field readings, at the recommended depth ({{ ctx.recommended }}).</small>
+        </aside>
+      </section>
+
+      <section class="ml-explainer" aria-label="How the model works">
+        <div><span class="ml-step">01</span><span><b>Start at the top</b><small>The most important question.</small></span></div>
+        <span class="ml-step-arrow" aria-hidden="true">→</span>
+        <div><span class="ml-step">02</span><span><b>Answer yes or no</b><small>Each answer picks a branch.</small></span></div>
+        <span class="ml-step-arrow" aria-hidden="true">→</span>
+        <div><span class="ml-step">03</span><span><b>Reach a recommendation</b><small>The final box is the advice.</small></span></div>
+      </section>
+
+      <section class="dt-workspace">
+        <div class="ml-workspace">
+          <div class="ml-form-panel">
+            <div class="ml-section-heading">
+              <div>
+                <span class="ml-kicker">YOUR FIELD</span>
+                <h2>Current conditions</h2>
+              </div>
+              <div class="nb-actions">
+                <button class="ml-example-button" id="dt-example" type="button">Load example</button>
+                <button class="ml-example-button" id="dt-reset" type="button">Typical values</button>
+              </div>
+            </div>
+            <p class="nb-help">
+              Starting values are the typical field. Change any condition, then
+              press <b>Get recommendation</b>.
+            </p>
+
+            <form id="dt-form" novalidate>
+              <div class="nb-grid nb-grid-crop">
+                {% for f in ctx.fields %}
+                <label class="ml-field">
+                  <span>{{ f.label }}{% if f.unit %} <small class="ml-field-sub">({{ f.unit }})</small>{% endif %}</span>
+                  {% if f.key == "crop_stage" %}
+                  <select name="{{ f.key }}" id="dt-{{ f.key }}" data-default="2">
+                    {% for stage in ctx.stages %}
+                    <option value="{{ stage.code }}"{% if stage.code == 2 %} selected{% endif %}>{{ stage.name }}</option>
+                    {% endfor %}
+                  </select>
+                  <small class="nb-range">Flowering and grain fill need the most water.</small>
+                  {% else %}
+                  <input
+                    type="number"
+                    name="{{ f.key }}"
+                    id="dt-{{ f.key }}"
+                    step="any"
+                    min="{{ f.min }}"
+                    max="{{ f.max }}"
+                    value="{{ '%.1f'|format(f.median)|replace('.0', '') }}"
+                    data-default="{{ '%.1f'|format(f.median)|replace('.0', '') }}"
+                    inputmode="decimal"
+                    required
+                  />
+                  <small class="nb-range">Typical: {{ '%.1f'|format(f.train_min)|replace('.0', '') }} to {{ '%.1f'|format(f.train_max)|replace('.0', '') }}</small>
+                  {% endif %}
+                </label>
+                {% endfor %}
+              </div>
+              <div class="ml-form-footer">
+                <p>The tree learned these rules from {{ ctx.train_rows }} simulated field records.</p>
+                <button class="ml-submit-button" id="dt-submit" type="submit">
+                  Get recommendation <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </form>
+            <div class="ml-status" id="dt-status" role="status" aria-live="polite"></div>
+          </div>
+
+          <aside class="ml-result-panel" aria-labelledby="dt-result-title">
+            <span class="ml-result-icon" aria-hidden="true">↗</span>
+            <span class="ml-kicker">MODEL OUTPUT</span>
+            <h2 id="dt-result-title">Recommended action</h2>
+            <p class="ml-result-intro" id="dt-intro">Enter conditions, then press Get recommendation.</p>
+            <div class="ml-result-value nb-top" id="dt-top" aria-live="polite">—</div>
+            <div class="ml-result-context" id="dt-context">No recommendation yet</div>
+            <p class="dt-advice" id="dt-advice" hidden></p>
+            <div class="ml-result-warning" id="dt-warning" hidden></div>
+            <div class="dt-rules" id="dt-rules" hidden>
+              <h3>The rules your field followed</h3>
+              <ol id="dt-rule-list"></ol>
+            </div>
+            <p class="dt-leaf" id="dt-leaf" hidden></p>
+            <p class="knn-k-note" id="dt-depth-note" hidden></p>
+            <div class="ml-performance-note">
+              <span class="ml-performance-icon" aria-hidden="true">i</span>
+              <p>
+                A learning demonstration with <b>simulated</b> data, not
+                agronomic advice for a real field.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="nb-evidence dt-tree-card" aria-labelledby="dt-tree-title">
+        <span class="ml-kicker">THE FLOWCHART</span>
+        <h2 id="dt-tree-title">The trained decision tree</h2>
+        <p id="dt-tree-intro">
+          Read left to right. <b>Yes</b> follows the upper branch and <b>No</b> the
+          lower one. Your path is highlighted once you get a recommendation.
+        </p>
+        <div class="dt-depth">
+          <label for="dt-depth-slider">
+            <span>Tree depth (questions in a row)</span>
+            <b id="dt-depth-value">{{ ctx.recommended }}</b>
+          </label>
+          <input type="range" id="dt-depth-slider" min="{{ ctx.min_depth }}" max="{{ ctx.max_depth }}" step="1" value="{{ ctx.recommended }}" />
+          <div class="knn-k-scale"><span>{{ ctx.min_depth }} (simple, easy to read)</span><span>{{ ctx.max_depth }} (detailed)</span></div>
+        </div>
+        <div class="dt-chart-wrap">
+          <svg id="dt-chart" class="dt-chart" role="img" aria-label="Decision tree flowchart"></svg>
+        </div>
+        <ul class="knn-legend" id="dt-legend"></ul>
+        <p class="knn-chart-note" id="dt-tree-note"></p>
+      </section>
+
+      <section class="nb-evidence dt-tree-card" aria-labelledby="dt-acc-title">
+        <span class="ml-kicker">WHAT MATTERS MOST</span>
+        <h2 id="dt-acc-title">Which conditions drive the advice, and how deep should the tree be?</h2>
+        <div class="dt-two-col">
+          <div>
+            <h3>Importance of each condition</h3>
+            <ul class="nb-bars" id="dt-importance" aria-label="Importance of each condition"></ul>
+          </div>
+          <div>
+            <h3>Accuracy by depth</h3>
+            <div class="knn-chart-wrap">
+              <svg id="dt-acc-chart" class="knn-chart" viewBox="0 0 420 240" role="img" aria-label="Accuracy for each tree depth"></svg>
+            </div>
+            <ul class="knn-legend" id="dt-acc-legend"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="ml-glossary" aria-labelledby="glossary-title">
+        <span class="ml-kicker">GLOSSARY & FIELD GUIDE</span>
+        <h2 id="glossary-title">How does a decision tree reach an answer?</h2>
+        <p class="ml-glossary-intro">
+          A decision tree works like a checklist an agronomist might follow. It
+          learned the checklist from past records: at each step it picked the
+          question that best separated the right actions.
+        </p>
+        <dl class="ml-glossary-grid">
+          <div>
+            <dt>Node (question)</dt>
+            <dd>One yes/no question about a single condition, such as "Soil moisture 24% or less?".</dd>
+          </div>
+          <div>
+            <dt>Branch</dt>
+            <dd>The path taken after an answer. Yes goes one way, No goes the other.</dd>
+          </div>
+          <div>
+            <dt>Leaf (recommendation)</dt>
+            <dd>A final box with no more questions. It shows the action most past records reaching that box needed.</dd>
+          </div>
+          <div>
+            <dt>Split</dt>
+            <dd>The cut-off value the tree chose for a question, for example 24% moisture. It picks the cut-off that makes the groups after it as pure as possible.</dd>
+          </div>
+          <div>
+            <dt>Depth</dt>
+            <dd>The most questions in a row. A shallow tree is easy to read but rough. A deeper tree is more accurate on past data but can start memorizing noise (overfitting).</dd>
+          </div>
+          <div>
+            <dt>Purity</dt>
+            <dd>The share of past records in a leaf that agree with its recommendation. 90% purity means 9 of 10 similar past fields needed this action.</dd>
+          </div>
+          <div>
+            <dt>Importance</dt>
+            <dd>How much a condition helped the tree separate the actions. A condition the tree never asks about has no importance.</dd>
+          </div>
+          <div>
+            <dt>Overfitting and pruning</dt>
+            <dd>An unrestricted tree can grow a question for every odd record. Limiting depth, or removing branches that add little (pruning), keeps the rules general.</dd>
+          </div>
+        </dl>
+        <p class="ml-glossary-note">
+          <b>Tip:</b> Load an example, then change one condition at a time, for
+          example soil moisture, and watch the highlighted path switch branches.
+        </p>
+      </section>
+
+      <section class="ml-caveat">
+        <span aria-hidden="true">ⓘ</span>
+        <p>
+          <b>Interpret results with care.</b> The irrigation data is
+          <b>simulated</b> for this course from simple agronomy-style rules,
+          with some sensor noise and mislabeled records. The tree rediscovers
+          those rules, which is why it works well. Real irrigation also depends
+          on soil type, crop variety and water access.
+        </p>
+      </section>
+
+      <footer class="ml-footer">
+        <span>AgroPulse Intelligence <i aria-hidden="true">✳</i> Machine Learning Field Lab</span>
+        <a href="/analytics.html">Back to the algorithm library <span aria-hidden="true">↗</span></a>
+      </footer>
+    </main>
+
+    <script id="dt-config" type="application/json">{{ {"recommended": ctx.recommended, "classes": ctx.classes}|tojson }}</script>
+  </body>
+</html>

@@ -1,0 +1,817 @@
+====================================================================
+AGROPULSE INTELLIGENCE — SYSTEM PRESENTATION SCRIPT
+ELEC026.23 Final Project | Company Website Showcasing Core ML Algorithms
+====================================================================
+
+Presenter:            [Your name]
+Section:              [Your section]
+Group:                [Group name]
+Estimated delivery:   About 15 minutes + Q&A
+Reference:            ELEC026.23 Final Project Specifications & Rubrics
+
+HOW TO USE THIS SCRIPT
+- Everything in [SQUARE BRACKETS] is a stage direction or a demo cue.
+  Do not read it aloud.
+- Replace every [PLACEHOLDER] with your own details.
+- The spoken script is written in first person because the ELEC026 rubric
+  includes an individual presentation grade. If you present as a group,
+  use Appendix G for a suggested split.
+- The timings are suggestions. Pause after important numbers. Do not rush.
+- Appendix B is a one-page numbers cheat sheet. Appendix C is Q&A prep.
+  Keep those two pages open on a second screen or printed nearby.
+
+BEFORE YOU PRESENT — 5-MINUTE CHECKLIST
+1. Start the server from the project folder:
+   .\.venv\Scripts\python.exe "site\ML Algorithms\app.py"
+2. Open these tabs in this order:
+   http://127.0.0.1:5051/
+   http://127.0.0.1:5051/about.html
+   http://127.0.0.1:5051/analytics.html
+   http://127.0.0.1:5051/linear-regression
+   http://127.0.0.1:5051/naive-bayes
+   http://127.0.0.1:5051/knn
+   http://127.0.0.1:5051/svm
+   http://127.0.0.1:5051/decision-tree
+   http://127.0.0.1:5051/neural-network
+3. Test one prediction on each demo page. The first ANN load can be slow
+   because TensorFlow starts up, so open that tab before you begin.
+4. Set browser zoom to 100–110% and close notifications, chats, and
+   unrelated tabs.
+5. Have backup screenshots of each demo in case Flask or TensorFlow fails.
+6. Keep the terminal running. If port 5051 is busy, stop the old process
+   with Ctrl+C and start the server again.
+7. Decide who clicks. If you are alone, use the pre-opened tabs and the
+   keyboard; do not hunt for links while talking.
+
+
+====================================================================
+THE SPOKEN SCRIPT
+====================================================================
+
+1. OPENING — 0:00–0:40
+--------------------------------------------------------------------
+
+[STAND CENTRE. HOMEPAGE ON SCREEN.]
+
+Good morning, everyone. Imagine a field where the soil is dry, rain is
+forecast in two days, and the crop is flowering. Should you irrigate
+today? That one decision ties up water, fuel, labour, and yield. It is
+exactly the kind of question AgroPulse Intelligence is built to support.
+
+I'm [Your name], and in the next fifteen minutes I'll introduce the
+company, tour the website, walk through all six machine-learning models,
+and explain how the system is built — including what it can and cannot do.
+
+Let's start with the company behind the site.
+
+
+2. THE COMPANY AND THE PROBLEM — 0:40–2:05
+--------------------------------------------------------------------
+
+[HOMEPAGE. SCROLL SLOWLY TO THE THREE SOLUTION CARDS.]
+
+AgroPulse Intelligence is a fictional precision-agriculture and
+environmental-analytics company. Our mission is to make useful
+agricultural intelligence more accessible. Our vision is a more
+climate-resilient way to farm — practical, scalable, and useful for farms
+of every scale. Our operational goals are to make field data easier to
+interpret, reduce unnecessary input use, support earlier risk awareness,
+and keep every recommendation explainable.
+
+The problem is fragmentation: soil readings, weather records, satellite
+images, and harvest history live in different places and formats.
+AgroPulse brings them into one view and applies machine learning to three
+challenges: yield uncertainty, condition screening, and irrigation timing.
+
+We design for farm enterprises, grower cooperatives, agricultural
+insurers, and food distributors. The homepage frames our approach in three
+steps — connect the field, learn from patterns, take action — and the
+values behind it are environmental stewardship, data democracy, and
+predictive reliability.
+
+One important note: this is a concept website with working demos, not a
+deployed product. We label real and simulated data clearly, and we never
+present a model output as guaranteed farm advice.
+
+
+3. WEBSITE TOUR AND DESIGN — 2:05–3:15
+--------------------------------------------------------------------
+
+[CLICK "ABOUT US", THEN "ML ALGORITHMS".]
+
+Let me give you a quick tour. The homepage uses an earth-and-green
+palette, agricultural photography, and a consistent type system. The
+navigation is deliberately small — Home, About us, ML algorithms, and one
+call to action — and it collapses cleanly on mobile. Every page keeps the
+same header and footer, so users always know where they are.
+
+The About page covers the mission, vision, values, audiences, and the
+capabilities the models demonstrate today. Notice that the metrics are
+held-out results, not field trials; we say that explicitly.
+
+The Algorithm Hub is the centre of the site. Each of the six cards
+answers three questions at a glance: what kind of algorithm is this, what
+agricultural question does it answer, and what is its use case? Selecting
+a card updates the field-lab preview, and the arrow opens the trained
+demo.
+
+Across the six demos, there are four kinds of features: one-click
+examples, interactive visualizations, explanation panels, and guardrails.
+The design is responsive, keyboard-friendly, and accessible — skip links,
+ARIA labels, readable contrast. The goal is to make complex models
+approachable for a non-technical audience.
+
+
+4. THE SIX ALGORITHMS — 3:15–10:55
+--------------------------------------------------------------------
+
+4.1 LINEAR REGRESSION — "How much yield can we expect?"
+--------------------------------------------------------------------
+
+[OPEN /linear-regression.]
+
+Linear Regression is our yield-estimation model. It learns a weighted
+relationship between field conditions and historical yield, then estimates
+a number — here, tonnes per hectare.
+
+The data is CYCleSS: field-level records from 2015 to 2017, covering five
+crops. For each field we use Sentinel-1 radar summaries from three signals
+— Ratio, VH, and VV — with mean, standard deviation, minimum, maximum, and
+observation count for each. Crop and year add context. That gives 742
+training and 192 held-out fields.
+
+[CLICK "LOAD EXAMPLE INPUTS", THEN "CALCULATE YIELD ESTIMATE".]
+
+This oilseed rape example estimates about 6.0 tonnes per hectare. The
+orange marker places it against the held-out fields, and the scatter plot
+compares actual and predicted yield.
+
+On the held-out set, R-squared is about 0.66 and mean absolute error is
+1.27 tonnes per hectare. In plain language, the model explains about
+two-thirds of the variation in yield, with a typical miss of 1.27 tonnes
+per hectare. That supports planning, but it does not replace a field
+measurement.
+
+Why Linear Regression? It is transparent, fast, and a strong baseline.
+Radar sees canopy structure and works through cloud cover. The page also
+fills missing summaries from training medians and warns when inputs fall
+outside the training range.
+
+
+4.2 NAIVE BAYES — "What is the most likely disease, or the best crop?"
+--------------------------------------------------------------------
+
+[OPEN /naive-bayes.]
+
+Naive Bayes is a probabilistic classifier. It applies Bayes' theorem and
+assumes features are independent — a simplification, which is why it is
+called "naive." It is fast, works with small data, and gives a probability
+ranking.
+
+We use it for two questions. Soybean disease screening uses 35 symptom
+features, 15 disease classes, 290 training and 340 test records. Crop
+recommendation uses seven soil and climate inputs for 22 crops, with 1,760
+training and 440 test records.
+
+[LOAD SOYBEAN EXAMPLE, THEN PREDICT.]
+
+This held-out case is predicted as Diaporthe stem canker, and the "Why
+this answer?" panel shows which symptoms contributed most. If I clear a
+few symptoms, the probability spread widens — the model skips missing
+features instead of crashing.
+
+On the soybean test set, accuracy is 91.5% and top-three accuracy is
+98.8%, against a 14.1% baseline. Even with half the symptoms hidden,
+accuracy stays around 83.5%. Crop recommendation reaches 99.5%, but that
+dataset is clean and separable, so it is not a field guarantee.
+
+Why Naive Bayes? Disease screening often starts with incomplete,
+categorical observations, and the probability ranking supports triage.
+
+
+4.3 K-NEAREST NEIGHBORS — "What is this sample most similar to?"
+--------------------------------------------------------------------
+
+[OPEN /knn.]
+
+K-Nearest Neighbors does not learn an equation. It stores known examples,
+measures similarity, finds the k closest neighbors, and lets them vote.
+
+We use it on three simulated datasets: soil type, with seven lab
+measurements and four classes; soil fertility, with seven nutrient
+measurements and three classes; and plant condition, with five canopy
+measurements and four classes. The data is simulated but built from
+realistic agronomic ranges, with overlapping classes and a little label
+noise so the neighbors can disagree.
+
+[LOAD EXAMPLE, THEN MOVE THE K SLIDER.]
+
+Here is a soil-type example. The map is a two-dimensional PCA projection;
+the new sample sits among its neighbors. The table lists the nearest
+samples and distances, and the vote panel shows how the prediction changes
+as I move k.
+
+Held-out accuracy is 93.3% for soil type at k = 24, 92.6% for soil
+fertility at k = 22, and 93.2% for plant condition at k = 13. The
+baselines are 25.6%, 33.5%, and 25.3%, so the models are learning real
+structure.
+
+Why KNN? It mirrors how an agronomist reasons: "this soil looks like these
+soils I have seen before." Small k is sensitive to noise; large k smooths
+the boundary. We choose k by cross-validation, not by looking at the test
+set.
+
+
+4.4 SUPPORT VECTOR MACHINE — "Where is the boundary?"
+--------------------------------------------------------------------
+
+[OPEN /svm.]
+
+A Support Vector Machine finds the boundary that separates classes with
+the widest possible margin. The points closest to the boundary are the
+support vectors. With a kernel, the boundary can bend to capture
+non-linear patterns.
+
+Our demo uses a simulated crop-disease dataset: 960 training and 240 test
+records, four measurements — air temperature, humidity, leaf wetness, and
+a red-edge stress index — and two classes, healthy and diseased. Diseased
+crops sit in a middle temperature band with high humidity, while healthy
+crops surround that band. A straight line cannot separate them well; a
+curve can.
+
+[TOGGLE LINEAR VS RBF, THEN MOVE C AND GAMMA.]
+
+The shaded regions are the predicted zones, the line is the boundary, and
+the circled points are the support vectors. The model is refitted on the
+server each time.
+
+On all four measurements, the linear SVM reached 87.5% held-out accuracy;
+the RBF SVM reached 93.3%, with 254 support vectors. Cross-validation
+agrees: about 88.8% versus 94.8%. The two-dimensional view may show a
+different number because it uses only the two selected measurements — that
+is intentional, and it shows how feature choice changes the problem.
+
+Why SVM? It is strong on small, high-dimensional classification problems
+and gives a clear geometric picture. C controls tolerance for mistakes;
+gamma controls how far each point's influence reaches.
+
+
+4.5 DECISION TREE — "Should I irrigate now, soon, wait, or hold?"
+--------------------------------------------------------------------
+
+[OPEN /decision-tree.]
+
+A Decision Tree learns a flowchart from data. Each node asks a yes/no
+question; each leaf gives a prediction. It is one of the most explainable
+models we have.
+
+The irrigation demo uses 1,600 simulated field conditions, split into
+1,280 training and 320 test records. The inputs are soil moisture, rain in
+the last three days, forecast rain, crop stage, and air temperature. The
+four actions are irrigate now, irrigate soon, wait, or hold off. The data
+includes sensor noise and a 3% label flip, so the tree has to learn the
+underlying agronomy.
+
+[LOAD EXAMPLE, THEN PREDICT.]
+
+This held-out case is recommended as "Wait," and the panel shows the exact
+rules the field followed — soil moisture above a threshold, rain forecast,
+and crop stage. That is the explanation, not a post-hoc guess.
+
+At depth five, the tree reaches 82.2% test accuracy against a 43.6%
+baseline, with cross-validation around 80.1%. Soil moisture is the most
+important feature at 49.2%, followed by recent rain at 19.3%, crop stage
+at 17.9%, and forecast rain at 13.0%. The accuracy-by-depth chart shows
+why we stopped at five: the gains flatten, and deeper trees add complexity
+without adding much.
+
+Why a Decision Tree? Irrigation advice has to be explainable and
+auditable. A grower can see exactly why the system said "wait."
+
+
+4.6 ARTIFICIAL NEURAL NETWORK — "What disease is in this leaf photo?"
+--------------------------------------------------------------------
+
+[OPEN /neural-network.]
+
+Our final model is a convolutional neural network — a type of artificial
+neural network designed for images. Instead of hand-coding "look for dark
+spots," the network learns filters for edges, spots, and textures, then
+combines them into class scores.
+
+The data is a 4,500-image subset of PlantVillage, covering five tomato-leaf
+classes: healthy, early blight, late blight, bacterial spot, and yellow
+leaf curl. Each class has 900 images, split into 3,600 training and 900
+test images. Every image is resized to 64 by 64 pixels.
+
+[PICK A SAMPLE LEAF.]
+
+Here is an unseen test leaf. The network predicts the class, shows a
+confidence score for every class, and gives a short action note. The "as
+the network sees it" panel is an occlusion heat map: it greys out one
+patch at a time and shows which patches most affect the answer. That makes
+the CNN less of a black box.
+
+The model reaches 92.2% test accuracy and a macro F1 of 92.2%, against a
+20% baseline. A plain fully connected network reached 84.7%, so convolution
+adds about 7.5 percentage points. Most remaining errors are between early
+and late blight — visually similar diseases — which is what the confusion
+matrix shows.
+
+Why a CNN? Leaf diagnosis is a visual task, and convolution exploits the
+spatial structure of images. Uploaded images are processed in memory and
+are not stored.
+
+
+5. HOW THE SYSTEM IS BUILT — 10:55–12:10
+--------------------------------------------------------------------
+
+[OPTIONAL: SHOW THE PROJECT FOLDER OR A SIMPLE THREE-LAYER DIAGRAM.]
+
+Under the hood, AgroPulse is a Python Flask application. The front end is
+HTML, CSS, and JavaScript. Five classical models use scikit-learn; the
+neural network uses TensorFlow and Keras. Trained artifacts are loaded
+when the server starts.
+
+The project has three layers: data, training, and serving. The data layer
+holds raw and processed datasets. The training layer contains reproducible
+scripts that prepare the data and train each model. The serving layer is
+the Flask app, which exposes page routes and JSON prediction endpoints.
+Each algorithm is a separate module, so a failure in one demo does not
+take down the rest of the site.
+
+We build in responsible defaults. Inputs are validated on the client and
+the server. Physical limits are enforced, and values outside the training
+range produce warnings rather than silent extrapolation. Missing values
+are imputed from training medians where appropriate. We use fixed seeds,
+train-only preprocessing, and held-out test sets; for CYCleSS, the split
+is by grid group, so the same field cannot appear in both training and
+test.
+
+What the system is not: it is not deployed, it does not connect to live
+sensors, and it has not been validated on external farms. The datasets are
+limited, and the simulated demos are labelled as simulations.
+
+
+6. MY CONTRIBUTION — 12:10–12:30
+--------------------------------------------------------------------
+
+[REPLACE THIS WITH YOUR ACTUAL CONTRIBUTION. BE SPECIFIC AND HONEST.]
+
+Before I close, a quick note on my role. My main contribution was
+[ ... ]. I also [ ... ]. The part I'm most proud of is [ ... ] because
+[ ... ].
+
+[IF YOU ARE IN A GROUP, NAME ONE THING YOU LEARNED FROM A TEAMMATE'S PART.]
+
+
+7. IMPACT AND CONCLUSION — 12:30–14:00
+--------------------------------------------------------------------
+
+So what does this add up to? Three practical capabilities.
+
+First, yield estimation: Linear Regression turns field and satellite
+summaries into a yield estimate with a clear error range.
+
+Second, condition screening: Naive Bayes, SVM, KNN, and the CNN classify
+disease, soil, and plant conditions, giving a non-specialist a shortlist
+and an explanation, not just a label.
+
+Third, resource guidance: the Decision Tree turns soil moisture, rain, and
+crop stage into an irrigation recommendation a grower can audit.
+
+The broader value is accessibility. These are not the most complex models
+we could have built. They are models chosen because they can be explained,
+tested, and trusted. The site brings them together with consistent
+navigation, plain-language explanations, and interactive demos.
+
+If we took this further, the next steps would be a real field pilot, more
+crops and regions, external validation, calibration and monitoring, and a
+deployed version with authentication and a feedback loop. But the core
+idea stays the same: put the data behind a decision in front of the person
+making it, in a form they can understand.
+
+[PAUSE. SLOW DOWN FOR THE CLOSING LINES.]
+
+AgroPulse is not trying to replace the agronomist. It is trying to make
+agricultural data visible, explainable, and usable. Six algorithms, one
+question: how do we help growers make better decisions with the data they
+already have?
+
+Thank you. I'm happy to take your questions.
+
+
+====================================================================
+END OF SPOKEN SCRIPT
+====================================================================
+
+
+====================================================================
+APPENDIX A — DEMO RUN-OF-SHOW
+====================================================================
+
+Use this as your rehearsal checklist. The bold actions are the ones the
+audience should see.
+
+1. HOMEPAGE
+   - Scroll to the three solution cards: Connect the field, Learn from
+     patterns, Take action.
+   - Scroll to "Six models. Three practical capabilities."
+   - Optional: type a cost into the savings scenario. Point out that it is
+     arithmetic, not a model prediction.
+
+2. ABOUT PAGE
+   - Point to mission, vision, and the three values.
+   - Point to the four audiences.
+   - Point to the capability metrics and the "held-out, not field trials"
+     note.
+
+3. ALGORITHM HUB
+   - Click one card. Show the field-lab preview changing.
+   - Click the arrow to open the matching trained demo.
+   - Mention that every demo has a plain-language glossary lower on the page.
+
+4. LINEAR REGRESSION
+   - Click "Load example inputs".
+   - Click "Calculate yield estimate".
+   - Point to the estimate, the orange marker, and the actual-vs-predicted
+     scatter plot.
+   - Say the headline: R-squared about 0.66; typical error 1.27 t/ha.
+
+5. NAIVE BAYES
+   - Stay on the Soybean Disease tab.
+   - Click "Load example", then predict.
+   - Point to the top prediction and the "Why this answer?" evidence.
+   - Optional: clear two or three symptoms and predict again to show the
+     model still works with missing information.
+   - Switch to Crop Recommendation, load an example, predict.
+
+6. KNN
+   - Stay on the Soil Type tab.
+   - Click "Load example", then predict.
+   - Move the K slider slowly. Point to the vote counts and the PCA map.
+   - Point to the nearest-neighbor table and distances.
+   - Optional: switch to Soil Fertility or Plant Condition.
+
+7. SVM
+   - Keep the RBF kernel selected.
+   - Click "Load example", then predict.
+   - Toggle to the linear kernel. Point out how the boundary changes.
+   - Move C and gamma. Point to the support vectors.
+   - Say the headline: full-feature RBF 93.3% vs linear 87.5%.
+
+8. DECISION TREE
+   - Click "Load example", then predict.
+   - Point to the recommended action and the plain-language rule path.
+   - Move the depth slider. Point to the tree and the accuracy-by-depth chart.
+   - Point to feature importance: soil moisture is dominant.
+
+9. NEURAL NETWORK
+   - Pick a sample leaf (or upload one).
+   - Point to the predicted class, confidence bars, and advice.
+   - Point to the occlusion heat map ("as the network sees it").
+   - Scroll to the training curves and confusion matrix.
+   - Say the headline: 92.2% test accuracy; plain network 84.7%.
+
+10. RETURN TO THE HOMEPAGE OR A CLOSING SLIDE FOR THE CONCLUSION.
+
+
+====================================================================
+APPENDIX B — NUMBERS CHEAT SHEET
+====================================================================
+
+LINEAR REGRESSION — CYCleSS
+- Data: 2015–2017; five crops; Sentinel-1 Ratio, VH, VV summaries.
+- Features: mean, standard deviation, minimum, maximum, observations for
+  each signal, plus crop and year.
+- Split: 742 training / 192 held-out fields; grouped by grid to prevent
+  leakage.
+- Results: R-squared ≈ 0.66; MAE ≈ 1.27 t/ha; RMSE ≈ 1.61 t/ha.
+- Plain-language: explains about two-thirds of yield variation; typical
+  miss about 1.27 t/ha.
+
+NAIVE BAYES — SOYBEAN DISEASE
+- Data: 35 symptom/field-condition features; 15 disease classes.
+- Split: 290 training / 340 test.
+- Results: 91.5% accuracy; 98.8% top-three; 14.1% majority baseline.
+- Missing data: 83.5% accuracy when half the symptoms are hidden.
+- Plain-language: strong shortlist; useful when observations are incomplete.
+
+NAIVE BAYES — CROP RECOMMENDATION
+- Data: 7 inputs (N, P, K, temperature, humidity, pH, rainfall); 22 crops.
+- Split: 1,760 training / 440 test.
+- Results: 99.5% accuracy; 100% top-three; 4.5% majority baseline.
+- Caveat: clean, separable dataset; not a field guarantee.
+
+KNN — THREE DEMOS
+- Soil type: 7 features; 4 classes; 960/240 split; k = 24; 93.3% test;
+  25.6% baseline.
+- Soil fertility: 7 features; 3 classes; 1,080/270 split; k = 22; 92.6%
+  test; 33.5% baseline.
+- Plant condition: 5 features; 4 classes; 1,120/280 split; k = 13,
+  distance-weighted; 93.2% test; 25.3% baseline.
+- Selection: k chosen by cross-validation from 1 to 25.
+
+SVM — CROP DISEASE
+- Data: simulated; 4 features (air temperature, humidity, leaf wetness,
+  red-edge index); 2 classes.
+- Split: 960 training / 240 test; 59.2% majority baseline.
+- Results: full-feature linear 87.5% test; full-feature RBF 93.3% test;
+  cross-validation 88.8% vs 94.8%; 254 support vectors for RBF.
+- Demo note: the 2-D view refits on only the two selected measurements, so
+  its on-screen accuracy can differ from the four-feature result.
+
+DECISION TREE — IRRIGATION
+- Data: simulated; 1,600 rows; 1,280/320 split; 5 features; 4 actions.
+- Results: depth 5; 82.2% test; 80.1% cross-validation; 43.6% baseline.
+- Feature importance: soil moisture 49.2%; rain last 3 days 19.3%; crop
+  stage 17.9%; forecast rain 13.0%; air temperature 0.6%.
+- Accuracy by depth: 1 → 53.1%; 2 → 60.9%; 3 → 66.9%; 4 → 77.5%;
+  5 → 82.2%.
+
+CNN — TOMATO LEAF IMAGES
+- Data: PlantVillage subset; 4,500 images; 5 classes; 900 per class.
+- Split: 3,600 training / 900 test; images resized to 64 × 64.
+- Model: 4 conv blocks (32, 64, 96, 128 filters), dense layer 64;
+  195,045 parameters; 47 epochs.
+- Results: 92.2% test accuracy; 92.2% macro F1; 20% majority baseline.
+- Comparison: plain fully connected network 84.7%.
+- Main confusion: early blight vs late blight.
+
+
+====================================================================
+APPENDIX C — Q&A PREP
+====================================================================
+
+Answer in three parts: a direct answer, the evidence, then the caveat.
+If you do not know something, say so and explain what you would check.
+
+1. WHY LINEAR REGRESSION INSTEAD OF A MORE POWERFUL MODEL?
+   Interpretability and data size. With 742 training fields and a need to
+   explain each input's effect, a linear baseline is transparent and fast.
+   A tree ensemble or gradient boosting model is a natural next step once
+   we have more data.
+
+2. WHAT DOES R-SQUARED = 0.66 ACTUALLY MEAN?
+   The model explains about 66% of the variation in held-out yield. The
+   other 34% is unexplained. MAE of 1.27 t/ha tells us the typical size of
+   the error, which is often easier to interpret than R-squared alone.
+
+3. HOW DID YOU PREVENT DATA LEAKAGE?
+   Preprocessing was fit on the training split only. For CYCleSS, we held
+   out entire grid groups, not random rows, so the same field could not
+   appear in both sets. The test set stayed untouched until final
+   evaluation.
+
+4. WHY IS NAIVE BAYES ACCURACY SO HIGH ON CROP RECOMMENDATION?
+   That dataset is relatively clean and separable, and the classes have
+   distinct feature ranges. The 99.5% is a held-out result, but it is not a
+   field guarantee. We report the 4.5% majority baseline to show how much
+   of the gain is real.
+
+5. WHAT HAPPENS IF SYMPTOMS ARE MISSING IN NAIVE BAYES?
+   The model skips missing features rather than treating them as a
+   category. With half the symptoms hidden, accuracy drops to about 83.5%,
+   still well above the 14.1% baseline. The UI shows how the probability
+   ranking changes.
+
+6. HOW DID YOU CHOOSE K IN KNN?
+   By cross-validation over k = 1 to 25 on the training data. The best
+   values were 24 for soil type, 22 for soil fertility, and 13 for plant
+   condition. We did not tune on the test set.
+
+7. WHY DOES KNN USE PCA IN THE DEMO?
+   The model uses all features. PCA is only for the two-dimensional
+   visualization. It lets the user see the training points and the new
+   sample in a plane while the prediction still uses the full feature
+   space.
+
+8. WHY IS RBF BETTER THAN LINEAR FOR SVM?
+   The simulated disease pattern is non-linear: diseased cases sit in a
+   middle temperature and humidity band, so a straight line cannot
+   separate them. The RBF kernel bends the boundary and captures that
+   structure.
+
+9. WHAT DO C AND GAMMA DO?
+   C controls the penalty for misclassification: a larger C fits the
+   training data more tightly. Gamma controls how far each training point's
+   influence reaches: a larger gamma creates a tighter, more wiggly
+   boundary. Both are regularization levers.
+
+10. WHY STOP THE DECISION TREE AT DEPTH FIVE?
+    Depth five gave the best cross-validated accuracy in the range we
+    tested and kept the tree readable. The accuracy-by-depth curve shows
+    diminishing returns; deeper trees add complexity and risk overfitting
+    without a meaningful gain.
+
+11. HOW DO YOU INTERPRET FEATURE IMPORTANCE IN THE TREE?
+    It is the reduction in impurity contributed by each feature across the
+    tree. Soil moisture is dominant at 49.2%, followed by recent rain and
+    crop stage. It is a global summary, not a causal claim.
+
+12. WHY USE A CNN INSTEAD OF A PLAIN NEURAL NETWORK?
+    Images have spatial structure. Convolutional layers share weights
+    across patches, so they learn local patterns like spots and edges with
+    far fewer parameters. The plain network reached 84.7%; the CNN reached
+    92.2%.
+
+13. WHAT ARE THE CNN'S MAIN FAILURE CASES?
+    Most confusion is between early and late blight, which look similar.
+    The confusion matrix shows that. The confidence score and heat map help
+    flag uncertain cases, but a lab test is still the definitive diagnosis.
+
+14. HOW DO YOU KNOW THE MODELS ARE NOT OVERFITTING?
+    We use held-out test sets, cross-validation for hyperparameters, and
+    majority baselines. We also show training curves and per-class metrics.
+    The gap between training and test is visible on the ANN page; it is
+    small but not zero.
+
+15. WHY ARE SOME DATASETS SIMULATED?
+    Some agricultural scenarios are hard to source with real, labelled,
+    shareable data. Simulation lets us test the pipeline and make the
+    algorithm's behaviour visible, and we label those demos clearly. The
+    CYCleSS, soybean, crop-recommendation, and PlantVillage datasets come
+    from real or public sources.
+
+16. HOW IS THE WEBSITE BUILT?
+    Flask serves the pages and JSON APIs. The front end is HTML, CSS, and
+    JavaScript. scikit-learn handles five models, and TensorFlow/Keras
+    handles the CNN. Trained artifacts are loaded at startup. The app runs
+    locally on port 5051.
+
+17. WHAT ABOUT PRIVACY AND UPLOADED IMAGES?
+    Uploaded leaf images are processed in memory and are not saved. The app
+    is local and does not send data to an external service. It accepts
+    JPEG/PNG files up to 5 MB.
+
+18. WHAT ARE THE BIGGEST LIMITATIONS?
+    Limited datasets, no external validation, simulated data for three
+    demos, no live sensor integration, and no deployment. The models are
+    educational decision support, not advice. Distribution shift and local
+    calibration are the next big questions.
+
+19. HOW WOULD YOU DEPLOY THIS IN THE REAL WORLD?
+    Containerize the Flask app, put it behind a production server, add
+    authentication and a database, integrate sensor and weather APIs,
+    monitor drift, and establish a retraining and human-review loop. Start
+    with a pilot on a few fields.
+
+20. WHY DOES THE SITE INCLUDE A SAVINGS CALCULATOR IF IT IS NOT A MODEL?
+    It is explicitly a planning scenario, not a prediction. The user
+    supplies the costs and the assumed reduction; the page only does the
+    arithmetic. We labelled it clearly to avoid implying a guaranteed
+    saving.
+
+21. WHAT IS THE DIFFERENCE BETWEEN AI, MACHINE LEARNING, AND DEEP LEARNING?
+    AI is the broad goal of machines doing intelligent tasks. Machine
+    learning is a subset that learns from data. Deep learning is machine
+    learning with multi-layer neural networks. Our CNN is deep learning;
+    the other five models are classical machine learning.
+
+22. WHY SIX ALGORITHMS INSTEAD OF ONE?
+    The project brief asks for all six, and it is also a good design
+    choice: different questions need different tools. Regression for a
+    number, classification for a label, a tree for a rule, and a CNN for an
+    image.
+
+23. WHAT DID YOU PERSONALLY CONTRIBUTE?
+    [Answer honestly. Name one concrete piece of work — data preparation,
+    model training, front-end, integration, testing, or documentation —
+    and one thing you learned from it.]
+
+24. WHAT WOULD YOU DO DIFFERENTLY IF YOU STARTED AGAIN?
+    Collect more field data earlier, define the evaluation protocol before
+    modelling, and test the full demo flow with real users sooner. Those
+    three changes would have saved time and made the results more
+    trustworthy.
+
+
+====================================================================
+APPENDIX D — HOW THIS SCRIPT MAPS TO THE ELEC026 RUBRIC
+====================================================================
+
+WEBSITE AESTHETICS AND NAVIGATION
+- Section 3 tours the branding, visual system, navigation, mobile
+  behaviour, and accessibility.
+- The demo run-of-show shows every page is reachable in one or two clicks.
+
+CLARITY AND ACCURACY OF ALGORITHM EXPLANATIONS
+- Section 4 explains each algorithm in plain language before giving the
+  data and results.
+- Each demo page also includes a plain-language glossary.
+- Analogies: line of best fit, evidence stacking, nearest neighbors,
+  widest street, flowchart, visual filters.
+
+RELEVANCE AND JUSTIFICATION OF DATA AND ALGORITHMS
+- Every algorithm section answers: why this data, why this model, and what
+  business question it serves.
+- The script distinguishes real/public datasets from simulated ones.
+
+DEPTH OF ALGORITHM APPLICATION AND RESULTS INTERPRETATION
+- Each section reports held-out metrics, a baseline, and a limitation.
+- The tree section interprets feature importance and depth.
+- The CNN section interprets the confusion matrix and heat map.
+- The KNN section explains the k trade-off.
+
+INDIVIDUAL PRESENTATION QUALITY AND DEPTH OF UNDERSTANDING
+- The script has a clear opening, roadmap, signposted sections, and a
+  conclusion.
+- Section 6 is a placeholder for your specific contribution.
+- Appendix C prepares you for likely questions.
+
+
+====================================================================
+APPENDIX E — IF YOU HAVE LESS TIME
+====================================================================
+
+IF YOU HAVE 10 MINUTES:
+- Keep the opening and the three-step company explanation.
+- Tour only the Algorithm Hub; skip the About page walkthrough.
+- For each algorithm, keep the question, the data, and one headline metric.
+  Drop the secondary metrics and some implementation detail.
+- Keep the decision tree and CNN demos, because they are the most visual.
+- Keep the conclusion and your personal contribution.
+- Use the Q&A appendix for anything you skip.
+
+IF YOU HAVE 7 MINUTES:
+- Opening: 30 seconds.
+- Company and tour: 1 minute total.
+- Six algorithms: 45 seconds each — question, data, headline result.
+- Architecture: one sentence: "Flask serves the pages and APIs;
+  scikit-learn and TensorFlow run the models."
+- Impact and conclusion: 1 minute.
+- Do not skip any algorithm entirely; the rubric rewards coverage.
+
+IF YOU HAVE 15 MINUTES:
+- Add one more sentence of interpretation per algorithm.
+- Show one extra interaction: clear symptoms in Naive Bayes, switch KNN
+  datasets, or toggle the SVM kernel twice.
+- Spend more time on limitations and the "what we would do next" section.
+
+
+====================================================================
+APPENDIX F — DELIVERY AND BACKUP TIPS
+====================================================================
+
+DELIVERY
+- Speak to the audience, not the screen. Point, then look back at them.
+- Do not read every number. Say the headline, then interpret it.
+- Pause for one beat after a metric. Let it land.
+- Use the same phrase for the three capabilities each time: yield
+  estimation, condition screening, resource guidance.
+- If you make a mistake, correct it briefly and move on. Do not apologize
+  repeatedly.
+- Keep water nearby. Slow down when you feel nervous.
+
+BACKUP PLAN
+- If Flask fails, switch to the saved screenshots and keep the explanation
+  moving. Say: "I'll use the saved view so we can keep going."
+- If TensorFlow is slow, the ANN page may take a few seconds. Open it
+  before you start, or use a screenshot.
+- If the internet fails, the site still works; only Google Fonts fall back.
+- If port 5051 is busy, stop the old server with Ctrl+C and restart.
+- If a demo returns an error, check that the trained models and processed
+  data folders are present. The error message names the missing artifact.
+
+WHAT NOT TO SAY
+- Do not claim the models are deployed or field-validated.
+- Do not claim the savings calculator is a model prediction.
+- Do not claim 99.5% crop accuracy means real-world perfection.
+- Do not claim the CNN replaces a plant pathologist.
+- Do not apologize for using simpler models. Explain why they were chosen.
+
+
+====================================================================
+APPENDIX G — OPTIONAL GROUP SPLIT (4 SPEAKERS)
+====================================================================
+
+If the presentation is shared, keep each speaker's section self-contained
+so the handoffs are clean.
+
+SPEAKER 1 — Company and website
+- Opening (0:00–0:45)
+- Company and problem (0:45–2:00)
+- Website tour and design (2:00–3:00)
+
+SPEAKER 2 — Regression and classification
+- Linear Regression (3:00–3:50)
+- Naive Bayes (3:50–4:45)
+- KNN (4:45–5:35)
+
+SPEAKER 3 — Boundaries, rules, and images
+- SVM (5:35–6:25)
+- Decision Tree (6:25–7:15)
+- ANN (7:15–8:20)
+
+SPEAKER 4 — System and close
+- Architecture and responsible design (8:20–9:25)
+- Personal contribution (9:25–9:45)
+- Impact and conclusion (9:45–10:50)
+
+ALL SPEAKERS
+- Take one question each in Q&A. The person who owned that section
+  answers first; the others can add one sentence.
+
+====================================================================
+END OF FILE
+====================================================================

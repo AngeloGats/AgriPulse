@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore trained Naive Bayes models that diagnose soybean disease from symptoms and recommend crops from field conditions."
+    />
+    <title>Naive Bayes Field Lab | AgroPulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/ml-static/linear-regression.css?v=6" />
+    <link rel="stylesheet" href="/ml-static/naive-bayes.css?v=1" />
+    <script src="/ml-static/naive-bayes.js?v=1" defer></script>
+  </head>
+  <body>
+    <header class="ml-header">
+      <a class="ml-brand" href="/index.html" aria-label="AgroPulse Intelligence home">
+        <span class="ml-brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 27V14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M16 17C8.8 17 5 13.2 5 6c7.2 0 11 3.8 11 11Z" fill="currentColor" />
+            <path d="M16 21c0-6.2 3.2-9.5 9.5-9.5 0 6.3-3.3 9.5-9.5 9.5Z" fill="currentColor" opacity=".62" />
+          </svg>
+        </span>
+        <span>AgroPulse<span class="ml-brand-muted"> Intelligence</span></span>
+      </a>
+      <nav class="ml-nav" aria-label="Main navigation">
+        <a href="/analytics.html">Algorithm library</a>
+        <a href="/about.html">About us</a>
+        <a href="/analytics.html">ML algorithms</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="ml-hero">
+        <div>
+          <div class="ml-overline"><span></span> INTERACTIVE MODEL FIELD LAB</div>
+          <h1>Diagnose and recommend<br />with <em>Naive Bayes.</em></h1>
+          <p>
+            Pick the symptoms you see in a soybean field, or enter soil and
+            weather conditions, and watch the trained model weigh the evidence
+            and rank the most likely answers.
+          </p>
+          <div class="ml-hero-meta">
+            <span><i></i> {{ soybean_class_count }} soybean diseases, {{ crop_class_count }} crops</span>
+            <span>Output: a probability for every possible answer</span>
+          </div>
+        </div>
+        <aside class="ml-score-card" aria-label="Held-out model performance">
+          <span class="ml-score-label">HELD-OUT TEST PERFORMANCE</span>
+          <strong>{{ "%.0f"|format(soybean_metrics.accuracy * 100) }}%</strong>
+          <span>Soybean disease accuracy</span>
+          <b>{{ "%.0f"|format(soybean_metrics.top3_accuracy * 100) }}% in the top 3</b>
+          <small>Measured on {{ soybean_metrics.test_rows }} unseen soybean records.</small>
+        </aside>
+      </section>
+
+      <section class="ml-explainer" aria-label="How the model works">
+        <div><span class="ml-step">01</span><span><b>Start with how common</b><small>Each answer has a prior chance.</small></span></div>
+        <span class="ml-step-arrow" aria-hidden="true">→</span>
+        <div><span class="ml-step">02</span><span><b>Weigh each clue</b><small>Every symptom shifts the odds.</small></span></div>
+        <span class="ml-step-arrow" aria-hidden="true">→</span>
+        <div><span class="ml-step">03</span><span><b>Rank the answers</b><small>Probabilities add up to 100%.</small></span></div>
+      </section>
+
+      <div class="nb-tabs" role="tablist" aria-label="Choose a Naive Bayes demo">
+        <button class="nb-tab is-active" id="tab-soybean" role="tab" aria-selected="true" aria-controls="panel-soybean" type="button">
+          Soybean disease diagnosis
+          <small>Symptoms → disease</small>
+        </button>
+        <button class="nb-tab" id="tab-crop" role="tab" aria-selected="false" aria-controls="panel-crop" type="button">
+          Crop recommendation
+          <small>Field conditions → crop</small>
+        </button>
+      </div>
+
+      <section class="nb-demo" id="panel-soybean" role="tabpanel" aria-labelledby="tab-soybean">
+        <div class="ml-workspace">
+          <div class="ml-form-panel">
+            <div class="ml-section-heading">
+              <div>
+                <span class="ml-kicker">WHAT DO YOU SEE?</span>
+                <h2>Symptoms and field conditions</h2>
+              </div>
+              <div class="nb-actions">
+                <button class="ml-example-button" id="soybean-example" type="button">Load example</button>
+                <button class="ml-example-button" id="soybean-clear" type="button">Clear all</button>
+              </div>
+            </div>
+            <p class="nb-help">
+              Leave anything you do not know on <b>Not sure</b>. The model simply
+              ignores it. More clues give a more confident answer.
+            </p>
+
+            <form id="soybean-form" novalidate>
+              {% for group in soybean_form %}
+              <fieldset class="nb-group" {% if loop.first %}data-open{% endif %}>
+                <legend>{{ group.title }}</legend>
+                <div class="nb-grid">
+                  {% for feature in group.features %}
+                  <label class="ml-field">
+                    <span>{{ feature.label }}</span>
+                    <select name="{{ feature.key }}" id="sb-{{ feature.key }}">
+                      <option value="">Not sure</option>
+                      {% for option in feature.options %}
+                      <option value="{{ option.code }}">{{ option.label }}</option>
+                      {% endfor %}
+                    </select>
+                  </label>
+                  {% endfor %}
+                </div>
+              </fieldset>
+              {% endfor %}
+
+              <div class="ml-form-footer">
+                <p><span id="soybean-count">0</span> of {{ soybean_symptom_count }} clues selected</p>
+                <button class="ml-submit-button" id="soybean-submit" type="submit">
+                  Diagnose <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </form>
+            <div class="ml-status" id="soybean-status" role="status" aria-live="polite"></div>
+          </div>
+
+          <aside class="ml-result-panel" aria-labelledby="soybean-result-title">
+            <span class="ml-result-icon" aria-hidden="true">↗</span>
+            <span class="ml-kicker">MODEL OUTPUT</span>
+            <h2 id="soybean-result-title">Most likely disease</h2>
+            <p class="ml-result-intro" id="soybean-intro">Select symptoms, then press Diagnose.</p>
+            <div class="ml-result-value nb-top" id="soybean-top" aria-live="polite">—</div>
+            <div class="ml-result-context" id="soybean-context">No diagnosis yet</div>
+            <ol class="nb-bars" id="soybean-bars" aria-label="Probability for each disease"></ol>
+            <div class="ml-performance-note">
+              <span class="ml-performance-icon" aria-hidden="true">i</span>
+              <p>
+                A learning demonstration, not a field diagnosis. Confirm any
+                disease with an agronomist or a lab test.
+              </p>
+            </div>
+          </aside>
+        </div>
+
+        <section class="nb-evidence" id="soybean-evidence" aria-labelledby="soybean-evidence-title" hidden>
+          <span class="ml-kicker">HOW THE EVIDENCE ADDS UP</span>
+          <h2 id="soybean-evidence-title">Why this answer?</h2>
+          <p id="soybean-evidence-intro"></p>
+          <ul class="nb-evidence-list" id="soybean-evidence-list"></ul>
+        </section>
+      </section>
+
+      <section class="nb-demo" id="panel-crop" role="tabpanel" aria-labelledby="tab-crop" hidden>
+        <div class="ml-workspace">
+          <div class="ml-form-panel">
+            <div class="ml-section-heading">
+              <div>
+                <span class="ml-kicker">YOUR FIELD</span>
+                <h2>Soil and weather conditions</h2>
+              </div>
+              <div class="nb-actions">
+                <button class="ml-example-button" id="crop-example" type="button">Load example</button>
+              </div>
+            </div>
+            <p class="nb-help">
+              Enter typical conditions for the field. The model returns the crops
+              whose usual growing conditions match best.
+            </p>
+
+            <form id="crop-form" novalidate>
+              <div class="nb-grid nb-grid-crop">
+                {% for feature in crop_form %}
+                <label class="ml-field">
+                  <span>{{ feature.label }}{% if feature.unit %} <small class="ml-field-sub">({{ feature.unit }})</small>{% endif %}</span>
+                  <input
+                    type="number"
+                    name="{{ feature.key }}"
+                    id="cr-{{ feature.key }}"
+                    step="any"
+                    min="{{ feature.min }}"
+                    max="{{ feature.max }}"
+                    value="{{ '%.1f'|format(feature.median)|replace('.0', '') }}"
+                    inputmode="decimal"
+                    required
+                  />
+                  <small class="nb-range">Typical: {{ '%.1f'|format(feature.train_min)|replace('.0', '') }} to {{ '%.1f'|format(feature.train_max)|replace('.0', '') }}</small>
+                </label>
+                {% endfor %}
+              </div>
+              <div class="ml-form-footer">
+                <p>Starting values are the typical (median) field.</p>
+                <button class="ml-submit-button" id="crop-submit" type="submit">
+                  Recommend crops <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </form>
+            <div class="ml-status" id="crop-status" role="status" aria-live="polite"></div>
+          </div>
+
+          <aside class="ml-result-panel" aria-labelledby="crop-result-title">
+            <span class="ml-result-icon" aria-hidden="true">↗</span>
+            <span class="ml-kicker">MODEL OUTPUT</span>
+            <h2 id="crop-result-title">Best-suited crop</h2>
+            <p class="ml-result-intro" id="crop-intro">Enter conditions, then press Recommend crops.</p>
+            <div class="ml-result-value nb-top" id="crop-top" aria-live="polite">—</div>
+            <div class="ml-result-context" id="crop-context">No recommendation yet</div>
+            <div class="ml-result-warning" id="crop-warning" hidden></div>
+            <ol class="nb-bars" id="crop-bars" aria-label="Probability for each crop"></ol>
+            <div class="ml-performance-note">
+              <span class="ml-performance-icon" aria-hidden="true">i</span>
+              <p>
+                Held-out accuracy is {{ "%.1f"|format(crop_metrics.accuracy * 100) }}%.
+                The dataset is very clean, so real fields will be less clear-cut.
+              </p>
+            </div>
+          </aside>
+        </div>
+
+        <section class="nb-evidence" id="crop-evidence" aria-labelledby="crop-evidence-title" hidden>
+          <span class="ml-kicker">HOW THE EVIDENCE ADDS UP</span>
+          <h2 id="crop-evidence-title">Why this crop?</h2>
+          <p id="crop-evidence-intro"></p>
+          <ul class="nb-evidence-list" id="crop-evidence-list"></ul>
+        </section>
+      </section>
+
+      <section class="ml-glossary" aria-labelledby="glossary-title">
+        <span class="ml-kicker">GLOSSARY & FIELD GUIDE</span>
+        <h2 id="glossary-title">How does Naive Bayes reach an answer?</h2>
+        <p class="ml-glossary-intro">
+          Naive Bayes behaves like an experienced scout. It knows how common
+          each disease or crop is, and how often each clue shows up with each
+          one. It combines the clues you give it into a probability for every
+          possible answer.
+        </p>
+        <dl class="ml-glossary-grid">
+          <div>
+            <dt>Prior</dt>
+            <dd>How common each answer is before you tell the model anything. A disease seen in many training fields starts with a higher prior.</dd>
+          </div>
+          <div>
+            <dt>Likelihood</dt>
+            <dd>How often a clue appears when a given answer is true. Yellow halos around leaf spots are common with some diseases and rare with others.</dd>
+          </div>
+          <div>
+            <dt>Probability</dt>
+            <dd>The model's confidence in each answer after weighing all clues. All answers together always add up to 100%.</dd>
+          </div>
+          <div>
+            <dt>"Naive" independence</dt>
+            <dd>The model treats each clue as separate evidence, even though real symptoms are often linked. This simplification keeps it fast and works well with small datasets, but it can make the model over-confident.</dd>
+          </div>
+          <div>
+            <dt>Top-3 accuracy</dt>
+            <dd>How often the true answer is among the model's three highest-ranked choices. Useful when several diseases look alike.</dd>
+          </div>
+          <div>
+            <dt>Not sure</dt>
+            <dd>A clue left blank is skipped. It adds no evidence for or against any answer.</dd>
+          </div>
+        </dl>
+        <p class="ml-glossary-note">
+          <b>Tip:</b> Use <b>Load example</b> to start from a real held-out record,
+          then change one clue at a time to see how the probabilities move.
+        </p>
+      </section>
+
+      <section class="ml-caveat">
+        <span aria-hidden="true">ⓘ</span>
+        <p>
+          <b>Interpret results with care.</b> The soybean model learned from
+          {{ soybean_metrics.train_rows }} expert-labeled records covering
+          {{ soybean_class_count }} diseases; four very rare diseases are
+          excluded. The crop dataset is clean and likely synthetic, so its
+          near-perfect accuracy will not carry over to real fields.
+        </p>
+      </section>
+
+      <footer class="ml-footer">
+        <span>AgroPulse Intelligence <i aria-hidden="true">✳</i> Machine Learning Field Lab</span>
+        <a href="/analytics.html">Back to the algorithm library <span aria-hidden="true">↗</span></a>
+      </footer>
+    </main>
+  </body>
+</html>

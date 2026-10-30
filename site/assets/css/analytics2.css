@@ -1,0 +1,859 @@
+/* ============================================================
+   Algorithm hub visual refresh
+   Loaded after styles.css + site.css + site2.css.
+   Keeps the existing visualization components and script hooks;
+   refreshes the surrounding layout, typography, and controls.
+   ============================================================ */
+
+body {
+  background: #fff;
+}
+
+.analytics2-page {
+  width: min(1184px, calc(100% - 96px));
+  margin: 0 auto;
+}
+
+/* ---------- Hero ---------- */
+
+.analytics2-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  align-items: center;
+  gap: clamp(36px, 5vw, 64px);
+  padding: 64px 0 74px;
+}
+
+.analytics2-hero h1 {
+  margin: 16px 0 18px;
+  font-size: clamp(40px, 4.3vw, 58px);
+  font-weight: 700;
+  letter-spacing: -2.6px;
+  line-height: 1.1;
+}
+
+.analytics2-hero h1 em {
+  color: var(--s2-green);
+  font-style: normal;
+}
+
+.analytics2-lede {
+  max-width: 560px;
+  margin: 0;
+  color: var(--s2-muted);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.analytics2-hero .hero-actions {
+  margin-top: 26px;
+}
+
+.analytics2-hero-note {
+  display: flex;
+  max-width: 540px;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 22px 0 0;
+  color: var(--s2-soft);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.analytics2-hero-note span {
+  flex: 0 0 auto;
+  color: #5f8567;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.analytics2-hero-visual {
+  position: relative;
+  min-height: 412px;
+  margin: 0;
+  overflow: hidden;
+  background: #244a38;
+  border-radius: 20px;
+}
+
+.analytics2-hero-visual img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 54%;
+}
+
+.analytics2-hero-visual::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(14, 33, 22, 0.08) 0%, rgba(14, 33, 22, 0) 40%, rgba(14, 33, 22, 0.56) 100%);
+}
+
+.analytics2-hero-caption {
+  position: absolute;
+  z-index: 1;
+  bottom: 18px;
+  left: 18px;
+  padding: 8px 12px;
+  color: #fff;
+  background: rgba(19, 40, 27, 0.72);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.analytics2-hero-card {
+  position: absolute;
+  z-index: 1;
+  top: 20px;
+  left: 20px;
+  display: grid;
+  gap: 4px;
+  max-width: 252px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 13px;
+  box-shadow: 0 16px 36px rgba(27, 49, 34, 0.18);
+}
+
+.analytics2-hero-card span {
+  color: var(--s2-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.analytics2-hero-card b {
+  color: #2b4535;
+  font-family: "Manrope", sans-serif;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+  line-height: 1.3;
+}
+
+.analytics2-hero-card em {
+  color: var(--s2-green);
+  font-style: normal;
+}
+
+.analytics2-hero-card small {
+  color: var(--s2-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ---------- Algorithm section ---------- */
+
+.analytics2-algorithms {
+  padding: 72px 0 64px;
+  border-top: 1px solid var(--s2-line);
+}
+
+.analytics2-section-head {
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  margin: 0 0 30px;
+}
+
+.analytics2-section-head h2 {
+  margin: 10px 0 8px;
+  font-size: clamp(32px, 3.2vw, 42px);
+  letter-spacing: -1.7px;
+  line-height: 1.15;
+}
+
+.analytics2-section-head p {
+  max-width: 610px;
+  margin: 0;
+  color: var(--s2-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.analytics2-section-head .section-count {
+  padding: 9px 12px;
+  color: #5b6a60;
+  background: #f5f8f3;
+  border: 1px solid var(--s2-line);
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.analytics2-section-head .section-count strong {
+  margin-right: 4px;
+  font-size: 14px;
+}
+
+.analytics2-algorithms .algorithm-grid {
+  gap: 16px;
+}
+
+.analytics2-algorithms .algorithm-card {
+  min-height: 244px;
+  padding: 20px 20px 18px;
+  background: #fff;
+  border: 1px solid var(--s2-line);
+  border-radius: 16px;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.analytics2-algorithms .algorithm-card:hover {
+  border-color: #b5cbb8;
+  box-shadow: 0 14px 30px rgba(36, 61, 46, 0.08);
+  transform: translateY(-3px);
+}
+
+.analytics2-algorithms .algorithm-card.selected,
+.analytics2-algorithms .algorithm-card:focus-within {
+  border-color: var(--s2-green);
+  box-shadow: 0 0 0 3px rgba(47, 107, 73, 0.14), 0 14px 30px rgba(36, 61, 46, 0.08);
+}
+
+.analytics2-algorithms .algorithm-card-control {
+  padding: 0;
+}
+
+.analytics2-algorithms .algorithm-icon {
+  width: 46px;
+  height: 46px;
+  margin-bottom: 12px;
+  border-radius: 13px;
+}
+
+.analytics2-algorithms .algorithm-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.analytics2-algorithms .card-topline {
+  position: static;
+  display: flex;
+  margin: 0 0 9px;
+}
+
+.analytics2-page .category-tag {
+  padding: 5px 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.65px;
+}
+
+.analytics2-page .regression-tag {
+  color: #3d6a47;
+  background: #eaf2e9;
+}
+
+.analytics2-page .classification-tag {
+  color: #5f4d84;
+  background: #f1edf8;
+}
+
+.analytics2-page .rules-tag {
+  color: #725a24;
+  background: #f7f1e3;
+}
+
+.analytics2-page .neural-tag {
+  color: #7d4a5e;
+  background: #f8edf0;
+}
+
+.analytics2-algorithms .algorithm-card-control > strong {
+  margin: 0 0 7px;
+  font-size: 18px;
+  letter-spacing: -0.35px;
+  line-height: 1.3;
+}
+
+.analytics2-algorithms .card-description {
+  min-height: 0;
+  margin-bottom: 18px;
+  color: var(--s2-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.analytics2-algorithms .card-footer {
+  padding-top: 14px;
+  margin-top: auto;
+  color: #4f6056;
+  border-top: 1px solid #edf1eb;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.analytics2-algorithms .use-case-dot {
+  width: 8px;
+  height: 8px;
+}
+
+.analytics2-algorithms .card-arrow-link {
+  top: 14px;
+  right: 14px;
+  width: 44px;
+  height: 44px;
+  background: #f4f8f2;
+  border: 1px solid #e4ebe1;
+  box-shadow: none;
+}
+
+.analytics2-algorithms .card-arrow-link .card-arrow {
+  color: #4f6b57;
+  font-size: 16px;
+}
+
+.analytics2-algorithms .card-arrow-link:hover {
+  background: #eaf2e9;
+}
+
+.analytics2-algorithms .card-arrow-link:focus-visible {
+  outline: 3px solid #6f9d79;
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* ---------- Field lab ---------- */
+
+.analytics2-lab {
+  padding: 68px 0 76px;
+  margin-top: 0;
+  border-top: 1px solid var(--s2-line);
+  scroll-margin-top: 24px;
+}
+
+.analytics2-lab .field-heading {
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  margin-bottom: 24px;
+}
+
+.analytics2-lab .field-heading h2 {
+  margin: 10px 0 8px;
+  font-size: clamp(30px, 3.1vw, 38px);
+  letter-spacing: -1.5px;
+  line-height: 1.16;
+}
+
+.analytics2-lab .field-heading p {
+  max-width: 560px;
+  color: var(--s2-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.analytics2-lab .preview-label {
+  padding: 8px 11px;
+  color: #4c6655;
+  background: #eef4ed;
+  border: 1px solid #e0e9dd;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+}
+
+.analytics2-lab .preview-label span {
+  width: 7px;
+  height: 7px;
+}
+
+.analytics2-lab .demo-panel {
+  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.85fr);
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--s2-line);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(36, 61, 46, 0.06);
+}
+
+.analytics2-lab .demo-main {
+  padding: 26px 26px 20px;
+}
+
+.analytics2-lab .demo-title-row {
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.analytics2-lab .demo-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--s2-green);
+  background: var(--s2-soft-green);
+  border-radius: 12px;
+  font-size: 24px;
+}
+
+.analytics2-lab .demo-title .category-tag {
+  margin-bottom: 5px;
+}
+
+.analytics2-lab .demo-title h3 {
+  font-size: 22px;
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+}
+
+.analytics2-lab .sample-badge {
+  padding: 6px 9px;
+  color: #6d5626;
+  background: #fbf4e3;
+  border-radius: 5px;
+  font-size: 11px;
+  letter-spacing: 0.55px;
+}
+
+.analytics2-lab .demo-description {
+  margin: 14px 0 10px;
+  color: var(--s2-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.analytics2-lab .visualization {
+  min-height: 240px;
+  background-color: #fbfcfa;
+  border-color: #e9eee6;
+  border-radius: 12px;
+}
+
+.analytics2-lab .plot-svg {
+  height: 220px;
+}
+
+.analytics2-lab .plot-svg text,
+.analytics2-lab .svg-label {
+  fill: #6f7d73;
+  font-size: 11px;
+}
+
+.analytics2-lab .chart-legend {
+  min-height: 40px;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  color: var(--s2-muted);
+  font-size: 12px;
+}
+
+.analytics2-lab .chart-legend[hidden] {
+  display: none;
+}
+
+.analytics2-lab .legend-dot {
+  width: 8px;
+  height: 8px;
+}
+
+.analytics2-lab .legend-line {
+  width: 16px;
+}
+
+.analytics2-lab .demo-caption {
+  gap: 7px;
+  margin-top: 10px;
+  color: var(--s2-soft);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.analytics2-lab .demo-caption span {
+  color: #71867a;
+  font-size: 14px;
+}
+
+.analytics2-lab .demo-insight {
+  padding: 26px 24px 22px;
+  background: #f6f9f4;
+  border-left-color: #e7ede4;
+}
+
+.analytics2-lab .insight-label {
+  color: var(--s2-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.9px;
+}
+
+.analytics2-lab .insight-label span {
+  color: #4d7d58;
+  font-size: 14px;
+}
+
+.analytics2-lab .demo-insight h3 {
+  margin: 10px 0 8px;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+  line-height: 1.3;
+}
+
+.analytics2-lab .demo-insight > p {
+  margin-bottom: 18px;
+  color: var(--s2-muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.analytics2-lab .insight-divider {
+  margin-bottom: 16px;
+  background: #e2e9df;
+}
+
+.analytics2-lab .example-output {
+  gap: 7px;
+}
+
+.analytics2-lab .output-label {
+  color: var(--s2-soft);
+  font-size: 11px;
+  letter-spacing: 0.7px;
+}
+
+.analytics2-lab .example-output strong {
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.analytics2-lab .example-output strong span {
+  font-size: 24px;
+  letter-spacing: -0.7px;
+  line-height: 1.2;
+}
+
+.analytics2-lab .output-note {
+  color: var(--s2-soft);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.analytics2-lab .data-chips {
+  gap: 6px;
+  margin-top: 15px;
+}
+
+.analytics2-lab .data-chips span {
+  padding: 6px 9px;
+  color: #4f5f55;
+  background: #fff;
+  border-color: #e2e9df;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.analytics2-lab .insight-footnote {
+  gap: 8px;
+  padding-top: 15px;
+  margin-top: 16px;
+  color: var(--s2-muted);
+  border-top-color: #e2e9df;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.analytics2-lab .footnote-icon {
+  color: #5e8567;
+  font-size: 13px;
+}
+
+.analytics2-lab .model-demo-button {
+  min-height: 46px;
+  padding: 0 16px;
+  margin-top: 18px;
+  background: var(--s2-green);
+  border-radius: 9px;
+  font-size: 14px;
+}
+
+.analytics2-lab .model-demo-button:focus-visible {
+  outline: 3px solid #6f9d79;
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* ---------- Existing visualization primitives ---------- */
+
+.analytics2-lab .probability-list {
+  width: min(88%, 440px);
+  gap: 14px;
+}
+
+.analytics2-lab .probability-row {
+  grid-template-columns: 108px minmax(60px, 1fr) 40px;
+  gap: 12px;
+  color: #53645a;
+  font-size: 12px;
+}
+
+.analytics2-lab .probability-row strong {
+  color: #45564b;
+  font-size: 12px;
+}
+
+.analytics2-lab .probability-track {
+  height: 10px;
+}
+
+.analytics2-lab .tree-visual {
+  min-height: 220px;
+  padding: 18px;
+}
+
+.analytics2-lab .tree-flow {
+  gap: 16px;
+}
+
+.analytics2-lab .tree-node {
+  padding: 9px 14px;
+  font-size: 12px;
+}
+
+.analytics2-lab .branch-label {
+  color: var(--s2-soft);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.analytics2-lab .neural-svg {
+  height: 210px;
+}
+
+.analytics2-lab .neural-svg text {
+  fill: #6f7d73;
+  font-family: "DM Sans", sans-serif;
+  font-size: 11px;
+}
+
+/* ---------- Closing CTA ---------- */
+
+.analytics2-cta {
+  width: 100%;
+  margin: 0 0 64px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1050px) {
+  .analytics2-page {
+    width: calc(100% - 60px);
+  }
+}
+
+@media (max-width: 900px) {
+  .analytics2-hero {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 48px 0 56px;
+  }
+
+  .analytics2-hero-visual {
+    min-height: 360px;
+  }
+
+  .analytics2-algorithms {
+    padding-top: 56px;
+  }
+
+  .analytics2-lab .demo-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics2-lab .demo-insight {
+    border-top: 1px solid #e7ede4;
+    border-left: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .analytics2-page {
+    width: calc(100% - 44px);
+  }
+
+  .analytics2-hero {
+    padding: 40px 0 48px;
+  }
+
+  .analytics2-section-head {
+    align-items: flex-start;
+  }
+
+  .analytics2-algorithms {
+    padding: 50px 0 52px;
+  }
+
+  .analytics2-lab {
+    padding: 50px 0 56px;
+  }
+
+  .analytics2-lab .demo-main {
+    padding: 22px 20px 18px;
+  }
+
+  .analytics2-lab .demo-insight {
+    padding: 22px 20px 20px;
+  }
+
+  .analytics2-cta {
+    margin-bottom: 42px;
+  }
+}
+
+@media (max-width: 620px) {
+  .analytics2-algorithms .algorithm-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics2-algorithms .algorithm-card {
+    min-height: 0;
+  }
+
+  .analytics2-lab .visualization {
+    min-height: 180px;
+  }
+
+  .analytics2-lab .plot-svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .analytics2-lab .plot-svg text {
+    font-size: 14px;
+  }
+
+  .analytics2-lab .neural-svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .analytics2-lab .neural-svg text {
+    font-size: 14px;
+  }
+
+  .analytics2-lab .tree-branches {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .analytics2-lab .probability-list {
+    width: 100%;
+  }
+
+  .analytics2-lab .probability-row {
+    grid-template-columns: minmax(84px, 1fr) minmax(40px, 0.8fr) 38px;
+    gap: 9px;
+    font-size: 11px;
+  }
+
+  .analytics2-lab .probability-row strong {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .analytics2-page {
+    width: calc(100% - 36px);
+  }
+
+  .analytics2-hero h1 {
+    font-size: clamp(33px, 9.2vw, 40px);
+    letter-spacing: -1.9px;
+  }
+
+  .analytics2-lede {
+    font-size: 15px;
+  }
+
+  .analytics2-hero-visual {
+    min-height: 300px;
+  }
+
+  .analytics2-hero-card {
+    top: 16px;
+    left: 16px;
+    max-width: 226px;
+    padding: 14px 16px;
+  }
+
+  .analytics2-hero-card b {
+    font-size: 17px;
+  }
+
+  .analytics2-hero-caption {
+    bottom: 14px;
+    left: 14px;
+    font-size: 11px;
+  }
+
+  .analytics2-section-head h2,
+  .analytics2-lab .field-heading h2 {
+    font-size: 29px;
+    letter-spacing: -1.2px;
+  }
+
+  .analytics2-algorithms .algorithm-card {
+    padding: 18px 18px 16px;
+  }
+
+  .analytics2-lab .demo-main {
+    padding: 18px 16px 16px;
+  }
+
+  .analytics2-lab .demo-insight {
+    padding: 20px 16px 18px;
+  }
+
+  .analytics2-lab .demo-title h3 {
+    font-size: 20px;
+  }
+
+  .analytics2-lab .sample-badge {
+    margin-left: 0;
+  }
+
+  .analytics2-lab .demo-insight h3 {
+    font-size: 20px;
+  }
+
+  .analytics2-lab .example-output strong span {
+    font-size: 22px;
+  }
+
+  .analytics2-lab .visualization {
+    min-height: 170px;
+  }
+
+  .analytics2-lab .plot-svg {
+    height: auto;
+  }
+
+  .analytics2-lab .plot-svg text {
+    font-size: 19px;
+  }
+
+  .analytics2-lab .neural-svg {
+    height: auto;
+  }
+
+  .analytics2-lab .neural-svg text {
+    font-size: 17px;
+  }
+
+  .analytics2-cta {
+    padding: 24px 20px;
+    margin-bottom: 36px;
+  }
+
+  .analytics2-cta h2 {
+    font-size: 24px;
+  }
+}

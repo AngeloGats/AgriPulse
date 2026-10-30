@@ -15,10 +15,13 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../assets/css/site.css?v=3" />
+    <link rel="stylesheet" href="../assets/css/site2.css?v=2" />
     <script src="../assets/js/site.js" defer></script>
     <script src="../assets/js/home.js" defer></script>
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
     <header class="site-header">
       <a class="site-brand" href="index.html" aria-label="AgroPulse Intelligence home">
         <span class="site-brand-icon" aria-hidden="true">
@@ -35,12 +38,11 @@
         <a class="current" href="index.html" aria-current="page">Home</a>
         <a href="about.html">About us</a>
         <a href="analytics.html">ML algorithms</a>
-        <a href="demo.html">Client portal</a>
         <a class="nav-cta" href="analytics.html">Explore the platform <span aria-hidden="true">↗</span></a>
       </nav>
     </header>
 
-    <main>
+    <main id="main">
       <section class="home-hero">
         <div class="hero-content">
           <div class="overline"><span></span> PRECISION AGRICULTURE · AGTECH · ENVIRONMENTAL ANALYTICS</div>
@@ -52,13 +54,17 @@
           </div>
           <div class="hero-trust"><span class="trust-mark" aria-hidden="true">✓</span> Designed for farm teams, cooperatives, and agricultural partners</div>
         </div>
-        <div class="hero-visual">
+        <figure class="hero-visual">
           <img
             class="hero-photo"
             src="../assets/images/Farmer1.jpg"
             alt="Farmer standing in a crop field with a tractor in the background"
+            width="967"
+            height="725"
+            fetchpriority="high"
           />
-        </div>
+          <figcaption class="hero-caption">Soil · weather · satellite · crop data</figcaption>
+        </figure>
       </section>
 
       <section class="audience-strip" aria-label="Who AgroPulse is designed for">
@@ -77,21 +83,35 @@
         </div>
         <div class="solution-cards">
           <article class="solution-card">
-            <span class="solution-icon soil-icon" aria-hidden="true">⌁</span>
+            <span class="solution-icon soil-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                <circle cx="12" cy="12" r="2.2" />
+                <path d="M8.2 15.8a5.4 5.4 0 0 1 0-7.6M15.8 8.2a5.4 5.4 0 0 1 0 7.6M5.4 18.6a9.4 9.4 0 0 1 0-13.2M18.6 5.4a9.4 9.4 0 0 1 0 13.2" />
+              </svg>
+            </span>
             <span class="card-index">01 / INPUTS</span>
             <h3>Connect the field</h3>
             <p>Bring together soil sensor readings, local weather, satellite observations, and historical crop metrics.</p>
             <div class="source-tags"><span>Soil sensors</span><span>Weather feeds</span><span>Satellite data</span></div>
           </article>
           <article class="solution-card">
-            <span class="solution-icon model-icon" aria-hidden="true">✳</span>
+            <span class="solution-icon model-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19V5M4 19h16" />
+                <path d="m7.5 15 3.5-3.5 3 2L19 8" />
+              </svg>
+            </span>
             <span class="card-index">02 / UNDERSTAND</span>
             <h3>Learn from patterns</h3>
-            <p>Explore machine learning approaches for forecasts, condition classification, and operational decisions.</p>
+            <p>Explore machine learning approaches for yield estimates, condition classification, and operational decisions.</p>
             <div class="source-tags"><span>Yield trends</span><span>Crop health</span><span>Field insights</span></div>
           </article>
           <article class="solution-card">
-            <span class="solution-icon action-icon" aria-hidden="true">↗</span>
+            <span class="solution-icon action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 19 19 5M10 5h9v9" />
+              </svg>
+            </span>
             <span class="card-index">03 / TAKE ACTION</span>
             <h3>Make informed plans</h3>
             <p>Give farm teams a shared, accessible view of insights that can support resource planning and risk awareness.</p>
@@ -100,32 +120,86 @@
         </div>
       </section>
 
+      <section class="capability-section" aria-labelledby="capability-title">
+        <div class="capability-intro">
+          <div class="overline">WHAT THE MODELS DEMONSTRATE TODAY</div>
+          <h2 id="capability-title">Six models.<br />Three practical capabilities.</h2>
+          <p>Held-out results on the project's own datasets — not field trials or independently verified performance. Demos trained on simulated data are labelled on their pages.</p>
+        </div>
+        <div class="capability-list">
+          <article class="capability-item">
+            <span class="capability-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 18 10 12l4 3 6-8" />
+                <path d="M14 7h6v6" />
+              </svg>
+            </span>
+            <div>
+              <h3>Yield estimation</h3>
+              <p>Linear Regression estimates yield from full-season Sentinel-1 radar summaries plus crop and year context.</p>
+              <span class="capability-meta">CYCleSS held-out · R² ≈ 0.66 · MAE 1.27 t/ha</span>
+            </div>
+          </article>
+          <article class="capability-item">
+            <span class="capability-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 4C9 4 4 9 4 17c0 1.7.3 3 .3 3S8 20 12 20c8 0 8-9 8-16Z" />
+                <path d="M4 20 14 10" />
+              </svg>
+            </span>
+            <div>
+              <h3>Condition screening</h3>
+              <p>Naive Bayes and SVM classify recorded crop conditions, and a CNN classifies tomato leaf photos.</p>
+              <span class="capability-meta">PlantVillage subset · CNN ≈ 92% held-out accuracy</span>
+            </div>
+          </article>
+          <article class="capability-item">
+            <span class="capability-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3.5S6 10 6 14a6 6 0 0 0 12 0c0-4-6-10.5-6-10.5Z" />
+                <path d="m9.6 14 1.8 1.8 3.2-3.5" />
+              </svg>
+            </span>
+            <div>
+              <h3>Resource guidance</h3>
+              <p>A Decision Tree turns soil moisture, rain, and crop stage into irrigation advice. KNN compares new soil or plant samples with nearby known cases.</p>
+              <span class="capability-meta">Decision Tree + KNN · interactive demos</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <section class="impact-section" id="impact-calculator">
         <div class="impact-copy">
-          <div class="overline">A MORE EFFICIENT GROWING SEASON</div>
-          <h2>What could more precise input planning mean for your farm?</h2>
-          <p>Explore a simple savings range based on the input costs you enter. This is an illustrative estimate—not a verified AgroPulse result or a guarantee.</p>
-          <div class="impact-target"><span class="target-icon" aria-hidden="true">◎</span><span><b>25–30% input reduction</b><small>A strategic objective described in the AgroPulse project profile.</small></span></div>
+          <div class="overline">A SCENARIO EXPLORER</div>
+          <h2>What could a reduction in input use mean for your farm?</h2>
+          <p>Enter your seasonal costs and your own reduction assumption to see the arithmetic. This is a planning scenario—not a model output or a guarantee.</p>
+          <div class="impact-target"><span class="target-icon" aria-hidden="true">◎</span><span><b>Where the models help</b><small>The Decision Tree demo turns soil moisture, rain, and crop stage into irrigation guidance. KNN compares soil and plant samples with known cases.</small></span></div>
         </div>
         <form class="calculator-card" id="impact-form">
-          <div class="calculator-heading"><span class="calculator-icon" aria-hidden="true">⌗</span><div><h3>Impact estimator</h3><p>Enter your approximate seasonal input costs</p></div><label class="currency-select">Currency<select name="currency"><option value="PHP" selected>PHP</option><option value="USD">USD</option><option value="EUR">EUR</option></select></label></div>
+          <div class="calculator-heading">
+            <span class="calculator-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                <path d="M5 19v-8M12 19V5M19 19v-6" />
+              </svg>
+            </span>
+            <div><h3>Savings scenario</h3><p>Enter your costs and an assumed reduction</p></div>
+            <label class="currency-select">Currency<select name="currency"><option value="PHP" selected>PHP</option><option value="USD">USD</option><option value="EUR">EUR</option></select></label>
+          </div>
           <label class="cost-field">Fertilizer costs <span><b data-currency-symbol>₱</b><input name="fertilizer" type="number" min="0" step="100" value="12000" inputmode="decimal" /></span></label>
           <label class="cost-field">Crop protection costs <span><b data-currency-symbol>₱</b><input name="protection" type="number" min="0" step="100" value="6500" inputmode="decimal" /></span></label>
           <label class="cost-field">Irrigation costs <span><b data-currency-symbol>₱</b><input name="irrigation" type="number" min="0" step="100" value="4000" inputmode="decimal" /></span></label>
-          <div class="estimate-result" aria-live="polite">
-            <span>ILLUSTRATIVE POTENTIAL SAVINGS RANGE</span>
-            <strong id="savings-range">₱5,625 – ₱6,750</strong>
-            <small>Based on a 25–30% reduction applied to the costs entered above.</small>
+          <div class="cost-pair">
+            <label class="cost-field">Assumed reduction (low) <span><input name="reductionLow" type="number" min="0" max="100" step="1" value="25" inputmode="decimal" /><b>%</b></span></label>
+            <label class="cost-field">Assumed reduction (high) <span><input name="reductionHigh" type="number" min="0" max="100" step="1" value="30" inputmode="decimal" /><b>%</b></span></label>
           </div>
-          <p class="calculator-disclaimer">Actual outcomes depend on farm conditions, data quality, and management decisions. No savings are guaranteed.</p>
+          <div class="estimate-result" aria-live="polite">
+            <span>ILLUSTRATIVE SAVINGS FOR YOUR ASSUMPTION</span>
+            <strong id="savings-range">₱5,625 – ₱6,750</strong>
+            <small>Based on the reduction range you enter, applied to the costs above.</small>
+          </div>
+          <p class="calculator-disclaimer">This is arithmetic, not a model prediction. Actual outcomes depend on farm conditions, data quality, and management decisions. No savings are guaranteed.</p>
         </form>
-      </section>
-
-      <section class="goal-strip">
-        <div class="goal-heading"><span class="overline">THE DIRECTION WE'RE WORKING TOWARD</span><p>Strategic objectives from the project profile—not independently validated performance claims.</p></div>
-        <div class="goal-item"><strong>48<span> hrs</span></strong><span>Target window for early-stage issue detection</span></div>
-        <div class="goal-item"><strong>90<span>%+</span></strong><span>Yield forecast accuracy target, 60 days before harvest</span></div>
-        <div class="goal-item"><strong>25–30<span>%</span></strong><span>Input reduction objective across a growing season</span></div>
       </section>
 
       <section class="closing-cta">
@@ -137,8 +211,14 @@
     <footer class="site-footer">
       <a class="site-brand footer-brand" href="index.html"><span class="site-brand-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 27V14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /><path d="M16 17C8.8 17 5 13.2 5 6c7.2 0 11 3.8 11 11Z" fill="currentColor" /><path d="M16 21c0-6.2 3.2-9.5 9.5-9.5 0 6.3-3.3 9.5-9.5 9.5Z" fill="currentColor" opacity=".62" /></svg></span><span>AgroPulse<span class="brand-light"> Intelligence</span></span></a>
       <p>Predictive intelligence for sustainable agriculture.</p>
-      <nav aria-label="Footer navigation"><a href="about.html">About us</a><a href="analytics.html">ML algorithms</a><a href="demo.html">Client portal</a></nav>
-      <small>Concept website · Project profile objectives are targets, not measured outcomes.</small>
+      <nav aria-label="Footer navigation"><a href="about.html">About us</a><a href="analytics.html">ML algorithms</a></nav>
+      <small>Concept website · Model demos use real and clearly labelled simulated datasets; results are educational, not field advice.</small>
     </footer>
+
+    <script>
+      window.addEventListener("pageshow", () => {
+        if (typeof updateSavingsEstimate === "function") updateSavingsEstimate();
+      });
+    </script>
   </body>
 </html>

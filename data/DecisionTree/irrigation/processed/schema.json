@@ -1,0 +1,46 @@
+{
+  "dataset": "irrigation",
+  "features": [
+    "soil_moisture_pct",
+    "rain_last_3d_mm",
+    "forecast_rain_mm",
+    "crop_stage",
+    "air_temp_c"
+  ],
+  "classes": [
+    "hold",
+    "irrigate_now",
+    "irrigate_soon",
+    "wait"
+  ],
+  "crop_stages": [
+    "seedling",
+    "vegetative",
+    "flowering",
+    "grain_fill"
+  ],
+  "ranges": {
+    "soil_moisture_pct": [
+      6.0,
+      48.0
+    ],
+    "rain_last_3d_mm": [
+      0.0,
+      52.0
+    ],
+    "forecast_rain_mm": [
+      0.0,
+      74.4
+    ],
+    "crop_stage": [
+      1.0,
+      4.0
+    ],
+    "air_temp_c": [
+      14.0,
+      43.0
+    ]
+  },
+  "train_rows": 1280,
+  "test_rows": 320
+}

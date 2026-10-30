@@ -1,0 +1,626 @@
+[
+  {
+    "dataset": "soil_type",
+    "features": [
+      "sand_pct",
+      "silt_pct",
+      "clay_pct",
+      "moisture_pct",
+      "ph",
+      "organic_matter_pct",
+      "bulk_density_g_cm3"
+    ],
+    "classes": [
+      "clay",
+      "loamy",
+      "sandy",
+      "silty"
+    ],
+    "best_k": 24,
+    "best_weights": "uniform",
+    "cv_accuracy": 0.940625,
+    "test_accuracy": 0.9333333333333333,
+    "test_macro_f1": 0.9335455943438837,
+    "majority_baseline": 0.25625,
+    "confusion_matrix": [
+      [
+        54,
+        4,
+        2,
+        0
+      ],
+      [
+        0,
+        57,
+        0,
+        2
+      ],
+      [
+        0,
+        1,
+        59,
+        0
+      ],
+      [
+        1,
+        5,
+        1,
+        54
+      ]
+    ],
+    "accuracy_by_k": [
+      {
+        "k": 1,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.8958333333333334,
+        "cv_accuracy": 0.8875
+      },
+      {
+        "k": 2,
+        "train_accuracy": 0.9541666666666667,
+        "test_accuracy": 0.8833333333333333,
+        "cv_accuracy": 0.8802083333333333
+      },
+      {
+        "k": 3,
+        "train_accuracy": 0.9479166666666666,
+        "test_accuracy": 0.925,
+        "cv_accuracy": 0.9177083333333332
+      },
+      {
+        "k": 4,
+        "train_accuracy": 0.9479166666666666,
+        "test_accuracy": 0.9166666666666666,
+        "cv_accuracy": 0.9229166666666666
+      },
+      {
+        "k": 5,
+        "train_accuracy": 0.94375,
+        "test_accuracy": 0.9208333333333333,
+        "cv_accuracy": 0.9260416666666668
+      },
+      {
+        "k": 6,
+        "train_accuracy": 0.94375,
+        "test_accuracy": 0.9291666666666667,
+        "cv_accuracy": 0.9291666666666666
+      },
+      {
+        "k": 7,
+        "train_accuracy": 0.9427083333333334,
+        "test_accuracy": 0.9208333333333333,
+        "cv_accuracy": 0.9302083333333332
+      },
+      {
+        "k": 8,
+        "train_accuracy": 0.940625,
+        "test_accuracy": 0.9291666666666667,
+        "cv_accuracy": 0.93125
+      },
+      {
+        "k": 9,
+        "train_accuracy": 0.94375,
+        "test_accuracy": 0.9333333333333333,
+        "cv_accuracy": 0.934375
+      },
+      {
+        "k": 10,
+        "train_accuracy": 0.940625,
+        "test_accuracy": 0.9291666666666667,
+        "cv_accuracy": 0.9322916666666667
+      },
+      {
+        "k": 11,
+        "train_accuracy": 0.9395833333333333,
+        "test_accuracy": 0.9291666666666667,
+        "cv_accuracy": 0.934375
+      },
+      {
+        "k": 12,
+        "train_accuracy": 0.94375,
+        "test_accuracy": 0.9375,
+        "cv_accuracy": 0.9322916666666666
+      },
+      {
+        "k": 13,
+        "train_accuracy": 0.94375,
+        "test_accuracy": 0.9291666666666667,
+        "cv_accuracy": 0.940625
+      },
+      {
+        "k": 14,
+        "train_accuracy": 0.9416666666666667,
+        "test_accuracy": 0.9291666666666667,
+        "cv_accuracy": 0.9364583333333334
+      },
+      {
+        "k": 15,
+        "train_accuracy": 0.9458333333333333,
+        "test_accuracy": 0.9208333333333333,
+        "cv_accuracy": 0.9375
+      },
+      {
+        "k": 16,
+        "train_accuracy": 0.9427083333333334,
+        "test_accuracy": 0.925,
+        "cv_accuracy": 0.9375
+      },
+      {
+        "k": 17,
+        "train_accuracy": 0.94375,
+        "test_accuracy": 0.9208333333333333,
+        "cv_accuracy": 0.934375
+      },
+      {
+        "k": 18,
+        "train_accuracy": 0.940625,
+        "test_accuracy": 0.9291666666666667,
+        "cv_accuracy": 0.9364583333333334
+      },
+      {
+        "k": 19,
+        "train_accuracy": 0.94375,
+        "test_accuracy": 0.9291666666666667,
+        "cv_accuracy": 0.9364583333333332
+      },
+      {
+        "k": 20,
+        "train_accuracy": 0.9416666666666667,
+        "test_accuracy": 0.9416666666666667,
+        "cv_accuracy": 0.9364583333333332
+      },
+      {
+        "k": 21,
+        "train_accuracy": 0.9395833333333333,
+        "test_accuracy": 0.9375,
+        "cv_accuracy": 0.9364583333333332
+      },
+      {
+        "k": 22,
+        "train_accuracy": 0.9385416666666667,
+        "test_accuracy": 0.9375,
+        "cv_accuracy": 0.9385416666666666
+      },
+      {
+        "k": 23,
+        "train_accuracy": 0.940625,
+        "test_accuracy": 0.9333333333333333,
+        "cv_accuracy": 0.9395833333333334
+      },
+      {
+        "k": 24,
+        "train_accuracy": 0.940625,
+        "test_accuracy": 0.9333333333333333,
+        "cv_accuracy": 0.940625
+      },
+      {
+        "k": 25,
+        "train_accuracy": 0.9395833333333333,
+        "test_accuracy": 0.9333333333333333,
+        "cv_accuracy": 0.9395833333333334
+      }
+    ],
+    "weighting_comparison": {
+      "uniform": {
+        "best_k": 24,
+        "best_cv_accuracy": 0.940625
+      },
+      "distance": {
+        "best_k": 24,
+        "best_cv_accuracy": 0.9395833333333334
+      }
+    }
+  },
+  {
+    "dataset": "soil_fertility",
+    "features": [
+      "ph",
+      "organic_carbon_pct",
+      "nitrogen_kg_ha",
+      "phosphorus_kg_ha",
+      "potassium_kg_ha",
+      "ec_ds_m",
+      "zinc_ppm"
+    ],
+    "classes": [
+      "high",
+      "low",
+      "medium"
+    ],
+    "best_k": 22,
+    "best_weights": "uniform",
+    "cv_accuracy": 0.9259259259259259,
+    "test_accuracy": 0.9259259259259259,
+    "test_macro_f1": 0.9256140350877193,
+    "majority_baseline": 0.3351851851851852,
+    "confusion_matrix": [
+      [
+        83,
+        1,
+        6
+      ],
+      [
+        0,
+        89,
+        1
+      ],
+      [
+        2,
+        10,
+        78
+      ]
+    ],
+    "accuracy_by_k": [
+      {
+        "k": 1,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.8740740740740741,
+        "cv_accuracy": 0.8907407407407408
+      },
+      {
+        "k": 2,
+        "train_accuracy": 0.9472222222222222,
+        "test_accuracy": 0.8740740740740741,
+        "cv_accuracy": 0.8703703703703705
+      },
+      {
+        "k": 3,
+        "train_accuracy": 0.9416666666666667,
+        "test_accuracy": 0.9037037037037037,
+        "cv_accuracy": 0.9148148148148149
+      },
+      {
+        "k": 4,
+        "train_accuracy": 0.9324074074074075,
+        "test_accuracy": 0.9074074074074074,
+        "cv_accuracy": 0.9148148148148149
+      },
+      {
+        "k": 5,
+        "train_accuracy": 0.9388888888888889,
+        "test_accuracy": 0.9148148148148149,
+        "cv_accuracy": 0.9203703703703704
+      },
+      {
+        "k": 6,
+        "train_accuracy": 0.9388888888888889,
+        "test_accuracy": 0.9148148148148149,
+        "cv_accuracy": 0.9194444444444445
+      },
+      {
+        "k": 7,
+        "train_accuracy": 0.9361111111111111,
+        "test_accuracy": 0.9222222222222223,
+        "cv_accuracy": 0.9185185185185185
+      },
+      {
+        "k": 8,
+        "train_accuracy": 0.9324074074074075,
+        "test_accuracy": 0.9222222222222223,
+        "cv_accuracy": 0.9194444444444445
+      },
+      {
+        "k": 9,
+        "train_accuracy": 0.9287037037037037,
+        "test_accuracy": 0.9259259259259259,
+        "cv_accuracy": 0.9212962962962964
+      },
+      {
+        "k": 10,
+        "train_accuracy": 0.9351851851851852,
+        "test_accuracy": 0.9185185185185185,
+        "cv_accuracy": 0.9185185185185185
+      },
+      {
+        "k": 11,
+        "train_accuracy": 0.9351851851851852,
+        "test_accuracy": 0.9222222222222223,
+        "cv_accuracy": 0.9212962962962964
+      },
+      {
+        "k": 12,
+        "train_accuracy": 0.9342592592592592,
+        "test_accuracy": 0.9222222222222223,
+        "cv_accuracy": 0.9203703703703704
+      },
+      {
+        "k": 13,
+        "train_accuracy": 0.9342592592592592,
+        "test_accuracy": 0.9185185185185185,
+        "cv_accuracy": 0.924074074074074
+      },
+      {
+        "k": 14,
+        "train_accuracy": 0.9287037037037037,
+        "test_accuracy": 0.9222222222222223,
+        "cv_accuracy": 0.9222222222222223
+      },
+      {
+        "k": 15,
+        "train_accuracy": 0.9333333333333333,
+        "test_accuracy": 0.9222222222222223,
+        "cv_accuracy": 0.9259259259259259
+      },
+      {
+        "k": 16,
+        "train_accuracy": 0.9305555555555556,
+        "test_accuracy": 0.9222222222222223,
+        "cv_accuracy": 0.9231481481481483
+      },
+      {
+        "k": 17,
+        "train_accuracy": 0.9324074074074075,
+        "test_accuracy": 0.9296296296296296,
+        "cv_accuracy": 0.9212962962962964
+      },
+      {
+        "k": 18,
+        "train_accuracy": 0.9287037037037037,
+        "test_accuracy": 0.9296296296296296,
+        "cv_accuracy": 0.9194444444444445
+      },
+      {
+        "k": 19,
+        "train_accuracy": 0.9314814814814815,
+        "test_accuracy": 0.9296296296296296,
+        "cv_accuracy": 0.9203703703703704
+      },
+      {
+        "k": 20,
+        "train_accuracy": 0.9324074074074075,
+        "test_accuracy": 0.9259259259259259,
+        "cv_accuracy": 0.9222222222222223
+      },
+      {
+        "k": 21,
+        "train_accuracy": 0.9314814814814815,
+        "test_accuracy": 0.9222222222222223,
+        "cv_accuracy": 0.9222222222222222
+      },
+      {
+        "k": 22,
+        "train_accuracy": 0.9324074074074075,
+        "test_accuracy": 0.9259259259259259,
+        "cv_accuracy": 0.9259259259259259
+      },
+      {
+        "k": 23,
+        "train_accuracy": 0.9305555555555556,
+        "test_accuracy": 0.9259259259259259,
+        "cv_accuracy": 0.923148148148148
+      },
+      {
+        "k": 24,
+        "train_accuracy": 0.9333333333333333,
+        "test_accuracy": 0.9296296296296296,
+        "cv_accuracy": 0.925
+      },
+      {
+        "k": 25,
+        "train_accuracy": 0.9314814814814815,
+        "test_accuracy": 0.9296296296296296,
+        "cv_accuracy": 0.9222222222222223
+      }
+    ],
+    "weighting_comparison": {
+      "uniform": {
+        "best_k": 22,
+        "best_cv_accuracy": 0.9259259259259259
+      },
+      "distance": {
+        "best_k": 14,
+        "best_cv_accuracy": 0.9259259259259259
+      }
+    }
+  },
+  {
+    "dataset": "plant_condition",
+    "features": [
+      "ndvi",
+      "chlorophyll_spad",
+      "canopy_temp_excess_c",
+      "soil_moisture_pct",
+      "leaf_damage_pct"
+    ],
+    "classes": [
+      "healthy",
+      "nutrient_deficient",
+      "pest_stressed",
+      "water_stressed"
+    ],
+    "best_k": 13,
+    "best_weights": "distance",
+    "cv_accuracy": 0.9491071428571429,
+    "test_accuracy": 0.9321428571428572,
+    "test_macro_f1": 0.931867679561743,
+    "majority_baseline": 0.2526785714285714,
+    "confusion_matrix": [
+      [
+        65,
+        2,
+        2,
+        1
+      ],
+      [
+        1,
+        67,
+        0,
+        2
+      ],
+      [
+        2,
+        3,
+        61,
+        4
+      ],
+      [
+        0,
+        1,
+        1,
+        68
+      ]
+    ],
+    "accuracy_by_k": [
+      {
+        "k": 1,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.8964285714285715,
+        "cv_accuracy": 0.9133928571428571
+      },
+      {
+        "k": 2,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.8964285714285715,
+        "cv_accuracy": 0.9133928571428571
+      },
+      {
+        "k": 3,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9285714285714286,
+        "cv_accuracy": 0.9357142857142857
+      },
+      {
+        "k": 4,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9285714285714286,
+        "cv_accuracy": 0.9410714285714284
+      },
+      {
+        "k": 5,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.9428571428571428
+      },
+      {
+        "k": 6,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.94375
+      },
+      {
+        "k": 7,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.9482142857142858
+      },
+      {
+        "k": 8,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.9464285714285714
+      },
+      {
+        "k": 9,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9285714285714286,
+        "cv_accuracy": 0.9446428571428571
+      },
+      {
+        "k": 10,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.9473214285714286
+      },
+      {
+        "k": 11,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.9473214285714286
+      },
+      {
+        "k": 12,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.9464285714285714
+      },
+      {
+        "k": 13,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.9491071428571429
+      },
+      {
+        "k": 14,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.9482142857142858
+      },
+      {
+        "k": 15,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.9464285714285714
+      },
+      {
+        "k": 16,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.9482142857142858
+      },
+      {
+        "k": 17,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.9446428571428573
+      },
+      {
+        "k": 18,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9357142857142857,
+        "cv_accuracy": 0.9446428571428573
+      },
+      {
+        "k": 19,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9357142857142857,
+        "cv_accuracy": 0.94375
+      },
+      {
+        "k": 20,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9357142857142857,
+        "cv_accuracy": 0.9428571428571428
+      },
+      {
+        "k": 21,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9321428571428572,
+        "cv_accuracy": 0.9419642857142858
+      },
+      {
+        "k": 22,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9357142857142857,
+        "cv_accuracy": 0.94375
+      },
+      {
+        "k": 23,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9357142857142857,
+        "cv_accuracy": 0.94375
+      },
+      {
+        "k": 24,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9285714285714286,
+        "cv_accuracy": 0.9446428571428571
+      },
+      {
+        "k": 25,
+        "train_accuracy": 1.0,
+        "test_accuracy": 0.9357142857142857,
+        "cv_accuracy": 0.94375
+      }
+    ],
+    "weighting_comparison": {
+      "uniform": {
+        "best_k": 7,
+        "best_cv_accuracy": 0.9482142857142858
+      },
+      "distance": {
+        "best_k": 13,
+        "best_cv_accuracy": 0.9491071428571429
+      }
+    }
+  }
+]

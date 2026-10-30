@@ -8,3 +8,19 @@ data/*
 !data/LinearRegression/
 data/LinearRegression/*
 !data/LinearRegression/processed/
+!data/NaiveBayes/
+data/NaiveBayes/*
+!data/NaiveBayes/processed/
+
+# Synthetic KNN datasets are small and reproducible, so they are committed.
+!data/kNN/
+
+# Synthetic SVM dataset (generated and prepared) is also committed.
+!data/SVM/
+
+# Synthetic Decision Tree dataset is also committed.
+!data/DecisionTree/
+
+# ANN leaf images: commit only the small downsized subset, never the raw PlantVillage download.
+!data/ANN/
+data/ANN/PlantVillage/

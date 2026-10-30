@@ -1,0 +1,21 @@
+{
+  "dataset": "plantvillage_tomato_subset",
+  "image_size": 64,
+  "classes": [
+    "healthy",
+    "early_blight",
+    "late_blight",
+    "bacterial_spot",
+    "yellow_leaf_curl"
+  ],
+  "names": {
+    "healthy": "Healthy",
+    "early_blight": "Early blight",
+    "late_blight": "Late blight",
+    "bacterial_spot": "Bacterial spot",
+    "yellow_leaf_curl": "Yellow leaf curl virus"
+  },
+  "per_class": 900,
+  "train_rows": 3600,
+  "test_rows": 900
+}

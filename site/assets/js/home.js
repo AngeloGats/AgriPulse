@@ -8,8 +8,16 @@ function updateSavingsEstimate() {
     return total + (Number.isFinite(value) ? Math.max(value, 0) : 0);
   }, 0);
 
-  const lowEstimate = totalCosts * 0.25;
-  const highEstimate = totalCosts * 0.3;
+  const readPercent = (key, fallback) => {
+    const raw = formData.get(key);
+    if (raw === null || raw === "") return fallback;
+    const value = Number(raw);
+    return Number.isFinite(value) ? Math.min(Math.max(value, 0), 100) : fallback;
+  };
+  const lowPercent = readPercent("reductionLow", 25);
+  const highPercent = readPercent("reductionHigh", 30);
+  const lowEstimate = totalCosts * (Math.min(lowPercent, highPercent) / 100);
+  const highEstimate = totalCosts * (Math.max(lowPercent, highPercent) / 100);
   const formatter = new Intl.NumberFormat("en-PH", {
     style: "currency",
     currency,

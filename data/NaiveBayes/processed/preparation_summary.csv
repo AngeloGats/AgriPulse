@@ -1,0 +1,3 @@
+dataset,model,raw_train_rows,raw_test_rows,train_rows,test_rows,features,classes,missing_cells_train_pct,missing_cells_test_pct,smallest_train_class
+soybean_disease,CategoricalNB,307,376,290,340,35,15,3.84,6.92,10
+crop_recommendation,GaussianNB,2200,0,1760,440,7,22,0.0,0.0,80

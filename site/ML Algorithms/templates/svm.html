@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore a trained Support Vector Machine that separates healthy crops from diseased ones with a boundary, a margin and a few support vectors."
+    />
+    <title>Support Vector Machine Field Lab | AgroPulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/ml-static/linear-regression.css?v=6" />
+    <link rel="stylesheet" href="/ml-static/naive-bayes.css?v=1" />
+    <link rel="stylesheet" href="/ml-static/knn.css?v=1" />
+    <link rel="stylesheet" href="/ml-static/svm.css?v=1" />
+    <script src="/ml-static/svm.js?v=1" defer></script>
+  </head>
+  <body>
+    <header class="ml-header">
+      <a class="ml-brand" href="/index.html" aria-label="AgroPulse Intelligence home">
+        <span class="ml-brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 27V14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M16 17C8.8 17 5 13.2 5 6c7.2 0 11 3.8 11 11Z" fill="currentColor" />
+            <path d="M16 21c0-6.2 3.2-9.5 9.5-9.5 0 6.3-3.3 9.5-9.5 9.5Z" fill="currentColor" opacity=".62" />
+          </svg>
+        </span>
+        <span>AgroPulse<span class="ml-brand-muted"> Intelligence</span></span>
+      </a>
+      <nav class="ml-nav" aria-label="Main navigation">
+        <a href="/analytics.html">Algorithm library</a>
+        <a href="/about.html">About us</a>
+        <a href="/analytics.html">ML algorithms</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="ml-hero">
+        <div>
+          <div class="ml-overline"><span></span> INTERACTIVE MODEL FIELD LAB</div>
+          <h1>Draw the line between<br />healthy and diseased with <em>SVM.</em></h1>
+          <p>
+            A Support Vector Machine learns a boundary between healthy and
+            diseased crops and keeps it as far from both groups as it can. Move
+            the sliders to see the boundary stretch, tighten and curve.
+          </p>
+          <div class="ml-hero-meta">
+            <span><i></i> {{ ctx.features|length }} field measurements, 2 outcomes</span>
+            <span>Output: which side of the boundary, and how far</span>
+          </div>
+        </div>
+        <aside class="ml-score-card" aria-label="Held-out model performance">
+          <span class="ml-score-label">HELD-OUT TEST PERFORMANCE</span>
+          <strong>{{ "%.0f"|format(ctx.full.rbf.test_accuracy * 100) }}%</strong>
+          <span>Healthy vs diseased accuracy</span>
+          <b>vs {{ "%.0f"|format(ctx.baseline * 100) }}% for always guessing "healthy"</b>
+          <small>Curved SVM using all {{ ctx.features|length }} measurements, measured on {{ ctx.test_rows }} unseen samples.</small>
+        </aside>
+      </section>
+
+      <section class="ml-explainer" aria-label="How the model works">
+        <div><span class="ml-step">01</span><span><b>Plot the samples</b><small>Each dot is a past field reading.</small></span></div>
+        <span class="ml-step-arrow" aria-hidden="true">→</span>
+        <div><span class="ml-step">02</span><span><b>Draw the widest street</b><small>A boundary with a margin on both sides.</small></span></div>
+        <span class="ml-step-arrow" aria-hidden="true">→</span>
+        <div><span class="ml-step">03</span><span><b>Check the side</b><small>A new sample takes the side it lands on.</small></span></div>
+      </section>
+
+      <section class="svm-workspace">
+        <div class="ml-workspace">
+          <div class="ml-form-panel">
+            <div class="ml-section-heading">
+              <div>
+                <span class="ml-kicker">THE BOUNDARY</span>
+                <h2>Healthy and diseased zones</h2>
+              </div>
+              <div class="nb-actions">
+                <button class="ml-example-button" id="svm-example" type="button">Load example</button>
+              </div>
+            </div>
+            <p class="nb-help">
+              The shading is the model's opinion. The thin dark line is the
+              boundary. The lighter bands on either side are the <b>margin</b>,
+              where the model is unsure. <b>Click or drag on the chart</b> to place
+              your own sample.
+            </p>
+
+            <div class="svm-chart-wrap" id="svm-chart-wrap">
+              <canvas id="svm-canvas" width="480" height="295" aria-hidden="true"></canvas>
+              <svg id="svm-chart" viewBox="0 0 720 460" role="img" aria-label="Chart of healthy and diseased samples, the SVM boundary and your sample"></svg>
+            </div>
+            <ul class="knn-legend" id="svm-legend">
+              <li><i class="knn-swatch" style="background:#34734f"></i>Healthy sample</li>
+              <li><i class="knn-swatch" style="background:#d98c2b"></i>Diseased sample</li>
+              <li><i class="knn-swatch svm-sv-swatch"></i>Support vector</li>
+              <li><i class="knn-swatch is-diamond" style="background:#21362c"></i>Your sample</li>
+            </ul>
+            <label class="svm-check"><input type="checkbox" id="svm-show-sv" checked /> Highlight support vectors</label>
+
+            <div class="svm-controls">
+              <div class="nb-grid">
+                <label class="ml-field">
+                  <span>Horizontal axis</span>
+                  <select id="svm-x">
+                    {% for f in ctx.features %}<option value="{{ f.key }}"{% if f.key == ctx.default_x %} selected{% endif %}>{{ f.label }}</option>{% endfor %}
+                  </select>
+                </label>
+                <label class="ml-field">
+                  <span>Vertical axis</span>
+                  <select id="svm-y">
+                    {% for f in ctx.features %}<option value="{{ f.key }}"{% if f.key == ctx.default_y %} selected{% endif %}>{{ f.label }}</option>{% endfor %}
+                  </select>
+                </label>
+              </div>
+
+              <div class="svm-kernel" role="group" aria-label="Boundary shape">
+                <button type="button" class="svm-seg is-active" data-kernel="rbf" aria-pressed="true">Curved boundary<small>RBF kernel</small></button>
+                <button type="button" class="svm-seg" data-kernel="linear" aria-pressed="false">Straight line<small>Linear kernel</small></button>
+              </div>
+
+              <div class="svm-slider">
+                <label for="svm-c"><span>Strictness (C)</span><b id="svm-c-value"></b></label>
+                <input type="range" id="svm-c" min="-2" max="2" step="0.05" value="0" />
+                <div class="knn-k-scale"><span>Forgiving: wide margin, allows mistakes</span><span>Strict: narrow margin, few mistakes</span></div>
+              </div>
+              <div class="svm-slider" id="svm-gamma-row">
+                <label for="svm-gamma"><span>Curve tightness (gamma)</span><b id="svm-gamma-value"></b></label>
+                <input type="range" id="svm-gamma" min="-2" max="1.3" step="0.05" value="-0.3" />
+                <div class="knn-k-scale"><span>Smooth, gentle curves</span><span>Twisty, hugs every cluster</span></div>
+              </div>
+              <div class="svm-buttons">
+                <button class="ml-example-button" id="svm-recommended" type="button">Use the best settings for this view</button>
+              </div>
+
+              <div class="nb-grid svm-sample-grid">
+                <label class="ml-field"><span id="svm-sx-label">Your sample</span><input type="number" id="svm-sx" step="any" inputmode="decimal" /></label>
+                <label class="ml-field"><span id="svm-sy-label">Your sample</span><input type="number" id="svm-sy" step="any" inputmode="decimal" /></label>
+              </div>
+            </div>
+            <div class="ml-status" id="svm-status" role="status" aria-live="polite"></div>
+          </div>
+
+          <aside class="ml-result-panel" aria-labelledby="svm-result-title">
+            <span class="ml-result-icon" aria-hidden="true">↗</span>
+            <span class="ml-kicker">MODEL OUTPUT</span>
+            <h2 id="svm-result-title">Predicted crop condition</h2>
+            <p class="ml-result-intro" id="svm-intro">Place a sample on the chart or enter its readings.</p>
+            <div class="ml-result-value nb-top" id="svm-top" aria-live="polite">—</div>
+            <div class="ml-result-context" id="svm-context">No sample yet</div>
+            <div class="svm-gauge" id="svm-gauge" hidden>
+              <div class="svm-gauge-track"><i class="svm-gauge-margin"></i><i class="svm-gauge-zero"></i><b class="svm-gauge-dot" id="svm-gauge-dot"></b></div>
+              <div class="knn-k-scale"><span>Healthy side</span><span>Boundary</span><span>Diseased side</span></div>
+              <p class="svm-gauge-note" id="svm-gauge-note"></p>
+            </div>
+            <div class="ml-result-warning" id="svm-warning" hidden></div>
+
+            <dl class="svm-stats">
+              <div><dt>Support vectors</dt><dd id="svm-stat-sv">—</dd></div>
+              <div><dt>Test accuracy (this view)</dt><dd id="svm-stat-acc">—</dd></div>
+              <div><dt>Straight line, best settings</dt><dd id="svm-stat-linear">—</dd></div>
+              <div><dt>Curved, best settings</dt><dd id="svm-stat-rbf">—</dd></div>
+            </dl>
+            <p class="svm-stat-note" id="svm-stat-note"></p>
+            <div class="ml-performance-note">
+              <span class="ml-performance-icon" aria-hidden="true">i</span>
+              <p>
+                This view uses only the two chosen measurements. With all
+                {{ ctx.features|length }} measurements the curved model reaches
+                {{ "%.0f"|format(ctx.full.rbf.test_accuracy * 100) }}%. The data is <b>simulated</b>.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="ml-glossary" aria-labelledby="glossary-title">
+        <span class="ml-kicker">GLOSSARY & FIELD GUIDE</span>
+        <h2 id="glossary-title">How does an SVM reach an answer?</h2>
+        <p class="ml-glossary-intro">
+          An SVM does not keep every past sample. It studies them once, learns a
+          dividing boundary, and then only asks which side a new sample lands on.
+        </p>
+        <dl class="ml-glossary-grid">
+          <div>
+            <dt>Decision boundary</dt>
+            <dd>The line (or curve) where the model switches from "healthy" to "diseased".</dd>
+          </div>
+          <div>
+            <dt>Margin</dt>
+            <dd>The empty street on each side of the boundary. The SVM chooses the boundary with the widest street, because a wider margin usually generalizes better. A sample inside the margin is a close call.</dd>
+          </div>
+          <div>
+            <dt>Support vectors</dt>
+            <dd>The few samples that sit on or inside the margin. They alone hold the boundary in place. Remove any other sample and the boundary would not move.</dd>
+          </div>
+          <div>
+            <dt>Strictness (C)</dt>
+            <dd>How much the model punishes mistakes. A low C accepts some mistakes for a wide, smooth margin. A high C bends to catch every sample, which can fit noise and mislabeled samples.</dd>
+          </div>
+          <div>
+            <dt>Kernel</dt>
+            <dd>The shape of boundary allowed. A <b>linear</b> kernel is a straight line. The <b>RBF</b> kernel can bend and loop. Disease that appears only in a middle band of temperature needs a curve, which a straight line cannot draw.</dd>
+          </div>
+          <div>
+            <dt>Curve tightness (gamma)</dt>
+            <dd>Only for the curved kernel. A low value gives broad, gentle curves. A high value makes the boundary wrap tightly around small clusters, which can overfit.</dd>
+          </div>
+          <div>
+            <dt>Distance from the boundary</dt>
+            <dd>The farther a sample is from the boundary, the more confident the model is. Beyond a score of 1 on either side, the sample is clear of the margin.</dd>
+          </div>
+          <div>
+            <dt>Two measurements at a time</dt>
+            <dd>A chart has two axes, so each view uses two measurements. The model can also use all of them together, which is usually more accurate.</dd>
+          </div>
+        </dl>
+        <p class="ml-glossary-note">
+          <b>Tip:</b> Start with the straight line on temperature and humidity and watch
+          it fail. Then switch to the curved boundary and compare the accuracy.
+        </p>
+      </section>
+
+      <section class="ml-caveat">
+        <span aria-hidden="true">ⓘ</span>
+        <p>
+          <b>Interpret results with care.</b> The crop-disease data is
+          <b>simulated</b> for this course. Disease is placed in a middle band of
+          temperature with high humidity, so the curve has something to find.
+          Real fields are messier, and a prediction is not a diagnosis.
+        </p>
+      </section>
+
+      <footer class="ml-footer">
+        <span>AgroPulse Intelligence <i aria-hidden="true">✳</i> Machine Learning Field Lab</span>
+        <a href="/analytics.html">Back to the algorithm library <span aria-hidden="true">↗</span></a>
+      </footer>
+    </main>
+
+    <script id="svm-config" type="application/json">{{ {"features": ctx.features, "recommended": recommended, "c_range": ctx.c_range, "gamma_range": ctx.gamma_range, "default_x": ctx.default_x, "default_y": ctx.default_y}|tojson }}</script>
+  </body>
+</html>

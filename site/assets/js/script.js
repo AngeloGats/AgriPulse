@@ -12,6 +12,7 @@ const models = {
     outputNote: "An example numeric prediction",
     chips: ["Rainfall", "Temperature", "Soil quality"],
     note: "Regression predicts a continuous number, rather than a category.",
+    demo: { path: "/linear-regression", label: "Try the trained Linear Regression model" },
     legend: '<span><i class="legend-dot harvest-dot"></i> Sample harvests</span><span><i class="legend-line"></i> Fitted trend</span>',
     visualization: `
       <svg class="plot-svg" viewBox="0 0 540 190" role="img" aria-label="Illustrative scatter plot with an upward fitted trend between rainfall and crop yield">
@@ -36,6 +37,7 @@ const models = {
     outputNote: "Example scores only—not a diagnosis",
     chips: ["Leaf spots", "Yellowing", "Humidity"],
     note: "Naive Bayes combines feature evidence while assuming features are conditionally independent.",
+    demo: { path: "/naive-bayes", label: "Try the trained Naive Bayes model" },
     legend: "",
     visualization: `
       <div class="probability-list" role="img" aria-label="Illustrative probability bars for three possible crop conditions">
@@ -57,6 +59,7 @@ const models = {
     outputNote: "The result depends on the selected K value",
     chips: ["Soil pH", "Moisture", "Nutrients"],
     note: "KNN uses the labels of the nearest examples; feature scales and the choice of K matter.",
+    demo: { path: "/knn", label: "Try the trained KNN model" },
     legend: '<span><i class="legend-dot harvest-dot"></i> Loamy samples</span><span><i class="legend-dot" style="background:#d5a36e"></i> Sandy samples</span><span><i class="legend-dot" style="background:#526f8b"></i> New sample</span>',
     visualization: `
       <svg class="plot-svg" viewBox="0 0 540 190" role="img" aria-label="Illustrative soil sample scatter plot with nearest neighbors highlighted">
@@ -83,6 +86,7 @@ const models = {
     outputNote: "A simplified two-feature example",
     chips: ["Leaf color", "Spot count", "Plant vigor"],
     note: "An SVM finds a separating boundary with the widest possible margin between classes.",
+    demo: { path: "/svm", label: "Try the trained SVM model" },
     legend: '<span><i class="legend-dot harvest-dot"></i> Healthy examples</span><span><i class="legend-dot" style="background:#d5a36e"></i> Disease examples</span><span><i class="legend-line"></i> Decision boundary</span>',
     visualization: `
       <svg class="plot-svg" viewBox="0 0 540 190" role="img" aria-label="Illustrative SVM plot with classes, a separating boundary, and margin">
@@ -110,6 +114,7 @@ const models = {
     outputNote: "A simplified rule path",
     chips: ["Soil moisture", "Recent rainfall", "Crop stage"],
     note: "A decision tree makes predictions by following feature-based questions from root to leaf.",
+    demo: { path: "/decision-tree", label: "Try the trained Decision Tree model" },
     legend: "",
     visualization: `
       <div class="tree-visual" role="img" aria-label="Illustrative decision tree for irrigation based on soil moisture and recent rainfall">
@@ -135,6 +140,7 @@ const models = {
     outputNote: "An example model output",
     chips: ["Leaf image", "Color pattern", "Texture"],
     note: "Neural networks learn layered patterns from examples; reliable results need representative labeled data.",
+    demo: { path: "/neural-network", label: "Try the trained Neural Network model" },
     legend: '<span><i class="legend-dot" style="background:#789d7a"></i> Input features</span><span><i class="legend-dot" style="background:#dcebdc;border:1px solid #78a27b"></i> Hidden layer</span><span><i class="legend-dot" style="background:#ad7183"></i> Output</span>',
     visualization: `
       <svg class="neural-svg" viewBox="0 0 480 170" role="img" aria-label="Illustrative neural network with input, hidden, and output layers">
@@ -154,6 +160,17 @@ const models = {
 
 const cards = document.querySelectorAll(".algorithm-card[data-model], .algorithm-card-control[data-model]");
 const modelDemoLinks = document.querySelectorAll("[data-model-demo]");
+const modelDemoButton = document.getElementById("modelDemoButton");
+const modelDemoLabel = document.getElementById("modelDemoLabel");
+const FLASK_ORIGIN =
+  ["127.0.0.1", "localhost"].includes(window.location.hostname) &&
+  window.location.port === "5500"
+    ? "http://127.0.0.1:5051"
+    : "";
+
+function demoUrl(path) {
+  return `${FLASK_ORIGIN}${path}`;
+}
 const demoCategory = document.getElementById("demoCategory");
 const demoIcon = document.getElementById("demoIcon");
 const demoName = document.getElementById("demoName");
@@ -168,14 +185,9 @@ const outputNote = document.getElementById("outputNote");
 const dataChips = document.getElementById("dataChips");
 const learningNote = document.getElementById("learningNote");
 
-if (
-  ["127.0.0.1", "localhost"].includes(window.location.hostname) &&
-  window.location.port === "5500"
-) {
-  modelDemoLinks.forEach((link) => {
-    link.href = "http://127.0.0.1:5051/linear-regression";
-  });
-}
+modelDemoLinks.forEach((link) => {
+  link.href = demoUrl(new URL(link.href, window.location.href).pathname);
+});
 
 function selectModel(modelKey) {
   const model = models[modelKey];
@@ -212,6 +224,12 @@ function selectModel(modelKey) {
     })
   );
   learningNote.textContent = model.note;
+
+  modelDemoButton.hidden = !model.demo;
+  if (model.demo) {
+    modelDemoButton.href = demoUrl(model.demo.path);
+    modelDemoLabel.textContent = model.demo.label;
+  }
 }
 
 cards.forEach((card) => {

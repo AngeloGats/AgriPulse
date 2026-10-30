@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore a trained K-Nearest Neighbors model that classifies soil and crop samples by comparing them with similar labeled examples."
+    />
+    <title>K-Nearest Neighbors Field Lab | AgroPulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/ml-static/linear-regression.css?v=6" />
+    <link rel="stylesheet" href="/ml-static/naive-bayes.css?v=1" />
+    <link rel="stylesheet" href="/ml-static/knn.css?v=1" />
+    <script src="/ml-static/knn.js?v=1" defer></script>
+  </head>
+  <body data-max-k="{{ max_k }}">
+    <header class="ml-header">
+      <a class="ml-brand" href="/index.html" aria-label="AgroPulse Intelligence home">
+        <span class="ml-brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 27V14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M16 17C8.8 17 5 13.2 5 6c7.2 0 11 3.8 11 11Z" fill="currentColor" />
+            <path d="M16 21c0-6.2 3.2-9.5 9.5-9.5 0 6.3-3.3 9.5-9.5 9.5Z" fill="currentColor" opacity=".62" />
+          </svg>
+        </span>
+        <span>AgroPulse<span class="ml-brand-muted"> Intelligence</span></span>
+      </a>
+      <nav class="ml-nav" aria-label="Main navigation">
+        <a href="/analytics.html">Algorithm library</a>
+        <a href="/about.html">About us</a>
+        <a href="/analytics.html">ML algorithms</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="ml-hero">
+        <div>
+          <div class="ml-overline"><span></span> INTERACTIVE MODEL FIELD LAB</div>
+          <h1>Ask the neighbors<br />with <em>K-Nearest Neighbors.</em></h1>
+          <p>
+            Enter measurements for a new sample and the model finds the most
+            similar samples it has already seen. They vote on the answer. Change
+            how many neighbors vote (K) and watch whether the answer holds.
+          </p>
+          <div class="ml-hero-meta">
+            <span><i></i> 3 demos: soil type, soil fertility, plant condition</span>
+            <span>Output: the neighbors' vote</span>
+          </div>
+        </div>
+        <aside class="ml-score-card" aria-label="Held-out model performance">
+          <span class="ml-score-label">HELD-OUT TEST PERFORMANCE</span>
+          <strong id="score-accuracy">{{ "%.0f"|format(datasets[0].accuracy * 100) }}%</strong>
+          <span id="score-title">{{ datasets[0].title }} accuracy</span>
+          <b id="score-baseline">vs {{ "%.0f"|format(datasets[0].baseline * 100) }}% for always guessing the biggest group</b>
+          <small id="score-rows">Measured on {{ datasets[0].test_rows }} unseen samples.</small>
+        </aside>
+      </section>
+
+      <section class="ml-explainer" aria-label="How the model works">
+        <div><span class="ml-step">01</span><span><b>Measure the sample</b><small>Enter its readings.</small></span></div>
+        <span class="ml-step-arrow" aria-hidden="true">→</span>
+        <div><span class="ml-step">02</span><span><b>Find K neighbors</b><small>The most similar known samples.</small></span></div>
+        <span class="ml-step-arrow" aria-hidden="true">→</span>
+        <div><span class="ml-step">03</span><span><b>Let them vote</b><small>The majority label wins.</small></span></div>
+      </section>
+
+      <div class="nb-tabs knn-tabs" role="tablist" aria-label="Choose a KNN demo">
+        {% for d in datasets %}
+        <button
+          class="nb-tab{% if loop.first %} is-active{% endif %}"
+          id="tab-{{ d.name }}"
+          role="tab"
+          aria-selected="{{ 'true' if loop.first else 'false' }}"
+          aria-controls="knn-workspace"
+          type="button"
+          data-dataset="{{ d.name }}"
+          data-title="{{ d.title }}"
+          data-accuracy="{{ d.accuracy }}"
+          data-baseline="{{ d.baseline }}"
+          data-test-rows="{{ d.test_rows }}"
+          data-best-k="{{ d.best_k }}"
+        >
+          {{ d.title }}
+          <small>{{ d.tab_hint }}</small>
+        </button>
+        {% endfor %}
+      </div>
+
+      <section id="knn-workspace" role="tabpanel">
+        <div class="ml-workspace">
+          <div class="ml-form-panel">
+            <div class="ml-section-heading">
+              <div>
+                <span class="ml-kicker">YOUR SAMPLE</span>
+                <h2 id="form-title">{{ datasets[0].question }}</h2>
+              </div>
+              <div class="nb-actions">
+                <button class="ml-example-button" id="knn-example" type="button">Load example</button>
+                <button class="ml-example-button" id="knn-reset" type="button">Typical values</button>
+              </div>
+            </div>
+            <p class="nb-help">
+              Starting values are the typical sample. Change any reading, then
+              press <b>Find neighbors</b>.
+            </p>
+
+            {% for d in datasets %}
+            <form class="knn-form" id="form-{{ d.name }}" data-dataset="{{ d.name }}" data-question="{{ d.question }}" novalidate {% if not loop.first %}hidden{% endif %}>
+              <div class="nb-grid nb-grid-crop">
+                {% for f in d.features %}
+                <label class="ml-field">
+                  <span>{{ f.label }}{% if f.unit %} <small class="ml-field-sub">({{ f.unit }})</small>{% endif %}</span>
+                  <input
+                    type="number"
+                    name="{{ f.key }}"
+                    step="any"
+                    min="{{ f.min }}"
+                    max="{{ f.max }}"
+                    value="{{ '%.2f'|format(f.median)|replace('.00', '') }}"
+                    data-default="{{ '%.2f'|format(f.median)|replace('.00', '') }}"
+                    inputmode="decimal"
+                    required
+                  />
+                  <small class="nb-range">Typical: {{ '%.2f'|format(f.train_min)|replace('.00', '') }} to {{ '%.2f'|format(f.train_max)|replace('.00', '') }}</small>
+                </label>
+                {% endfor %}
+              </div>
+            </form>
+            {% endfor %}
+
+            <div class="ml-form-footer">
+              <p>Readings are rescaled so no single unit dominates the distance.</p>
+              <button class="ml-submit-button" id="knn-submit" type="button">
+                Find neighbors <span aria-hidden="true">→</span>
+              </button>
+            </div>
+            <div class="ml-status" id="knn-status" role="status" aria-live="polite"></div>
+          </div>
+
+          <aside class="ml-result-panel" aria-labelledby="knn-result-title">
+            <span class="ml-result-icon" aria-hidden="true">↗</span>
+            <span class="ml-kicker">MODEL OUTPUT</span>
+            <h2 id="knn-result-title">{{ datasets[0].result_title }}</h2>
+            <p class="ml-result-intro" id="knn-intro">Enter a sample, then press Find neighbors.</p>
+            <div class="ml-result-value nb-top" id="knn-top" aria-live="polite">—</div>
+            <div class="ml-result-context" id="knn-context">No prediction yet</div>
+
+            <div class="knn-k">
+              <label for="knn-k-slider">
+                <span>Neighbors voting (K)</span>
+                <b id="knn-k-value">{{ datasets[0].best_k }}</b>
+              </label>
+              <input type="range" id="knn-k-slider" min="1" max="{{ max_k }}" step="1" value="{{ datasets[0].best_k }}" />
+              <div class="knn-k-scale"><span>1 (very local)</span><span>{{ max_k }} (broad)</span></div>
+              <p class="knn-k-note" id="knn-k-note" hidden></p>
+            </div>
+
+            <ol class="nb-bars" id="knn-bars" aria-label="Votes for each answer"></ol>
+            <div class="ml-result-warning" id="knn-warning" hidden></div>
+            <div class="ml-performance-note">
+              <span class="ml-performance-icon" aria-hidden="true">i</span>
+              <p>
+                A learning demonstration using <b>simulated</b> data. It is not
+                a substitute for a lab test or an agronomist.
+              </p>
+            </div>
+          </aside>
+        </div>
+
+        <section class="nb-evidence knn-chart-card" aria-labelledby="knn-chart-title">
+          <span class="ml-kicker">THE NEIGHBORHOOD</span>
+          <h2 id="knn-chart-title">Where your sample sits among known samples</h2>
+          <p id="knn-chart-intro">
+            Each dot is a known sample, colored by its group. The black diamond
+            is your sample. Rings and lines mark the K neighbors that vote.
+          </p>
+          <div class="knn-chart-wrap">
+            <svg id="knn-chart" class="knn-chart" viewBox="0 0 720 460" role="img" aria-label="Scatter chart of known samples with your sample and its nearest neighbors"></svg>
+          </div>
+          <ul class="knn-legend" id="knn-legend"></ul>
+          <p class="knn-chart-note" id="knn-chart-note"></p>
+        </section>
+
+        <section class="nb-evidence knn-chart-card" aria-labelledby="knn-acc-title">
+          <span class="ml-kicker">CHOOSING K</span>
+          <h2 id="knn-acc-title">How accurate is each K?</h2>
+          <p id="knn-acc-intro"></p>
+          <div class="knn-chart-wrap">
+            <svg id="knn-acc-chart" class="knn-chart" viewBox="0 0 720 300" role="img" aria-label="Accuracy for each value of K"></svg>
+          </div>
+          <ul class="knn-legend" id="knn-acc-legend"></ul>
+        </section>
+
+        <section class="nb-evidence knn-chart-card" id="knn-neighbors-card" aria-labelledby="knn-nb-title" hidden>
+          <span class="ml-kicker">THE VOTERS</span>
+          <h2 id="knn-nb-title">The nearest neighbors</h2>
+          <p>A smaller distance means a more similar sample. Only the first K rows vote.</p>
+          <div class="knn-table-wrap">
+            <table class="knn-table">
+              <thead id="knn-table-head"></thead>
+              <tbody id="knn-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section class="ml-glossary" aria-labelledby="glossary-title">
+        <span class="ml-kicker">GLOSSARY & FIELD GUIDE</span>
+        <h2 id="glossary-title">How does KNN reach an answer?</h2>
+        <p class="ml-glossary-intro">
+          KNN works like asking neighbors who have already farmed similar land.
+          It does not learn a formula. It keeps every known sample and, for a
+          new one, looks up the most similar ones and goes with their majority.
+        </p>
+        <dl class="ml-glossary-grid">
+          <div>
+            <dt>Neighbor</dt>
+            <dd>A known, labeled sample that is similar to yours across all the readings together.</dd>
+          </div>
+          <div>
+            <dt>Distance</dt>
+            <dd>How different two samples are. It combines the gap in every reading, so a smaller distance means a closer match.</dd>
+          </div>
+          <div>
+            <dt>K</dt>
+            <dd>How many neighbors get a vote. A small K follows local detail but can be thrown off by one odd sample. A large K is steadier but can blur real differences.</dd>
+          </div>
+          <div>
+            <dt>Rescaling</dt>
+            <dd>Readings use different units (pH against kg/ha). Each reading is rescaled to a comparable spread first, so a big-number reading does not drown out the rest.</dd>
+          </div>
+          <div>
+            <dt>Distance-weighted vote</dt>
+            <dd>Some models let closer neighbors count more. Each demo uses whichever style tested best, shown in the note under the chart.</dd>
+          </div>
+          <div>
+            <dt>Map view (PCA)</dt>
+            <dd>The model compares all readings at once, but a chart has two axes. PCA squeezes the readings into two summary axes that keep as much of the spread as possible. Dots that look close on the chart may be further apart in reality.</dd>
+          </div>
+          <div>
+            <dt>Cross-validation</dt>
+            <dd>The training samples are split into parts, and each part is used in turn to test the rest. It is how the best K was picked without touching the held-out test set.</dd>
+          </div>
+        </dl>
+        <p class="ml-glossary-note">
+          <b>Tip:</b> Use <b>Load example</b>, then drag the K slider. If the
+          answer flips between nearby values of K, the sample sits on a border
+          between groups.
+        </p>
+      </section>
+
+      <section class="ml-caveat">
+        <span aria-hidden="true">ⓘ</span>
+        <p>
+          <b>Interpret results with care.</b> All three datasets are
+          <b>simulated</b> for this course, with some deliberate overlap and
+          label noise, so they behave like realistic fields but are not measured
+          data. Accuracy on real fields would be lower.
+        </p>
+      </section>
+
+      <footer class="ml-footer">
+        <span>AgroPulse Intelligence <i aria-hidden="true">✳</i> Machine Learning Field Lab</span>
+        <a href="/analytics.html">Back to the algorithm library <span aria-hidden="true">↗</span></a>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -13,6 +13,12 @@ import pandas as pd
 from flask import Flask, abort, jsonify, render_template, request, send_from_directory
 from werkzeug.exceptions import BadRequest
 
+from decision_tree import register_decision_tree
+from ann import register_ann
+from knn import register_knn
+from naive_bayes import register_naive_bayes
+from svm import register_svm
+
 
 APP_DIR = Path(__file__).resolve().parent
 SITE_DIR = APP_DIR.parent
@@ -33,7 +39,7 @@ EXAMPLE_PATH = (
     / "cycless"
     / "X_test.csv"
 )
-ALLOWED_SITE_PAGES = {"index", "about", "analytics", "demo"}
+ALLOWED_SITE_PAGES = {"index", "about", "analytics"}
 OBSERVATION_LIMITS = {2015: 61, 2016: 73, 2017: 177}
 SENSORS = ("ratio", "vh", "vv")
 SENSOR_FIELDS = ("mean", "std", "min", "max", "observations")
@@ -323,6 +329,12 @@ def create_app() -> Flask:
                 "test_rows": model_metrics["test_rows"],
             },
         )
+
+    register_naive_bayes(app)
+    register_knn(app)
+    register_svm(app)
+    register_decision_tree(app)
+    register_ann(app)
 
     @app.get("/ml-static/<path:filename>")
     def ml_static(filename: str):

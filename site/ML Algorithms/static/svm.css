@@ -1,0 +1,215 @@
+.svm-chart-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 720 / 460;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.svm-chart-wrap canvas {
+  position: absolute;
+  top: 3.48%;
+  left: 7.78%;
+  width: 89.44%;
+  height: 86.09%;
+  border-radius: 4px;
+}
+
+.svm-chart-wrap svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.svm-dot {
+  stroke: #fff;
+  stroke-width: 0.8;
+  opacity: 0.85;
+}
+
+.svm-sv {
+  fill: none;
+  stroke: #21362c;
+  stroke-width: 1.4;
+}
+
+.svm-sv-swatch {
+  background: #fff;
+  border: 2px solid #21362c;
+  box-sizing: border-box;
+}
+
+.svm-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 0;
+  font-size: 13px;
+}
+
+.svm-controls {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--ml-line);
+}
+
+.svm-kernel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.svm-seg {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 11px 14px;
+  color: var(--ml-ink);
+  font-family: "Manrope", sans-serif;
+  font-size: 13.5px;
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid var(--ml-line);
+  border-radius: 12px;
+}
+
+.svm-seg small {
+  color: var(--ml-muted);
+  font-family: "DM Sans", sans-serif;
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.svm-seg.is-active {
+  color: #fff;
+  background: var(--ml-green);
+  border-color: var(--ml-green);
+}
+
+.svm-seg.is-active small {
+  color: #d6e7dc;
+}
+
+.svm-seg:focus-visible,
+.svm-slider input:focus-visible,
+.svm-check input:focus-visible {
+  outline: 2px solid var(--ml-green);
+  outline-offset: 2px;
+}
+
+.svm-slider[hidden] {
+  display: none;
+}
+
+.svm-slider label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.svm-slider label b {
+  color: var(--ml-green);
+  font-family: "Manrope", sans-serif;
+  font-size: 18px;
+}
+
+.svm-slider input[type="range"] {
+  width: 100%;
+  margin: 6px 0 2px;
+  accent-color: var(--ml-green);
+}
+
+.svm-gauge[hidden] {
+  display: none;
+}
+
+.svm-gauge {
+  margin: 4px 0 16px;
+}
+
+.svm-gauge-track {
+  position: relative;
+  height: 14px;
+  background: linear-gradient(90deg, #9fcba9, #e2f0e5 35%, #fbe9d2 65%, #f0b97a);
+  border-radius: 99px;
+}
+
+.svm-gauge-zero {
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 2px;
+  height: 20px;
+  background: #21362c;
+}
+
+.svm-gauge-dot {
+  position: absolute;
+  top: -3px;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px;
+  background: #21362c;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  transition: left 0.25s ease;
+}
+
+.svm-gauge .knn-k-scale {
+  margin-top: 8px;
+}
+
+.svm-gauge-note {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.svm-stats {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+
+.svm-stats div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.svm-stats dt {
+  color: var(--ml-muted);
+}
+
+.svm-stats dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.svm-stat-note {
+  margin: 4px 0 14px;
+  color: var(--ml-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.svm-tick {
+  fill: var(--ml-muted);
+  font-family: "DM Sans", sans-serif;
+  font-size: 11px;
+}
+
+@media (max-width: 760px) {
+  .svm-kernel {
+    grid-template-columns: 1fr;
+  }
+}

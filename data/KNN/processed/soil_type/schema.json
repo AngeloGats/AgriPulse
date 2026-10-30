@@ -1,0 +1,56 @@
+{
+  "dataset": "soil_type",
+  "features": [
+    "sand_pct",
+    "silt_pct",
+    "clay_pct",
+    "moisture_pct",
+    "ph",
+    "organic_matter_pct",
+    "bulk_density_g_cm3"
+  ],
+  "classes": [
+    "clay",
+    "loamy",
+    "sandy",
+    "silty"
+  ],
+  "ranges": {
+    "sand_pct": [
+      1.0,
+      97.7
+    ],
+    "silt_pct": [
+      1.0,
+      89.9
+    ],
+    "clay_pct": [
+      1.0,
+      80.6
+    ],
+    "moisture_pct": [
+      3.0,
+      50.0
+    ],
+    "ph": [
+      4.5,
+      9.0
+    ],
+    "organic_matter_pct": [
+      0.2,
+      6.54
+    ],
+    "bulk_density_g_cm3": [
+      1.0,
+      1.8
+    ]
+  },
+  "train_rows": 960,
+  "test_rows": 240,
+  "class_counts_train": {
+    "clay": 242,
+    "loamy": 234,
+    "sandy": 238,
+    "silty": 246
+  }
+}

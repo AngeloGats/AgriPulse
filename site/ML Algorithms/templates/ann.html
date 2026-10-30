@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Pick or upload a tomato leaf photo and see the neural network's predicted disease with a score for every class."
+    />
+    <title>Neural Network Field Lab | AgroPulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/ml-static/linear-regression.css?v=6" />
+    <link rel="stylesheet" href="/ml-static/naive-bayes.css?v=1" />
+    <link rel="stylesheet" href="/ml-static/knn.css?v=1" />
+    <link rel="stylesheet" href="/ml-static/ann.css?v=3" />
+    <script src="/ml-static/ann.js?v=3" defer></script>
+  </head>
+  <body>
+    <header class="ml-header">
+      <a class="ml-brand" href="/index.html" aria-label="AgroPulse Intelligence home">
+        <span class="ml-brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M16 27V14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M16 17C8.8 17 5 13.2 5 6c7.2 0 11 3.8 11 11Z" fill="currentColor" />
+            <path d="M16 21c0-6.2 3.2-9.5 9.5-9.5 0 6.3-3.3 9.5-9.5 9.5Z" fill="currentColor" opacity=".62" />
+          </svg>
+        </span>
+        <span>AgroPulse<span class="ml-brand-muted"> Intelligence</span></span>
+      </a>
+      <nav class="ml-nav" aria-label="Main navigation">
+        <a href="/analytics.html">Algorithm library</a>
+        <a href="/about.html">About us</a>
+        <a href="/analytics.html">ML algorithms</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="ml-hero">
+        <div>
+          <div class="ml-overline"><span></span> INTERACTIVE MODEL FIELD LAB</div>
+          <h1>Show a neural network<br /><em>a tomato leaf.</em></h1>
+          <p>
+            Pick a sample leaf or upload your own photo. The network turns the
+            picture into numbers, passes them through its layers, and scores each
+            possible condition.
+          </p>
+          <div class="ml-hero-meta">
+            <span><i></i> {{ ctx.classes|length }} leaf conditions, {{ ctx.per_class }} photos each</span>
+            <span>Output: the predicted class with a score for every class</span>
+          </div>
+        </div>
+        <aside class="ml-score-card" aria-label="Held-out model performance">
+          <span class="ml-score-label">HELD-OUT TEST PERFORMANCE</span>
+          <strong>{{ "%.0f"|format(ctx.accuracy * 100) }}%</strong>
+          <span>Leaf photos classified correctly</span>
+          <b>vs {{ "%.0f"|format(ctx.baseline * 100) }}% for random guessing</b>
+          <small>Measured on {{ ctx.test_rows }} photos the network never trained on. A plain pixel-list network scored {{ "%.0f"|format(ctx.plain_accuracy * 100) }}% on the same photos. Real photos taken in a field are harder.</small>
+        </aside>
+      </section>
+
+      <section class="ml-explainer" aria-label="How the model works">
+        <div><span class="ml-step">01</span><span><b>Read the picture</b><small>{{ ctx.size }}×{{ ctx.size }} colour dots = {{ ctx.inputs }} numbers.</small></span></div>
+        <span class="ml-step-arrow" aria-hidden="true">→</span>
+        <div><span class="ml-step">02</span><span><b>Filters find patterns</b><small>{{ ctx.filters|length }} convolutional layers: spots, edges, colour.</small></span></div>
+        <span class="ml-step-arrow" aria-hidden="true">→</span>
+        <div><span class="ml-step">03</span><span><b>Score each class</b><small>Scores add up to 100%.</small></span></div>
+      </section>
+
+      <section class="ann-workspace">
+        <div class="ml-workspace">
+          <div class="ml-form-panel">
+            <div class="ml-section-heading">
+              <div>
+                <span class="ml-kicker">YOUR LEAF</span>
+                <h2>Choose a leaf photo</h2>
+              </div>
+              <div class="nb-actions">
+                <button class="ml-example-button" id="ann-random" type="button">Random sample</button>
+              </div>
+            </div>
+
+            <div class="ann-drop" id="ann-drop">
+              <input type="file" id="ann-file" accept="image/jpeg,image/png" />
+              <label for="ann-file">
+                <b>Upload a leaf photo</b>
+                <span>or drag it here. JPEG or PNG, up to 5 MB. Works best on a single tomato leaf on a plain background.</span>
+              </label>
+            </div>
+
+            <h3 class="ann-gallery-title">Or pick a sample leaf <small>(unseen test photos)</small></h3>
+            <ul class="ann-gallery" id="ann-gallery">
+              {% for s in ctx.samples %}
+              <li>
+                <button type="button" class="ann-thumb" data-sample="{{ s.path }}" aria-label="Sample {{ s.name }} leaf {{ loop.index }}">
+                  <img src="/api/ann/sample-image/{{ s.path }}" alt="" width="64" height="64" loading="lazy" />
+                </button>
+              </li>
+              {% endfor %}
+            </ul>
+            <div class="ml-status" id="ann-status" role="status" aria-live="polite"></div>
+          </div>
+
+          <aside class="ml-result-panel" aria-labelledby="ann-result-title">
+            <span class="ml-result-icon" aria-hidden="true">↗</span>
+            <span class="ml-kicker">MODEL OUTPUT</span>
+            <h2 id="ann-result-title">Predicted class</h2>
+            <p class="ml-result-intro" id="ann-intro">Pick or upload a leaf to see the network's scores.</p>
+            <figure class="ann-leaf" id="ann-leaf" hidden>
+              <div class="ann-leaf-frame">
+                <img id="ann-leaf-img" alt="The leaf being classified" />
+                <svg id="ann-heat" viewBox="0 0 8 8" preserveAspectRatio="none" aria-hidden="true"></svg>
+              </div>
+              <figcaption>
+                <label class="ann-heat-toggle"><input type="checkbox" id="ann-heat-toggle" checked /> Show where the network looked</label>
+              </figcaption>
+            </figure>
+            <div class="ml-result-value nb-top" id="ann-top" aria-live="polite">—</div>
+            <div class="ml-result-context" id="ann-context"></div>
+            <ul class="nb-bars" id="ann-bars" aria-label="Score for each leaf condition"></ul>
+            <p class="ann-advice" id="ann-advice"></p>
+            <div class="ml-result-warning" id="ann-warning" hidden></div>
+            <div class="ml-performance-note">
+              <span class="ml-performance-icon" aria-hidden="true">i</span>
+              <p>A learning demonstration, not a diagnosis. Confirm any disease with an agronomist.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="nb-evidence ann-card" aria-labelledby="ann-see-title" id="ann-see" hidden>
+        <span class="ml-kicker">WHAT THE NETWORK SAW</span>
+        <h2 id="ann-see-title">The leaf as the network sees it</h2>
+        <p>
+          The network never sees your full-size photo. It sees a
+          <b>{{ ctx.size }}×{{ ctx.size }}</b> copy, centre-cropped to a square. Red patches
+          in the heat map on your leaf mark the areas where hiding the patch lowered the
+          score the most, so those areas drove the answer.
+        </p>
+        <div class="ann-see-row">
+          <figure>
+            <img id="ann-net-view" alt="The leaf shrunk to the size the network sees" width="192" height="192" />
+            <figcaption>What the network receives ({{ ctx.size }}×{{ ctx.size }})</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="nb-evidence ann-card" aria-labelledby="ann-train-title">
+        <span class="ml-kicker">HOW IT LEARNED</span>
+        <h2 id="ann-train-title">Training: it learns the training leaves slightly faster than new ones</h2>
+        <p>
+          Each pass through the training photos is an <b>epoch</b>. The network
+          adjusts its {{ ctx.parameters }} weights to reduce its error (the <b>loss</b>).
+          Every epoch the photos are randomly flipped, rotated, zoomed and brightened, so the
+          network cannot simply memorize them. Training stops early once the validation
+          accuracy stops improving.
+        </p>
+        <div class="ann-two-col">
+          <div>
+            <h3>Error (loss) per epoch</h3>
+            <div class="knn-chart-wrap"><svg id="ann-loss-chart" class="knn-chart" viewBox="0 0 420 240" role="img" aria-label="Training loss per epoch"></svg></div>
+          </div>
+          <div>
+            <h3>Accuracy per epoch</h3>
+            <div class="knn-chart-wrap"><svg id="ann-acc-chart" class="knn-chart" viewBox="0 0 420 240" role="img" aria-label="Accuracy per epoch"></svg></div>
+            <ul class="knn-legend" id="ann-acc-legend"></ul>
+          </div>
+        </div>
+        <h3 class="ann-sub">Which leaves it confuses (unseen test photos)</h3>
+        <div class="ann-table-wrap">
+          <table class="ann-confusion" id="ann-confusion"></table>
+        </div>
+      </section>
+
+      <section class="ml-glossary" aria-labelledby="glossary-title">
+        <span class="ml-kicker">GLOSSARY & FIELD GUIDE</span>
+        <h2 id="glossary-title">How does a neural network recognize a leaf?</h2>
+        <p class="ml-glossary-intro">
+          A neural network is many tiny calculators wired in layers. None is
+          smart alone, but after training they can pick up patterns in pictures that
+          are hard to describe with rules. This one is a <b>convolutional</b> network,
+          the kind used for most image recognition.
+        </p>
+        <dl class="ml-glossary-grid">
+          <div>
+            <dt>Pixel</dt>
+            <dd>One colour dot of the picture. Each pixel becomes three numbers (red, green, blue), so a small image is thousands of inputs.</dd>
+          </div>
+          <div>
+            <dt>Neuron</dt>
+            <dd>A small calculator. It adds up its weighted inputs and passes the result on if it is strong enough.</dd>
+          </div>
+          <div>
+            <dt>Convolutional filter</dt>
+            <dd>A small window (3×3 pixels) slid over the whole picture, looking for one pattern such as an edge, a spot or a yellow patch. Later layers combine these into bigger shapes.</dd>
+          </div>
+          <div>
+            <dt>Pooling</dt>
+            <dd>Shrinks the picture between layers, keeping the strongest signal in each small area, so the network focuses on what is present rather than exactly where.</dd>
+          </div>
+          <div>
+            <dt>Weight</dt>
+            <dd>How strongly one neuron listens to another. Training is just adjusting these numbers.</dd>
+          </div>
+          <div>
+            <dt>Score (softmax)</dt>
+            <dd>The output layer turns raw numbers into percentages that add up to 100%. A 45% answer is much less sure than a 95% one.</dd>
+          </div>
+          <div>
+            <dt>Epoch and loss</dt>
+            <dd>An epoch is one full pass through the training data. Loss is a score for how wrong the network is. Training pushes it down.</dd>
+          </div>
+          <div>
+            <dt>Overfitting</dt>
+            <dd>Memorizing the training photos instead of learning the general pattern. It looks perfect on training leaves and worse on new ones. Flipping and rotating the training photos helps prevent it.</dd>
+          </div>
+          <div>
+            <dt>Heat map (occlusion)</dt>
+            <dd>We hide one patch of the leaf at a time and watch the score. A big drop means that patch mattered. It is an explanation aid, not proof of the reason.</dd>
+          </div>
+        </dl>
+        <p class="ml-glossary-note">
+          <b>Tip:</b> Try a leaf, then see which classes get the next-highest
+          scores. The confusion table above shows which pairs of diseases the
+          network mixes up most.
+        </p>
+      </section>
+
+      <section class="ml-caveat">
+        <span aria-hidden="true">ⓘ</span>
+        <p>
+          <b>Interpret results with care.</b> The network learned from
+          <b>{{ ctx.per_class * ctx.classes|length }} downsized photos</b> from the public
+          PlantVillage collection (tomato leaves photographed on a plain background). It may not
+          recognize leaves from other crops, cluttered photos or other diseases, and it
+          always gives an answer even for a picture of something else.
+        </p>
+      </section>
+
+      <footer class="ml-footer">
+        <span>AgroPulse Intelligence <i aria-hidden="true">✳</i> Machine Learning Field Lab</span>
+        <a href="/analytics.html">Back to the algorithm library <span aria-hidden="true">↗</span></a>
+      </footer>
+    </main>
+  </body>
+</html>

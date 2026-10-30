@@ -1,0 +1,46 @@
+{
+  "dataset": "plant_condition",
+  "features": [
+    "ndvi",
+    "chlorophyll_spad",
+    "canopy_temp_excess_c",
+    "soil_moisture_pct",
+    "leaf_damage_pct"
+  ],
+  "classes": [
+    "healthy",
+    "nutrient_deficient",
+    "pest_stressed",
+    "water_stressed"
+  ],
+  "ranges": {
+    "ndvi": [
+      0.329,
+      0.929
+    ],
+    "chlorophyll_spad": [
+      14.7,
+      56.2
+    ],
+    "canopy_temp_excess_c": [
+      -2.0,
+      9.6
+    ],
+    "soil_moisture_pct": [
+      3.0,
+      43.1
+    ],
+    "leaf_damage_pct": [
+      0.0,
+      47.8
+    ]
+  },
+  "train_rows": 1120,
+  "test_rows": 280,
+  "class_counts_train": {
+    "healthy": 283,
+    "nutrient_deficient": 279,
+    "pest_stressed": 279,
+    "water_stressed": 279
+  }
+}

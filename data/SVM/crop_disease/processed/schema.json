@@ -1,0 +1,33 @@
+{
+  "dataset": "crop_disease",
+  "features": [
+    "air_temp_c",
+    "humidity_pct",
+    "leaf_wetness_hours",
+    "red_edge_index"
+  ],
+  "classes": [
+    "healthy",
+    "diseased"
+  ],
+  "ranges": {
+    "air_temp_c": [
+      6.2,
+      40.6
+    ],
+    "humidity_pct": [
+      23.9,
+      100.0
+    ],
+    "leaf_wetness_hours": [
+      0.0,
+      18.4
+    ],
+    "red_edge_index": [
+      0.316,
+      0.929
+    ]
+  },
+  "train_rows": 960,
+  "test_rows": 240
+}

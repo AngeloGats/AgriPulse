@@ -1,0 +1,198 @@
+{
+  "features": {
+    "date": [
+      "april",
+      "may",
+      "june",
+      "july",
+      "august",
+      "september",
+      "october"
+    ],
+    "plant-stand": [
+      "normal",
+      "lt-normal"
+    ],
+    "precip": [
+      "lt-norm",
+      "norm",
+      "gt-norm"
+    ],
+    "temp": [
+      "lt-norm",
+      "norm",
+      "gt-norm"
+    ],
+    "hail": [
+      "yes",
+      "no"
+    ],
+    "crop-hist": [
+      "diff-lst-year",
+      "same-lst-yr",
+      "same-lst-two-yrs",
+      "same-lst-sev-yrs"
+    ],
+    "area-damaged": [
+      "scattered",
+      "low-areas",
+      "upper-areas",
+      "whole-field"
+    ],
+    "severity": [
+      "minor",
+      "pot-severe",
+      "severe"
+    ],
+    "seed-tmt": [
+      "none",
+      "fungicide",
+      "other"
+    ],
+    "germination": [
+      "90-100%",
+      "80-89%",
+      "lt-80%"
+    ],
+    "plant-growth": [
+      "norm",
+      "abnorm"
+    ],
+    "leaves": [
+      "norm",
+      "abnorm"
+    ],
+    "leafspots-halo": [
+      "absent",
+      "yellow-halos",
+      "no-yellow-halos"
+    ],
+    "leafspots-marg": [
+      "w-s-marg",
+      "no-w-s-marg",
+      "dna"
+    ],
+    "leafspot-size": [
+      "lt-1/8",
+      "gt-1/8",
+      "dna"
+    ],
+    "leaf-shread": [
+      "absent",
+      "present"
+    ],
+    "leaf-malf": [
+      "absent",
+      "present"
+    ],
+    "leaf-mild": [
+      "absent",
+      "upper-surf",
+      "lower-surf"
+    ],
+    "stem": [
+      "norm",
+      "abnorm"
+    ],
+    "lodging": [
+      "yes",
+      "no"
+    ],
+    "stem-cankers": [
+      "absent",
+      "below-soil",
+      "above-soil",
+      "above-sec-nde"
+    ],
+    "canker-lesion": [
+      "dna",
+      "brown",
+      "dk-brown-blk",
+      "tan"
+    ],
+    "fruiting-bodies": [
+      "absent",
+      "present"
+    ],
+    "external-decay": [
+      "absent",
+      "firm-and-dry",
+      "watery"
+    ],
+    "mycelium": [
+      "absent",
+      "present"
+    ],
+    "int-discolor": [
+      "none",
+      "brown",
+      "black"
+    ],
+    "sclerotia": [
+      "absent",
+      "present"
+    ],
+    "fruit-pods": [
+      "norm",
+      "diseased",
+      "few-present",
+      "dna"
+    ],
+    "fruit-spots": [
+      "absent",
+      "colored",
+      "brown-w/blk-specks",
+      "distort",
+      "dna"
+    ],
+    "seed": [
+      "norm",
+      "abnorm"
+    ],
+    "mold-growth": [
+      "absent",
+      "present"
+    ],
+    "seed-discolor": [
+      "absent",
+      "present"
+    ],
+    "seed-size": [
+      "norm",
+      "lt-norm"
+    ],
+    "shriveling": [
+      "absent",
+      "present"
+    ],
+    "roots": [
+      "norm",
+      "rotted",
+      "galls-cysts"
+    ]
+  },
+  "classes": [
+    "alternarialeaf-spot",
+    "anthracnose",
+    "bacterial-blight",
+    "bacterial-pustule",
+    "brown-spot",
+    "brown-stem-rot",
+    "charcoal-rot",
+    "diaporthe-stem-canker",
+    "downy-mildew",
+    "frog-eye-leaf-spot",
+    "phyllosticta-leaf-spot",
+    "phytophthora-rot",
+    "powdery-mildew",
+    "purple-seed-stain",
+    "rhizoctonia-root-rot"
+  ],
+  "excluded_classes": [
+    "diaporthe-pod-&-stem-blight",
+    "cyst-nematode",
+    "2-4-d-injury",
+    "herbicide-injury"
+  ],
+  "missing_value": "blank cell = symptom not recorded"
+}

@@ -1,0 +1,4 @@
+dataset,train_rows,test_rows,features,classes
+soil_type,960,240,7,4
+soil_fertility,1080,270,7,3
+plant_condition,1120,280,5,4
