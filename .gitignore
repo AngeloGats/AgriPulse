@@ -24,3 +24,6 @@ data/NaiveBayes/*
 # ANN leaf images: commit only the small downsized subset, never the raw PlantVillage download.
 !data/ANN/
 data/ANN/PlantVillage/
+
+# Presentation scripts are kept locally but not published.
+AGROPULSE_PRESENTATION_SCRIPT*.txt
